@@ -9,7 +9,7 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 3. [Open decisions](engineering/OPEN_DECISIONS.md) — P0 gameplay questions that block dependent implementation.
 4. [Architecture decisions](engineering/ARCHITECTURE_DECISIONS.md) — accepted constraints and proposed ADRs.
 5. [Implementation WBS](engineering/IMPLEMENTATION_WBS.json) and [CSV](engineering/IMPLEMENTATION_WBS.csv) — 17 epic-level work packages.
-6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md) and [task register](maestro/TASK_REGISTER.md) — workflow lifecycle and task execution contract.
+6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md), [task register](maestro/TASK_REGISTER.md), [17 Maestro Task v2 packets](maestro/EMBERFALL_TASKS_V2.json), and [cycle packet templates](maestro/CORE_PACKET_TEMPLATES_V03.json).
 7. [Original specification — normalized text copy](references/EMBERFALL_GAME_SPEC_v0.2.txt) — structured text transcription of the supplied v0.2 game specification. Compare with the original source attachment in the local full handoff ZIP if exact wording matters.
 
 ## Repository and workflow baseline
@@ -18,8 +18,9 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 - Active handoff branch: `handoff/emberfall-coding-agent-v1.0`
 - The default branch contains only the repository bootstrap README.
 - Current Maestro source lock: `grep999/maestro` v0.3.0, observed `main` commit `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
+- Root `AGENTS.md`, `CLAUDE.md` and `.github/copilot-instructions.md` provide agent-specific entry points.
 - No game implementation is claimed by this handoff. The initial work is repository/source discovery, reproducible build setup and P0 rules grounding.
-- The complete local handoff ZIP additionally contains source design documents, work packet templates, design-volume maps and concept images; these binary assets and per-cycle templates are not yet mirrored into this remote branch.
+- The complete local handoff ZIP additionally contains the detailed 77-child-task WBS, 51 per-cycle packet templates, design-volume maps, original source attachment and binary concept-art references. Those extended documents/images are not all mirrored into this remote branch; the remote branch contains the implementation roadmap and epic-level task register required to start.
 
 ## Rules for all agents
 
