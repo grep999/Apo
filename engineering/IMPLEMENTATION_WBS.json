@@ -1,0 +1,198 @@
+{
+  "version": "1.0",
+  "project_id": "EMBERFALL",
+  "source_spec": "EMBERFALL Game Specification v0.2 (2026-11-21)",
+  "maestro_version": "0.3.0",
+  "note": "Epic-level register. Detailed acceptance criteria are in CODING_AGENT_ROADMAP.md. Each epic must be refined into bounded work items during Grounding; do not execute the whole epic as one agent prompt.",
+  "epics": [
+    {
+      "id": "EFB-000-BASELINE",
+      "title": "Repository, source inventory and build baseline",
+      "owner": "ARCHITECT",
+      "risk": "R1",
+      "dependencies": [],
+      "outcome": "Create a reproducible EMBERFALL repo, verify code/assets provenance, find the SLAY! prototype if available, pin toolchain, baseline build and test commands."
+    },
+    {
+      "id": "EFB-001-RULES-ADR",
+      "title": "Gameplay rules contract and P0 decisions",
+      "owner": "ARCHITECT",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-000-BASELINE"
+      ],
+      "outcome": "Convert the v0.2 specification into executable, versioned rules and resolve P0 ambiguities before dependent implementation."
+    },
+    {
+      "id": "EFB-002-BOARD-CORE",
+      "title": "Headless board engine and deterministic group-pop simulation",
+      "owner": "BUILDER",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-001-RULES-ADR"
+      ],
+      "outcome": "Implement deterministic 7×7 board, connected groups, pops, vertical gravity, Ink, chip damage, Spectrum Run, neutral blocks and Wall prototype."
+    },
+    {
+      "id": "EFB-003-TURN-COMBAT",
+      "title": "Turn state machine, player/enemy combat and telegraphed intents",
+      "owner": "BUILDER",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-002-BOARD-CORE"
+      ],
+      "outcome": "Implement Draw/Weave/Cast/Wall/Enemy/Cleanup phases, Vigil, Block, Flasks, enemy intents and atomic legal actions."
+    },
+    {
+      "id": "EFB-004-CARD-EFFECTS",
+      "title": "Data-driven card, cost, upgrade and effect engine",
+      "owner": "BUILDER",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-003-TURN-COMBAT"
+      ],
+      "outcome": "Implement typed card content schema, deterministic effect resolver, trigger queue, payment, Pop/Recolor/Fuse/Spawn/Shatter/Draw/Taps/Delay/Exhaust/Retain/Echo."
+    },
+    {
+      "id": "EFB-005-CLASSES-STARTER",
+      "title": "Three playable class identities and starter decks",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "outcome": "Implement Ashen Monk, Quarry Witch, The Unlit, signature mechanics, relics and validated 12-card starter decks."
+    },
+    {
+      "id": "EFB-006-ENEMIES-BOSSES",
+      "title": "Enemy, elite and phased boss content system",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-003-TURN-COMBAT",
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "outcome": "Implement data-driven enemy patterns, board attacks, 2-intent preview, elites and three-phase core bosses."
+    },
+    {
+      "id": "EFB-007-RUN-PROGRESSION",
+      "title": "Run map, rewards, shops, bonfires, events and covenants",
+      "owner": "BUILDER",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-005-CLASSES-STARTER",
+        "EFB-006-ENEMIES-BOSSES"
+      ],
+      "outcome": "Implement 3 acts, 15-row branching map, node validation, Cinders, rewards, shop, bonfire, events, Covenants, Ascension and per-node saves."
+    },
+    {
+      "id": "EFB-008-SHADE-NARRATIVE",
+      "title": "Death, Shade encounters, Remnants and narrative progression",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-007-RUN-PROGRESSION"
+      ],
+      "outcome": "Persist dead-deck identity, generate bounded Shade encounter, recover Cinders/Remnant, implement codex, NPC secrets and endings."
+    },
+    {
+      "id": "EFB-009-ANDROID-CLIENT",
+      "title": "Android app shell, portrait combat UI and touch UX",
+      "owner": "BUILDER",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-003-TURN-COMBAT",
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "outcome": "Build portrait Android client with corridor/board/hand composition, touch routing, preview, drag, undo, accessibility and navigation."
+    },
+    {
+      "id": "EFB-010-ART-ASSET-PIPELINE",
+      "title": "Art assets, manifests, atlases and game-world presentation",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT"
+      ],
+      "outcome": "Integrate approved art, traceable source/license metadata, atlases, animations, environment layers and game-event-driven VFX."
+    },
+    {
+      "id": "EFB-011-AUDIO-HAPTICS",
+      "title": "Dynamic music, sound effects, lighting response and haptics",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT",
+        "EFB-010-ART-ASSET-PIPELINE"
+      ],
+      "outcome": "Implement hue-note mapping, pop voicing, adaptive ambience, card/enemy SFX, haptics, audio controls and measured latency."
+    },
+    {
+      "id": "EFB-012-SAVE-REPLAY",
+      "title": "Versioned saves, action logs and deterministic replay",
+      "owner": "BUILDER",
+      "risk": "R2",
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-007-RUN-PROGRESSION"
+      ],
+      "outcome": "Implement atomic saves, migrations, recovery, seed/version/action logs and deterministic replay/checkpoint verification."
+    },
+    {
+      "id": "EFB-013-BALANCE-LAB",
+      "title": "Bot policies, seeded sweeps and balance dashboard",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-004-CARD-EFFECTS",
+        "EFB-006-ENEMIES-BOSSES",
+        "EFB-007-RUN-PROGRESSION",
+        "EFB-012-SAVE-REPLAY"
+      ],
+      "outcome": "Build greedy and lookahead bots, reproducible sweeps, archetype metrics, dashboards and exploit scans."
+    },
+    {
+      "id": "EFB-014-FULL-CONTENT",
+      "title": "Complete v1.0 content catalogue",
+      "owner": "DOMAIN_SPECIALIST",
+      "risk": "R1",
+      "dependencies": [
+        "EFB-005-CLASSES-STARTER",
+        "EFB-006-ENEMIES-BOSSES",
+        "EFB-007-RUN-PROGRESSION",
+        "EFB-008-SHADE-NARRATIVE",
+        "EFB-013-BALANCE-LAB"
+      ],
+      "outcome": "Populate 360 cards, 150 relics, 36 regular enemies, 12 elites, 3 bosses, 50 events and 400 codex entries or approved cut list."
+    },
+    {
+      "id": "EFB-015-BACKEND",
+      "title": "Daily seeds, leaderboard and replay validation service",
+      "owner": "BUILDER",
+      "risk": "R2",
+      "dependencies": [
+        "EFB-012-SAVE-REPLAY",
+        "EFB-013-BALANCE-LAB"
+      ],
+      "outcome": "Add optional daily seeds, leaderboard and replay validation without mandatory accounts or blocking offline play."
+    },
+    {
+      "id": "EFB-016-QA-RELEASE",
+      "title": "Device QA, performance, accessibility and launch hardening",
+      "owner": "ARCHITECT",
+      "risk": "R2",
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT",
+        "EFB-010-ART-ASSET-PIPELINE",
+        "EFB-011-AUDIO-HAPTICS",
+        "EFB-012-SAVE-REPLAY",
+        "EFB-013-BALANCE-LAB",
+        "EFB-014-FULL-CONTENT",
+        "EFB-015-BACKEND"
+      ],
+      "outcome": "Complete device matrix, 60fps target verification, crash/performance, accessibility, legal, store policy, Mastery and Repetition."
+    }
+  ]
+}
