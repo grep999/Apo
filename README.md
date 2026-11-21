@@ -9,8 +9,10 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 3. [Open decisions](engineering/OPEN_DECISIONS.md) — P0 gameplay questions that block dependent implementation.
 4. [Architecture decisions](engineering/ARCHITECTURE_DECISIONS.md) — accepted constraints and proposed ADRs.
 5. [Implementation WBS](engineering/IMPLEMENTATION_WBS.json) and [CSV](engineering/IMPLEMENTATION_WBS.csv) — 17 epic-level work packages.
-6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md), [task register](maestro/TASK_REGISTER.md), [17 Maestro Task v2 packets](maestro/EMBERFALL_TASKS_V2.json), and [cycle packet templates](maestro/CORE_PACKET_TEMPLATES_V03.json).
-7. [Original specification — normalized text copy](references/EMBERFALL_GAME_SPEC_v0.2.txt) — structured text transcription of the supplied v0.2 game specification. Compare with the original source attachment in the local full handoff ZIP if exact wording matters.
+6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md), [task register](maestro/TASK_REGISTER.md), [17 engineering Task v2 packets](maestro/EMBERFALL_TASKS_V2.json), and [cycle packet templates](maestro/CORE_PACKET_TEMPLATES_V03.json).
+7. [Graphics v0.4 agent handoff](graphics/README.md), [exact visual baseline lock](graphics/ART_BASELINE_LOCK.md), [Android art integration contract](graphics/ANDROID_ART_INTEGRATION_HANDOFF.md), and [graphics Maestro Task v2](graphics/MAESTRO_TASK_EFB_ART_UI_BASELINE_V2.json).
+8. [Graphics pack manifest summary](graphics/ASSET_MANIFEST_SUMMARY.json) — exact base-image and companion archive hashes.
+9. [Original specification — normalized text copy](references/EMBERFALL_GAME_SPEC_v0.2.txt) — structured text transcription of the supplied v0.2 game specification. Compare with the original source attachment in the local full handoff ZIP if exact wording matters.
 
 ## Repository and workflow baseline
 
@@ -19,8 +21,8 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 - The default branch contains only the repository bootstrap README.
 - Current Maestro source lock: `grep999/maestro` v0.3.0, observed `main` commit `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
 - Root `AGENTS.md`, `CLAUDE.md` and `.github/copilot-instructions.md` provide agent-specific entry points.
-- No game implementation is claimed by this handoff. The initial work is repository/source discovery, reproducible build setup and P0 rules grounding.
-- The complete local handoff ZIP additionally contains the detailed 77-child-task WBS, 51 per-cycle packet templates, design-volume maps, original source attachment and binary concept-art references. Those extended documents/images are not all mirrored into this remote branch; the remote branch contains the implementation roadmap and epic-level task register required to start.
+- No playable game implementation is claimed by this handoff. The initial work is repository/source discovery, reproducible build setup and P0 rules grounding.
+- Graphics v0.4 documents and Task v2 are mirrored here. The 30MB full art-source ZIP and 2.6MB Android resource-only ZIP are companion binary deliverables; their SHA-256 hashes are in `graphics/ASSET_MANIFEST_SUMMARY.json`. Download/extract the companion bundle into the actual game source workspace before integration. They are not embedded as binary Git blobs in this documentation branch.
 
 ## Rules for all agents
 
@@ -39,4 +41,4 @@ This repository is private. Every human or service agent that needs to collabora
 
 ## Scope and provenance
 
-Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. Preserve source/artist/license metadata for every production asset. The art direction's torch-lit crypt, carved-glass board, five-hue stained glass and ornate iron/gold interface are a design north star; final production assets still require proper creation, review, optimization and provenance.
+Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. The selected base image is the canonical visual design authority, copied byte-for-byte and hash-locked in graphics v0.4. Preserve source/artist/license metadata for every production asset. Final app integration and device verification are still required.
