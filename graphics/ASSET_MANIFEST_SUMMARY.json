@@ -64,8 +64,8 @@
     "full_source_sha256": "ed6844778bc52f01ac9be2d4985c653d4fa0507f058e8cdd50ef46a50f96327d",
     "android_resource_only": "EMBERFALL_ANDROID_RESOURCES_v0.4.zip",
     "android_resource_only_sha256": "6776274de05dd77607283bacd7986804b595813d85d7d0dc4c86c825a41c6ef3",
-    "full_source_size_bytes": 31457280,
-    "android_resource_only_size_bytes": 2726298
+    "full_source_size_bytes": 30704426,
+    "android_resource_only_size_bytes": 2717551
   },
   "not_verified": [
     "No playable Android app build",
