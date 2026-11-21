@@ -1,0 +1,280 @@
+EMBERFALL: Game Specification
+Version 0.2 (pivot: color-block puzzle x roguelike deckbuilder) · 21 Nov 2026 · Pre-production draft for review. Every number is a starting value to be tuned by the seeded bot sweep. Claims tagged HUNCH are estimates, not facts.
+
+1. Vision
+Pitch: a portrait-mode dungeon crawler where you pop colored glass blocks to earn Ink, spend the Ink on a deck of cards, and every card you add repaints the board you play on.
+Pillars (each with the rule it enforces)
+1. The deck paints the board. Block colors spawn in proportion to the hues in your deck. Never add a card that ignores this link.
+2. Every tap feeds a card; every card reshapes the board. Never let the board be a mere timer or the hand a mere menu.
+3. Every threat is shown two intents ahead. Never land an attack the player could not read.
+4. Death is content. Your dead deck returns as a Shade you fight and loot. Never let a failed run feel wasted.
+5. The dungeon is a place. Never ship a screen or a sound that does not belong to the same torch-lit crypt.
+Audience: Slay the Spire and Balatro players who want a new puzzle, and color-puzzle players who want depth. Ages 15–40. Platform: Android first (min API 24, target 35); iOS and gamepad at 1.0. Orientation: portrait only. Run length: about 30 minutes, saved after every node. Model: premium, no ads, no energy timers, no random-reward purchases.
+Borrowed from / What we take / What we add:
+- Slay the Spire: map, visible intents, relics, deck thinning, bonfire upgrades. Addition: a second board you play on while building the deck.
+- Color-pop puzzles (SameGame, Toon Blast): tap a group of same-colored blocks to pop it. Addition: pops pay Ink that cards spend; the deck decides which colors spawn.
+- Souls-likes: bonfire, finite flasks, your death as a place you return to. Addition: your Shade plays your last deck against you.
+- Dungeon crawlers (Grimrock, Eye of the Beholder): first-person corridor, torchlight, stone UI. Addition: popped blocks cast colored light onto the walls.
+Naming and IP: EMBERFALL is a working title pending a trademark search. Card, relic and enemy names are original; none are copied from Slay the Spire or FromSoftware work. Mechanics are free to build on; names, text and art are not. This is planning, not legal advice.
+
+2. A turn in sixty seconds
+1. Draw. Draw 5 cards. Ink carries over between turns, capped per hue.
+2. Weave (3 Taps). Each Tap pops one connected group of 2 or more same-hue blocks. A pop pays Ink of that hue and a small chip of damage. Pop in color-wheel order to build a Spectrum Run (Section 3).
+3. Cast. Play any number of cards by paying Ink. Cards deal damage, give Block, and act on the board: recolor, shatter, fuse, spawn.
+4. The Wall rises. One new row of blocks pushes up from below. The next row is visible, dimmed, before it arrives.
+5. The enemy acts. The intent it showed resolves. Discard the hand. Next turn.
+Parameters:
+- Board: 7 columns × 7 rows (plus one hidden row), cell 44 dp.
+- Hues: 5 playable: Ember, Tide, Moss, Gold, Violet. Neutral: Ash, Stone, Prism.
+- Taps per turn: 3 (cards and relics can add or remove).
+- Hand/starting deck: 5 cards drawn / 12 cards.
+- Ink cap: 8 per hue; overflow becomes Spark (colorless, usable on any colorless cost).
+- Vigil (your health): 70 at start; Block absorbs damage and resets each turn.
+- Flasks: 2 at start, max 5; each heals 30 Vigil.
+- Overflow: if the Wall cannot rise, lose 8 Vigil, burn the top 2 rows, skip the rise.
+The board is the energy engine and the clock at once: it feeds the hand and punishes a stalled turn.
+
+3. The board in detail
+Groups: orthogonal neighbors of the same hue. A group of 2 or more can be popped. Remaining blocks fall to fill gaps; columns do not slide sideways.
+Ink and chip: popping a group of n pays Ink = min(n, 8) + floor(max(n - 8, 0) / 2) of its hue, then multiplies by the Run bonus. Chip damage to the enemy is n - 1, applied after the enemy’s Block.
+Spectrum Run: the five hues sit on a wheel: Ember, Gold, Moss, Tide, Violet, then back to Ember. Pop the next hue on the wheel after your previous pop this turn and your Run rises by 1. Each pop’s Ink is multiplied by 1 + 0.5 × Run. Popping out of order resets Run to 0 for that pop. A Prism block counts as the next hue. Cards can rotate or skip the wheel.
+Neutral blocks: Ash pops in groups like a hue but pays no Ink (enemies insert it). Stone cannot be popped; it breaks when an adjacent group of 4 or more pops. Prism joins any group and counts as the next wheel hue.
+The deck paints the board: new blocks are drawn by weight: weight(h) = max(0.08, (cards of hue h + 1) / (deck size + 5)), then normalized. A 12-card deck with 5 Ember, 4 Tide and 3 Moss cards spawns about 35% Ember, 29% Tide, 24% Moss and 8% each of Gold and Violet. Adding an Ember card makes Ember groups bigger; removing a hue entirely leaves a two-hue board of enormous groups.
+Anti-degeneracy: group Ink past 8 pays half rate. Enemies seed Ash and Stone more against mono decks. Boss phases require at least two hues. The bot sweep must show no single archetype above a 45% pick rate.
+
+4. Cards
+Anatomy: a card has a cost (colored Ink pips, colorless pips payable by anything), a hue (its frame color, which also counts toward board spawn weights), a type (Attack, Skill, Power, Curse), a rarity, and an upgraded form. Cost key: E Ember, T Tide, M Moss, G Gold, V Violet, 1 any Ink.
+Keywords: Pop acts on the board as if you tapped it (no Tap spent). Recolor changes block hues. Fuse merges groups. Run reads your Spectrum Run. Exhaust removes the card for the fight. Retain keeps it in hand. Echo repeats an effect.
+Classes (three at 1.0). Each starts with a 12-card deck: 4 Strikes in its first hue, 4 Wards in its second, Pop Shot ×2, Sift, and one signature card.
+Classes:
+- Ashen Monk — Ember, Moss; burns Vigil for power; big single hits; Prayer Beads: first Tap each turn pays +2 Ink.
+- Quarry Witch — Tide, Violet; recolors the board; builds Spectrum Runs; Chisel Wand: once per fight, recolor one block free.
+- The Unlit — Gold, Ash; turns enemy Ash into fuel; thin, fast decks; Hollow Crown: each Ash block popped pays 1 Spark.
+24 sample cards (360 at 1.0: 3 classes × 90, plus 70 neutral and 20 curses):
+- Ember Strike, E: deal 6; baseline; paints the board Ember.
+- Moss Ward, M: gain 5 Block; baseline defense.
+- Pop Shot, 1: pop the largest group; deal 3; saves a Tap.
+- Sift, 1: reshuffle the Wall, keep Run, draw 1; fixes a bad board.
+- Quake Line, E E: destroy a row; gain its Ink as if popped; Demolition.
+- Pyre Column, E: destroy a column; deal 3 per block; Demolition.
+- Prism Seed, V: spawn a Prism atop a column; Spectrum.
+- Recolor, V: turn a 3×3 area into one hue of your choice; Monochrome.
+- Fuse, 1: merge two adjacent groups into one hue you pick; big groups.
+- Spectrum Lance, E G M: deal 5 per Run; Spectrum.
+- Rotate Wheel, 1: rotate the wheel one step; Run +1; Spectrum.
+- Hearthlight, G: +1 Tap this turn; Tempo.
+- Cinder Tithe, G: gain 6 Cinders; Exhaust; Economy.
+- Tide Surge, T T: delay the enemy’s next intent 1 turn; Control.
+- Brand Breaker, V: remove all Brand and Stone; deal 2 per item; Anti-enemy.
+- Ash Alchemy, 1: turn all Ash into Ember; deal 1 per Ash; Ash Warden.
+- Sacrifice Rite, M: lose 6 Vigil, +2 Taps, draw 2; Vigil-burner.
+- Tidal Shield, T: Block equal to your largest Tide group; board-reading.
+- Mossgrow, M: spawn 4 Moss blocks beside existing Moss; Monochrome.
+- Echo Chime, 1: repeat the last card cast this turn; Exhaust; Combo.
+- Frozen Moment, T V: skip this turn’s Wall rise; Tempo, Overflow safety.
+- Violet Vigil (Power), V V: each Run of 3 or more gives 3 Block; Spectrum.
+- Gold Eye (Power), G: see the Wall’s next two rows; Information.
+- Dread (Curse), no cost: unplayable; counts as a Violet card for spawn weights. Curses repaint the board too.
+
+5. Enemy intents and attacks
+Every enemy shows its next two intents with numbers. Attacks hit Vigil through Block; board attacks reshape the Wall. A turn’s intent is also a puzzle: decide how much Block, delay or board repair to buy with your Ink.
+- Strike (N): deal N Vigil. Counterplay: Block, Delay, kill first.
+- Ash Row: insert a row of Ash below the Wall. Counterplay: pop Ash for chip, or Ash Alchemy.
+- Stone Seed: place 3 Stone in a column. Counterplay: pop adjacent groups of 4 or more.
+- Stain: recolor one hue on the board to Ash. Counterplay: pop the targeted hue before it lands.
+- Fog: hide hues for 3 Taps (blocks show as gray glyphs). Colorblind glyphs stay readable; Gold Eye.
+- Seal: lock a column for 3 turns. Counterplay: plan around the shown column.
+- Brand: marked blocks cost 2 Vigil when popped. Counterplay: Brand Breaker or pop via card.
+- Surge: Wall rises twice next turn. Counterplay: Frozen Moment, clear before the rise.
+- Snatch: exhaust one card from your hand. Counterplay: play it first.
+- Curse (Dread, Hollow): add a curse card to your discard. Counterplay: thin it at a bonfire.
+
+6. Synergy engine
+Cards and the board feed each other in a loop: board pops pay Ink, Ink buys cards, cards reshape the board, the deck decides what the board spawns. Five archetypes use that loop differently:
+- Monochrome: thin to 1–2 hues so groups reach 10+; Recolor, Mossgrow, Fuse; weakness: Ash and Stone punish it; Ink past 8 pays half.
+- Spectrum: Run of 4+ every turn multiplies Ink; Rotate Wheel, Prism Seed, Spectrum Lance; weakness: needs all five hues; fragile to Stain.
+- Demolition: cards destroy rows and columns for Ink; Quake Line, Pyre Column, Pop Shot; weakness: burns the board; Overflow risk.
+- Ash Warden: enemy Ash becomes damage and Ink; Ash Alchemy, Hollow Crown; weakness: needs the enemy to supply Ash.
+- Vigil-burner: spend Vigil for Taps and cards; Sacrifice Rite, Moss cards; weakness: one bad intent kills you.
+Relics: 150 at 1.0; rarities Common, Uncommon, Rare, Keystone, Cursed. Twenty examples:
+- Kindling Box: +1 Tap on turn one of each fight; Any.
+- Ash Ledger: each Ash popped deals 1; Ash Warden.
+- Glass Prism: Prism blocks spawn twice as often; Spectrum.
+- Wheel of Hours: Run bonus is +0.75 per step, not +0.5; Spectrum.
+- Quarry Chisel: card removal costs 25 less; Any.
+- Ember Ring: Ember groups of 5+ deal 3 extra; Monochrome.
+- Pyre Tongs: destroyed rows deal 2 per block; Demolition.
+- Quiet Bell: Fog lasts 1 Tap less; Any.
+- Hollow Crown: Ash pays 1 Spark per block; Ash Warden.
+- Lamplighter: see 3 intents ahead; Any.
+- Drowned Coin: shops carry one extra item; Any.
+- Gravedigger’s Spade: Shade reward is 150%; Any.
+- Salt Circle: Seals last 1 turn less; Any.
+- Cinder Purse: start each fight with 10 Cinders; Any.
+- Wicker Cage: Flasks heal 20 more; Vigil-burner.
+- Greywatch: Wall rise preview shows two rows; Any.
+- Masoned Glove: first card each turn costs 1 less; Any.
+- Cracked Hourglass: hand size +1, Taps −1; Any.
+- Black Hearth (Keystone): Run bonus doubles; max Flasks 1; Spectrum.
+- Pact of Silence (Cursed): +50% Ink, hues hidden after turn 2; Vigil-burner.
+Soft-lock policy: the bot sweep must show no relic or card pair giving unbounded Ink or damage in one turn; every Keystone carries a stated downside.
+
+7. Run structure, death and difficulty
+- Three acts, each a 15-row branching map drawn as a dungeon floor plan. Act 3 ends the run; Ascension and Covenants drive replay (decided; no meta-currency in v1).
+- Per act: about 6 fights, 1–2 elites, 2 bonfires, 1 shop, 2 events, 1 treasure, 1 boss. Full run about 30 minutes; the run is saved after every node.
+- Bonfire: choose one: Kindle (heal 30% of Vigil), Temper (upgrade a card), Forget (remove a card), or Read (a lore fragment and a free relic reroll).
+- Shop: 5 cards, 2 relics, 1 Flask, and one card removal at rising price.
+- Rewards: after each fight, pick 1 of 3 cards (or skip), plus Cinders; elites also drop a relic.
+Death and the Shade: when your Vigil hits 0 the run ends and your deck is saved. In your next run a Shade node appears on row 5 of Act 1: a fight against your dead deck, whose cards become the enemy’s intents. Beat it to recover the Cinders you died with and one Remnant, a card chosen from your dead deck. Skip it and the Shade fades. This is a bounded rubber band, not a meta-currency.
+Covenants:
+- Ash: enemies insert 25% more Ash; +1 relic slot.
+- Silence: hues hidden after turn 2; +50% Ink.
+- Famine: max 2 Flasks; shops sell cheaper.
+- Fever: Wall rises twice on turn 4 of each fight; boss relic choice of 4.
+- Unlit: start with a Dread curse; unlocks the true-ending route.
+Ascension: 15 levels; each adds one rule (more Vigor, faster cadence, fewer Flasks, a harder elite pool, curses in treasure, a second Act 1 boss form).
+
+8. Bosses
+Each boss has three phases, a tell one turn before every attack, and a board mechanic only it uses.
+- The Hollow Warden (Act 1): walls a column with Stone each turn, leaving one Door column open. Pop groups of 4 or more beside the Stone to break it; keep the Door clear for your own Spectrum Run.
+- The Drowned Choir (Act 2): every 3 turns the bottom two rows flood into Tide and pop only with Tide groups. Bank Tide Ink early; spend it on cards while the tide is out.
+- The Hearthkeeper (Act 3): copies your last 3 cards into Mirror curses in your discard. Play cards whose mirror helps you; the true ending is in Section 9.
+Three optional covenant bosses (one per covenant) unlock at 1.0: the Quarrywoman, the Unlit Child, the Chapter’s Last Brother.
+
+9. Lore and bestiary (original)
+Central metaphor: a popped block is a memory released into fire. Playing cards is choosing which memories to burn for strength.
+Cosmology: The Cairn is a tower holding up a cracked sky. At its heart the Hearth burns Glass, colored shards of the remembered dead. The five hues are five humors: Ember (wrath), Tide (grief), Moss (patience), Gold (greed), Violet (wonder). Ash is what a memory becomes when nobody burns it in time. The Hollow are the people made of Ash.
+Timeline: (1) The Raising: the first Kindler lights the Hearth. (2) The Long Rain: the sky cracks, Glass begins to fall. (3) The Chapter is founded to burn what falls. (4) The Hollowing: those who stopped burning turned to Ash. (5) You: the last ash-born Kindler.
+Factions: the Ashen Chapter (burn everything), the Quarrymen (cut Glass, run the shops), the Unlit (refuse to burn; called heretics).
+Five NPCs, one secret each: Sister Verrin (bonfire keeper) has been burning the Chapter’s records. Old Tamm (Quarryman) cut the first Hollow shard by accident. The Lamplighter (event) is a previous player’s Shade. Ilse (the Unlit child) hears the Hearth, and it is afraid. Warden Corvin (Act 1 boss) is the Chapter’s first Brother.
+True ending: the Hearth does not preserve the world, it feeds the Fall. In the Act 3 finale the Hearthkeeper heals from the Ink you make, so the way to win is the Fast: for 3 consecutive turns, pop only Ash (which pays no Ink) and play no cards while its attacks fall on empty air. The normal ending is killing the Hearthkeeper and continuing the cycle.
+Delivery: no cutscene walls. Story arrives through card, relic and enemy text, codex entries, bonfire dialogue and carvings visible in the corridor. Voice rule: cryptic but meaningful, three lines at most. Samples:
+- Quarry Chisel: “Every stone remembers its hands. Cut gently.”
+- Ash Ledger: “What the fire refuses, the ledger keeps.”
+- Glass Prism: “It does not choose a color. It chooses the next.”
+- Dread: “A memory you never burned. It remembers you.”
+- Black Hearth: “One flame is enough. One is also all you have.”
+Bestiary specimens (from 36 enemies; 12 per act):
+- Cinder Rat (Act 1): Ash Row; born from burnt rows.
+- Mason’s Shade (Act 1): Stone Seed; still guarding a wall it built.
+- Grave Moth (Act 1): Fog; eats the light of lanterns.
+- Cairn Hound (Act 1): Surge; chases every dropping shard.
+- Drowned Acolyte (Act 2): Seal; moves with the tide.
+- Salt Widow (Act 2): Brand; marks what she mourns.
+- Tide Warden (Act 2): Stain; keeps the waterline.
+- Pale Drover (Act 2): Curse (Dread); herds the Hollow.
+- Hearthbound Monk (Act 3): Snatch; took the Chapter’s oath too far.
+- Lantern-Eater (Act 3): Fog + Brand; hungers for light.
+- Gap Wraith (Act 3): Stain + Ash Row; born from a refused memory.
+- Glass Giant (Act 3): Stone Seed ×2; a wall of remembered shapes.
+
+10. Dungeon-crawler visual identity
+The screen is one stacked scene lit by torches. The board you play on is a carved slate set into the crypt wall.
+Zone (390×844 portrait):
+- Top 30%: the corridor — first-person view down a stone corridor; the enemy stands in a doorway; torches flicker; intent icons float above it.
+- Middle 40%: the slate — 7×7 board of cut glass in iron settings; the dimmed next row; Spectrum wheel and Ink pools on the frame.
+- Bottom 30%: the hand — 5 engraved tablets with iron corners, hue-colored glass inlay, Ink pips; Vigil and Flasks above them.
+Visual direction:
+- Rendering: pixel art authored at 1/3 scale and upscaled, with true-resolution lighting on top (an HD-2D approach). Parallax layers in the corridor, a slow dolly between nodes.
+- Light is feedback: popping a group casts that hue’s colored light on the corridor walls, brighter for bigger groups and Runs. Danger dims the torches. The room itself tells you how the turn went.
+- Hue identity (shape, not only color): Ember = flame glyph, Tide = wave, Moss = leaf, Gold = coin, Violet = eye. Each glyph is stamped on its block and card frame for colorblind play.
+- Act palettes: Act 1 crypt, warm torch on ash and cinder. Act 2 flooded vault, cold teal and wet stone. Act 3 reliquary, white-hot ember light bleeding through everything.
+- Enemies: 36 regular, 12 elite and 3 boss sprites, each with idle (4 frames), attack, hurt and death; readable at 128 px tall. Bosses fill the doorway and animate the corridor around them.
+- Cards: one frame per hue, one icon set, rarity shown by metal (iron, bronze, gold, bone-white). Full-bleed art on rares only, to hold production cost.
+- Typography: Cinzel for titles, Cormorant italic for lore, JetBrains Mono for numbers and intent. Same palette as the identity board (Ash, Cinder, Bone, Ember, Flare, Blood).
+- Map: a dungeon floor plan pinned to a stone table; nodes are carved sigils; the next reachable rooms glow.
+- Juice rule: shake, flash and haptics fire on outcomes (big pops, kills, hits taken), never on plain taps.
+
+11. Sound identity
+Direction: a sparse, reverberant crypt. Stone, water, torch and breath form the bed; every player action is a musical note. Silence is a design tool.
+Hue / Instrument / Note (D minor pentatonic):
+- Ember / Low brass and taiko / D
+- Gold / Handbells / F
+- Moss / Marimba and wooden flute / G
+- Tide / Glass harmonica and singing bowl / A
+- Violet / Choir pad and bowed psaltery / C
+Sound principles:
+- Pops are notes. A pop plays its hue’s note immediately; group size picks the voicing (2–3 blocks a single note, 4–5 adds the fifth, 6 or more adds the octave). The wheel order is the scale, so a Spectrum Run literally climbs a melody. An out-of-order pop is an unpitched wooden knock: the miss is audible.
+- The bed follows the player. Layers fade in by game state, never on a click track: drone (always), pulse (Wall at 5 or more rows), run melody (Run of 2 or more), choir (boss phase or Vigil under 30%). Because pops sound at once, music cannot add input latency.
+- Cards: draw is a vellum slide and stone click; play is an iron clank; Powers are a wax-seal stamp; Block is a low shield gong; hits use material sounds (flesh, bone, stone, glass).
+- Tells: a heartbeat on the turn before an intent lands; a long reversed swell before a boss phase change.
+- Act shifts: Act 1 dry stone and torch; Act 2 water, drips and detuned glass; Act 3 shimmering choir and rising overtones.
+- Mix rule: outcomes the player caused always outrank enemy sounds. A big Run cuts through everything.
+- Haptics: pop tick scaled by group size; rising pulses along a Run; a double thud for damage taken; a slow pulse for a Flask. All can be disabled.
+- Tech: sampled instruments mapped by pitch (5 instruments × about 6 layers), a convolution crypt reverb, low-latency audio via Oboe (target under 40 ms, a HUNCH to verify on device). No voice acting at 1.0.
+
+12. Economy and balance
+All values are starting points, tagged HUNCH until the bot sweep measures them.
+- Cinders: 10–20 per fight, 25–35 per elite, 100 per boss.
+- Prices: card 50–60 (common), 75–90 (uncommon), 150–180 (rare); relic 150–300; Flask 60; removal 75 plus 25 per previous removal.
+- Vigor: Vigor = round(36 × 1.11^node) for fights, ×1.6 for elites, ×3 for bosses, where node counts fights from 0.
+- Enemy damage per hit: Act 1 6–12, Act 2 12–22, Act 3 20–40.
+- Pacing targets: fights 3–4 turns, elites 5–6, bosses 9–12.
+- Targets from the sweep: win rate at Ascension 0 of 15–30% per class; archetype win rates within 10 points of each other; no card above a 60% pick rate when offered; median run 30 minutes; deaths split across attacks, Overflow and Vigil-burn rather than one dominant cause.
+- Balance culture: a heuristic bot (greedy expected value) plus a lookahead bot for the skill ceiling; 3,000 runs per class per build in CI with a dashboard. This extends the existing SLAY! sweep.
+
+13. Controls and UX
+- Tap a highlighted group to pop it. Press and hold a group to preview its size, Ink and Run result without committing.
+- Drag a card onto the enemy, the board, or yourself; long-press a card to read it; tap the sigil to end the turn.
+- Safety: an optional confirm-Tap mode and one Undo per turn on the last Tap before any card is played.
+- Accessibility: a unique glyph per hue, remappable layout, reduced motion and flashing, haptics off, one-handed reach (hand and End Turn in the lower third), scalable text.
+- Onboarding ramp: fight 1 is board only (pops and chip); fight 2 adds Ink and one card type; each later fight introduces one keyword. A bonfire tip appears when a technique first matters.
+
+14. Technical architecture
+The uploaded SLAY! prototype is a close starting point: a headless, deterministic sim with no Android imports, a data-driven fx queue, a profile saved in SharedPreferences, a self-check suite and a seeded bot sweep. We keep those ideas and change the rules.
+- Keep: headless Game sim, fx as data, SelfCheck culture, Sweep, zero-dependency builds while viable, honest known-gaps docs.
+- Replace: swap-match-3 rules with group-pop, no-slide gravity and the rising Wall.
+- Add: Deck, Hand, Ink, Card (data-driven), Intent, RunMap, Relic, Shade.
+- Cards as data: each card is a list of small effects (DAMAGE n, BLOCK n, POP largest, RECOLOR 3×3, FUSE, DRAW n, TAPS n). 360 cards need no 360 classes. Each card has a golden test that checks its effect on a seeded board.
+- Determinism and replay: fixed-step sim, seeded RNG, run = seed plus input log. Gives daily seeds, bug repro and server-side validation.
+- Rendering: Canvas for the vertical slice; add an OpenGL ES 3 pass for colored point lights from pops, bloom and torch flicker. Decision gate at Milestone 2: stay native or port presentation to a cross-platform engine, decided on measured frame times and the iOS plan.
+- Targets: locked 60 fps on a 4-year-old mid-range phone; 99.5% crash-free; run saved after every node.
+- Backend (1.0): daily seeds, leaderboards and replay validation only; no account needed.
+- Tests: card golden tests, group and gravity invariants, Spectrum Run math, spawn-weight distribution, determinism, the sweep. Install-testing on real hardware is mandatory before any milestone closes.
+
+15. Content targets at 1.0
+- Classes: 3.
+- Cards: 360 (270 class, 70 neutral, 20 curses).
+- Relics: 150.
+- Enemies / elites / bosses: 36 / 12 / 3, plus 3 optional bosses.
+- Events: 50.
+- Covenants / Ascension levels: 5 / 15.
+- Codex entries: 400.
+- Music tracks: 12 (map, fight and boss per act, plus title, bonfire, death).
+- Sound effects: about 400.
+- Languages: EN at launch; PL, DE, FR, ES, JA, PT-BR, ZH post-launch.
+
+16. Production plan
+Team and cost figures are HUNCH estimates.
+- Lean pro team: 14–18 people; about 24 months to 1.0.
+- Full studio: 40–60 people; about 18 months to 1.0.
+- Lean team shape: design, 3 engineers, 3 artists (pixel, enemies, UI), animator, composer, sound designer, writer, QA, producer.
+- Full studio adds tech art, lighting, dedicated card-art and animation teams, live ops, localization.
+Milestones:
+- M0 Prototype (4 weeks): group-pop board, 12-card deck, hue-weighted spawn, one enemy with intents; 5 external testers say the deck-paints-board loop is clever, not confusing.
+- M1 Vertical slice (10 weeks): Act 1 for one class at final art and sound quality: 60 cards, 25 relics, 8 enemies, 3 elites, boss, bonfire, shop, map, Shade; 60 fps on target device.
+- M2 Engine gate: architecture decision; Act 2 greybox.
+- M3 Alpha: all acts and 3 classes playable; economy tuned by the sweep.
+- M4 Beta: content complete, localization, accessibility pass, daily seed.
+- M5 Gold: 99.5% crash-free, store assets, ratings, launch.
+Cut list, first to die: daily leaderboard, optional covenant bosses, gamepad, third class, Act 3 palette shift, 20 relics.
+
+17. Risks
+- Two systems overwhelm new players: onboarding ramp in Section 13; fight 1 is board only.
+- One dominant strategy (giant mono groups): half-rate Ink past 8, Ash and Stone seeding, a pick-rate cap in the sweep.
+- The board feels like a timer, not a puzzle: M0 must prove pops are interesting alone before any card system is built.
+- Card art and animation cost: one frame per hue, rare-only full art, reusable enemy rigs.
+- Touch accuracy on 44 dp cells: hold-to-preview, optional confirm, one Undo.
+- Too close to Slay the Spire: the deck-paints-board loop and Spectrum Run are the identity; original names and text throughout.
+- Scope growth: quality over count; the cut list is binding.
+
+18. Legal and business
+Premium price at launch; no ads; optional cosmetic card backs and board frames after launch only if they never affect play. Expected ratings are low violence, no gore (likely ESRB E10+ or T, PEGI 12; HUNCH, confirm at submission). Analytics are anonymous and opt-in. A trademark search and IP review precede any public reveal. This is planning, not legal advice.
+
+19. Open decisions
+1. Core verb: group-pop (chosen) versus swap-match-3. Group-pop suits one-thumb portrait play and planning like a deckbuilder; swap-match-3 is more crowded and cascade-luck driven. Confirm.
+2. Hues: five at launch, or four for a simpler first act?
+3. Run length: 30 minutes full run, with a 20-minute short crawl post-launch?
+4. Engine path at Milestone 2.
+5. Final title after the trademark search.
+6. The identity canvas still shows falling pieces: refresh it for glass blocks, the hand and the corridor view.
