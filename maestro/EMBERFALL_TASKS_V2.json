@@ -1,0 +1,836 @@
+{
+  "schema_version": 2,
+  "project_id": "EMBERFALL",
+  "maestro_version": "0.3.0",
+  "baseline": {
+    "type": "document",
+    "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+    "version": "EMBERFALL Game Specification v0.2"
+  },
+  "note": "Task v2 packet bundle. Packets start INBOX. They are not proof of native Maestro workflow creation or acceptance; agents must run coding-start and Grounding through the actual v0.3 runtime.",
+  "tasks": [
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-000-BASELINE",
+      "title": "Repository, source inventory and build baseline",
+      "outcome": "Create a reproducible EMBERFALL repo, verify code/assets provenance, find the SLAY! prototype if available, pin toolchain, baseline build and test commands.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "ARCHITECT",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Inspect assigned workspace, Git remotes, branches and all available source/prototype material.",
+        "Establish a clean, reproducible build and record any blockers.",
+        "Pin JDK, Gradle, Android Gradle Plugin and SDK.",
+        "Verify the pinned Maestro v0.3.0 installation and tests."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-001-RULES-ADR",
+      "title": "Gameplay rules contract and P0 decisions",
+      "outcome": "Convert the v0.2 specification into executable, versioned rules and resolve P0 ambiguities before dependent implementation.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "ARCHITECT",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Enumerate formulas, state transitions and content targets from the source specification.",
+        "Resolve open P0 decisions through explicit ADRs.",
+        "Create typed rule configuration and golden examples."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-000-BASELINE"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-002-BOARD-CORE",
+      "title": "Headless board engine and deterministic group-pop simulation",
+      "outcome": "Implement deterministic 7×7 board, connected groups, pops, vertical gravity, Ink, chip damage, Spectrum Run, neutral blocks and Wall prototype.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement board primitives and versioned deterministic RNG.",
+        "Implement connected-component detection, legal pop and vertical-only gravity.",
+        "Implement Ink, chip, hue spawn weights and Spectrum math after ADRs.",
+        "Implement Ash, Stone, Prism, Wall and overflow after ADRs.",
+        "Expose headless simulation and invariant checks."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-001-RULES-ADR"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-003-TURN-COMBAT",
+      "title": "Turn state machine, player/enemy combat and telegraphed intents",
+      "outcome": "Implement Draw/Weave/Cast/Wall/Enemy/Cleanup phases, Vigil, Block, Flasks, enemy intents and atomic legal actions.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement player/enemy state and explicit turn phases.",
+        "Implement deterministic two-intent preview and resolution.",
+        "Implement damage, defense, delay, statuses, board attacks and cleanup.",
+        "Expose command/preview/transition API and combat events."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-002-BOARD-CORE"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-004-CARD-EFFECTS",
+      "title": "Data-driven card, cost, upgrade and effect engine",
+      "outcome": "Implement typed card/effect schema, deterministic effect resolver, trigger queue, payment, Pop/Recolor/Fuse/Spawn/Shatter/Draw/Taps/Delay/Exhaust/Retain/Echo.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Create versioned schema for card cost, hue, type, rarity, effects, upgrades and tags.",
+        "Implement deterministic effect resolver and ordered trigger queue.",
+        "Implement payment and supported board/combat effects.",
+        "Add effect budgets, recursion protection and one golden fixture per card."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-003-TURN-COMBAT"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-005-CLASSES-STARTER",
+      "title": "Three playable class identities and starter decks",
+      "outcome": "Implement Ashen Monk, Quarry Witch, The Unlit, signature mechanics, relics and validated 12-card starter decks.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement three class definitions and their signature mechanics.",
+        "Implement starting relics and exact 12-card deck data.",
+        "Resolve The Unlit Gold/Ash deck semantics before finalizing its list.",
+        "Add class and spawn-weight tests."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-006-ENEMIES-BOSSES",
+      "title": "Enemy, elite and phased boss content system",
+      "outcome": "Implement data-driven enemy patterns, board attacks, 2-intent preview, elites and three-phase core bosses.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement all source-listed enemy attacks as data.",
+        "Build M1 encounter set and expand to 36 regular/12 elite/3 core bosses.",
+        "Implement explicit deterministic three-phase boss state machines.",
+        "Test intent order, board mutation and telegraph parity."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-003-TURN-COMBAT",
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-007-RUN-PROGRESSION",
+      "title": "Run map, rewards, shop, bonfire, events and Ascension",
+      "outcome": "Implement three-act maps, node types, rewards, economy, shops, bonfires, events, Covenants and Ascension.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Generate and validate 15-row branching maps.",
+        "Implement combat/elite/treasure/shop/bonfire/event/boss nodes.",
+        "Implement card rewards, Cinders, shop transactions, upgrades/removals and Flasks.",
+        "Implement Covenants and Ascension from approved rules.",
+        "Save after every node."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-005-CLASSES-STARTER",
+        "EFB-006-ENEMIES-BOSSES"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-008-SHADE-NARRATIVE",
+      "title": "Death, Shade, Remnants, codex and endings",
+      "outcome": "Implement dead-deck identity, bounded Shade, Remnant, lore progression and endings.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Persist dead deck and relevant run metadata on death.",
+        "Create deterministic bounded Shade node in next Act 1 run.",
+        "Implement recovered Cinders and Remnant reward.",
+        "Implement codex/NPC/environmental lore and ending state transitions."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-007-RUN-PROGRESSION"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-009-ANDROID-CLIENT",
+      "title": "Android app shell, portrait combat UI and touch UX",
+      "outcome": "Build portrait Android client with corridor/board/hand composition, touch routing, preview, drag, undo, accessibility and navigation.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Create app shell, navigation and settings.",
+        "Implement stacked corridor/board/hand combat screen.",
+        "Route tap/hold/drag/undo gestures to domain commands only.",
+        "Implement map/reward/shop/bonfire/event/Shade screens.",
+        "Verify small-screen layout and accessibility."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-003-TURN-COMBAT",
+        "EFB-004-CARD-EFFECTS"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-010-ART-ASSET-PIPELINE",
+      "title": "Asset manifest, integration, atlases and VFX",
+      "outcome": "Integrate approved sourced art, atlases, animations, environment layers and game-event-driven VFX.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Build asset manifest with origin/license/provenance fields.",
+        "Integrate glyph-bearing hue/neutral blocks and card/relic frames.",
+        "Integrate corridor/character/enemy assets and atlases.",
+        "Bind VFX and lighting response to deterministic game events.",
+        "Keep generated concept boards as reference only."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-011-AUDIO-HAPTICS",
+      "title": "Adaptive music, SFX, lighting response and haptics",
+      "outcome": "Implement hue-note mapping, pop voicing, adaptive ambience, card/enemy SFX, haptics, audio controls and measured latency.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement five-hue pitch/instrument mapping and pop voicing.",
+        "Implement adaptive ambience, act shifts and boss tells.",
+        "Implement card/enemy/material SFX and priority mix.",
+        "Implement haptics and accessibility controls.",
+        "Measure latency on physical devices."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT",
+        "EFB-010-ART-ASSET-PIPELINE"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-012-SAVE-REPLAY",
+      "title": "Versioned persistence, action log and deterministic replay",
+      "outcome": "Implement atomic saves, migrations, recovery, seed/version/action logs and deterministic replay/checkpoint verification.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement atomic snapshot persistence and save-after-node behavior.",
+        "Implement schema migration and crash recovery.",
+        "Record seed, rules/content/RNG versions and action log.",
+        "Replay and compare state hashes at checkpoints."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-002-BOARD-CORE",
+        "EFB-007-RUN-PROGRESSION"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R2",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-013-BALANCE-LAB",
+      "title": "Greedy/lookahead bots, sweeps, balance metrics and exploit tests",
+      "outcome": "Build bots, reproducible sweeps, archetype metrics, dashboards and exploit scans.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement greedy expected-value and lookahead policies using the same legal action API.",
+        "Run versioned seed batches and formal 3,000-run/class sweeps.",
+        "Track class/archetype win rates, picks, duration, Run/Ink and death causes.",
+        "Scan infinite Ink/damage/Tap/Block/Wall and Echo combinations."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-004-CARD-EFFECTS",
+        "EFB-006-ENEMIES-BOSSES",
+        "EFB-007-RUN-PROGRESSION",
+        "EFB-012-SAVE-REPLAY"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-014-FULL-CONTENT",
+      "title": "Launch content catalogue",
+      "outcome": "Populate card, relic, enemy, event and codex targets; validate all content.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "DOMAIN_SPECIALIST",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Populate 360 cards, 150 relics, 36 regular enemies, 12 elites and 3 core bosses.",
+        "Populate events, codex entries, music and sound identifiers.",
+        "Validate unique IDs, schema, localization and asset references.",
+        "Test card/relic behaviors and tune by seeded sweeps."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-005-CLASSES-STARTER",
+        "EFB-006-ENEMIES-BOSSES",
+        "EFB-007-RUN-PROGRESSION",
+        "EFB-008-SHADE-NARRATIVE",
+        "EFB-013-BALANCE-LAB"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R1",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-015-BACKEND",
+      "title": "Optional daily seeds, leaderboard and replay validation",
+      "outcome": "Add optional online challenge features without mandatory accounts or blocking offline play.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "BUILDER",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Implement daily seed delivery.",
+        "Implement leaderboard submission with abuse controls.",
+        "Implement deterministic replay validation.",
+        "Keep all gameplay and save flows offline-capable."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-012-SAVE-REPLAY",
+        "EFB-013-BALANCE-LAB"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R2",
+      "state": "INBOX"
+    },
+    {
+      "schema_version": 2,
+      "project_id": "EMBERFALL",
+      "task_id": "EFB-016-QA-RELEASE",
+      "title": "Device, performance, accessibility, legal and release verification",
+      "outcome": "Complete device matrix, 60fps target verification, crash/performance, accessibility, legal, store policy, Mastery and Repetition.",
+      "baseline": {
+        "type": "document",
+        "ref": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+        "version": "EMBERFALL Game Specification v0.2"
+      },
+      "stage": "GROUNDING",
+      "owner": "ARCHITECT",
+      "reviewer": "INDEPENDENT_REVIEWER",
+      "scope": [
+        "Run Android device and aspect-ratio matrix.",
+        "Measure frame time, memory, thermal, battery and audio/input latency.",
+        "Complete accessibility, save migration, offline and crash tests.",
+        "Verify current store target API, IP/assets, privacy and trademark.",
+        "Complete independent Mastery and Repetition for release candidate."
+      ],
+      "exclusions": [
+        "Do not bypass unresolved P0 decisions.",
+        "Do not merge or publish without explicit human authorization.",
+        "Do not treat concept art or planned features as completed production assets/code."
+      ],
+      "dependencies": [
+        "EFB-009-ANDROID-CLIENT",
+        "EFB-010-ART-ASSET-PIPELINE",
+        "EFB-011-AUDIO-HAPTICS",
+        "EFB-012-SAVE-REPLAY",
+        "EFB-013-BALANCE-LAB",
+        "EFB-014-FULL-CONTENT",
+        "EFB-015-BACKEND"
+      ],
+      "acceptance": [
+        "All task-specific outcomes and acceptance criteria in engineering/CODING_AGENT_ROADMAP.md are met.",
+        "Changes are implemented in an isolated candidate and bound to an exact candidate SHA.",
+        "Applicable tests and deterministic gates pass with evidence.",
+        "Independent Mastery review examines the exact candidate and records findings.",
+        "Repetition records lessons, durable state updates, evidence and next decision."
+      ],
+      "evidence_required": [
+        "baseline commit SHA",
+        "candidate SHA",
+        "changed paths",
+        "applicable GateRunner outputs with exit code and log hash",
+        "independent review evidence",
+        "known risks and blockers",
+        "updated documentation/ADR"
+      ],
+      "risk": "R2",
+      "state": "INBOX"
+    }
+  ]
+}
