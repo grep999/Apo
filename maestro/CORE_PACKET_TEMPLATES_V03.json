@@ -1,0 +1,84 @@
+{
+  "version": "0.3.0",
+  "project_id": "EMBERFALL",
+  "source": "Maestro v0.3.0 engine contracts",
+  "note": "Templates only. Replace TODOs and ensure exact candidate identity and evidence before calling Maestro.",
+  "grounding": {
+    "purpose": "TODO: concise purpose of this increment",
+    "sources": [
+      "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+      "TODO: source files/ADR/research"
+    ],
+    "constraints": [
+      "preserve source rules unless accepted ADR changes them",
+      "no secrets in commits/logs",
+      "isolated branch/worktree",
+      "least-privilege tools and permissions"
+    ],
+    "dependencies": [
+      "TODO: explicit upstream dependencies"
+    ],
+    "risks": [
+      "TODO: uncertainties, risks, compatibility concerns"
+    ],
+    "acceptance": [
+      "TODO: measurable outcome",
+      "TODO: deterministic tests and verification"
+    ],
+    "next_increment": "TODO: one coherent next action",
+    "baseline_ref": "TODO: actual git:<branch>@<base_sha>"
+  },
+  "momentum": {
+    "candidate_ref": "git:<candidate_sha>",
+    "outcome": "TODO: what changed and what was delivered",
+    "changed_artifacts": [
+      "TODO: relative repository paths or artifact identifiers"
+    ],
+    "checks": [
+      {
+        "name": "unit-tests",
+        "outcome": "not_run",
+        "required": true,
+        "command": "TODO: actual command",
+        "exit_code": null,
+        "log_hash": null,
+        "evidence_class": "PLANNED",
+        "runner_identity": null,
+        "ran_on_sha": null,
+        "category": "test"
+      },
+      {
+        "name": "lint",
+        "outcome": "not_run",
+        "required": true,
+        "command": "TODO: actual command",
+        "exit_code": null,
+        "log_hash": null,
+        "evidence_class": "PLANNED",
+        "runner_identity": null,
+        "ran_on_sha": null,
+        "category": "lint"
+      }
+    ],
+    "risks": [
+      "TODO: unresolved issue or []"
+    ]
+  },
+  "repetition": {
+    "expected_vs_actual": "TODO: compare the Grounding acceptance criteria with the candidate outcome",
+    "lessons": [
+      "TODO: durable lesson"
+    ],
+    "state_updates": [
+      "TODO: update README/ADR/known gaps/task status as warranted"
+    ],
+    "next_decision": "TODO: next bounded increment or explicit hold",
+    "evidence": [
+      "TODO: review artifact and gate evidence"
+    ],
+    "progress": 0,
+    "objective_complete": false,
+    "rework_hours": 0,
+    "cost_tokens": 0
+  }
+}
