@@ -8,11 +8,9 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 2. [Master coding-agent prompt](engineering/MASTER_CODING_AGENT_PROMPT.md) — principal engineer persona and working contract.
 3. [Open decisions](engineering/OPEN_DECISIONS.md) — P0 gameplay questions that block dependent implementation.
 4. [Architecture decisions](engineering/ARCHITECTURE_DECISIONS.md) — accepted constraints and proposed ADRs.
-5. [Implementation WBS](engineering/IMPLEMENTATION_WBS.json) and [CSV](engineering/IMPLEMENTATION_WBS.csv) — 17 epics and 77 child tasks.
-6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md) — current workflow lifecycle and evidence policy.
-7. [Maestro task packets](maestro/tasks_v2/) and [cycle packet templates](maestro/packets_v03/) — Grounding/Momentum/Mastery/Repetition work inputs.
-8. [Original game specification](references/EMBERFALL_GAME_SPEC_v0.2.txt) — authoritative game rules and content brief.
-9. [Visual references](art/concept_references/) — mood/composition references only, not final approved production assets.
+5. [Implementation WBS](engineering/IMPLEMENTATION_WBS.json) and [CSV](engineering/IMPLEMENTATION_WBS.csv) — 17 epic-level work packages.
+6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md) and [task register](maestro/TASK_REGISTER.md) — workflow lifecycle and task execution contract.
+7. [Original specification — normalized text copy](references/EMBERFALL_GAME_SPEC_v0.2.txt) — structured text transcription of the supplied v0.2 game specification. Compare with the original source attachment in the local full handoff ZIP if exact wording matters.
 
 ## Repository and workflow baseline
 
@@ -21,6 +19,7 @@ This branch is the shared engineering handoff for EMBERFALL, a premium, portrait
 - The default branch contains only the repository bootstrap README.
 - Current Maestro source lock: `grep999/maestro` v0.3.0, observed `main` commit `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
 - No game implementation is claimed by this handoff. The initial work is repository/source discovery, reproducible build setup and P0 rules grounding.
+- The complete local handoff ZIP additionally contains source design documents, work packet templates, design-volume maps and concept images; these binary assets and per-cycle templates are not yet mirrored into this remote branch.
 
 ## Rules for all agents
 
@@ -39,4 +38,4 @@ This repository is private. Every human or service agent that needs to collabora
 
 ## Scope and provenance
 
-The prior visual-design and V00 design chapters remain reference material. Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. Preserve source/artist/license metadata for every production asset.
+Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. Preserve source/artist/license metadata for every production asset. The art direction's torch-lit crypt, carved-glass board, five-hue stained glass and ornate iron/gold interface are a design north star; final production assets still require proper creation, review, optimization and provenance.
