@@ -1,0 +1,142 @@
+name: Import Emberfall source and run Android verification
+
+on:
+  push:
+    branches: [implementation/emberfall-latest-source]
+    paths:
+      - 'source-import-payload/**'
+
+permissions:
+  contents: write
+
+jobs:
+  import-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout import branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and import the source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat source-import-payload/part-*.txt | tr -d '\r\n' | base64 --decode > "$RUNNER_TEMP/emberfall-source.zip"
+          printf '%s  %s\n' '3366ab88b46e4194f1f35bb7c61aaf3d58b104eafdca44bc9f34f63036f201bb' "$RUNNER_TEMP/emberfall-source.zip" | sha256sum -c -
+          unzip -tq "$RUNNER_TEMP/emberfall-source.zip"
+          mkdir -p "$RUNNER_TEMP/emberfall-extracted"
+          unzip -q "$RUNNER_TEMP/emberfall-source.zip" -d "$RUNNER_TEMP/emberfall-extracted"
+          test -d "$RUNNER_TEMP/emberfall-extracted/Emberfall"
+
+          # Preserve the original engineering handoff, but keep it out of the app root.
+          mkdir -p docs/handoff-v1
+          for item in AGENTS.md CLAUDE.md README.md engineering governance graphics maestro references; do
+            if [ -e "$item" ]; then mv "$item" docs/handoff-v1/; fi
+          done
+          if [ -f .github/copilot-instructions.md ]; then
+            mv .github/copilot-instructions.md docs/handoff-v1/copilot-instructions.md
+          fi
+
+          cp -a "$RUNNER_TEMP/emberfall-extracted/Emberfall/." .
+          rm -rf source-import-payload
+          rm -f .github/workflows/import-source.yml
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Import latest Emberfall Android source snapshot'
+          git push origin HEAD:refs/heads/implementation/emberfall-latest-source
+
+      - name: Set up Temurin JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager --install 'platforms;android-36.1' 'build-tools;36.0.0' 'platform-tools'
+
+      - name: Set up Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.3.1'
+
+      - name: Prepare local-only build configuration
+        run: |
+          cp .env.example .env
+          keytool -genkeypair -noprompt -keystore debug.keystore \
+            -storetype JKS -storepass android -keypass android \
+            -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname 'CN=Android Debug,O=Android,C=US'
+
+      - name: Generate and commit the pinned Gradle wrapper
+        run: |
+          gradle wrapper --gradle-version 9.3.1 --distribution-type bin
+          chmod +x gradlew
+          git add gradlew gradlew.bat gradle/wrapper/gradle-wrapper.jar gradle/wrapper/gradle-wrapper.properties
+          if ! git diff --cached --quiet; then
+            git commit -m 'Build: add pinned Gradle 9.3.1 wrapper'
+            git push origin HEAD:refs/heads/implementation/emberfall-latest-source
+          fi
+
+      - name: Verify pure-JVM engine isolation
+        run: |
+          if grep -rnE 'import (android|androidx|dagger|hilt|com\.example\.(audio|data|ui))\.' app/src/main/java/com/example/engine/; then
+            echo 'ERROR: Android/framework import found in pure-JVM engine package.'
+            exit 1
+          fi
+
+      - name: Run unit, audio DSP, Room migration and Robolectric tests
+        run: ./gradlew :app:testDebugUnitTest --console=plain
+
+      - name: Run debug and release lint
+        run: ./gradlew :app:lintDebug :app:lintRelease --console=plain
+
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug --console=plain
+
+      - name: Create ephemeral CI-only release signing key
+        shell: bash
+        run: |
+          keytool -genkeypair -noprompt \
+            -keystore "$RUNNER_TEMP/emberfall-ci-upload.jks" \
+            -storetype JKS -storepass "$CI_STORE_PASSWORD" -keypass "$CI_KEY_PASSWORD" \
+            -alias upload -keyalg RSA -keysize 2048 -validity 2 \
+            -dname 'CN=Emberfall CI Verification'
+        env:
+          CI_STORE_PASSWORD: emberfall-ci-store-only
+          CI_KEY_PASSWORD: emberfall-ci-key-only
+
+      - name: Assemble release APK and AAB with CI-only key
+        run: ./gradlew :app:assembleRelease :app:bundleRelease --console=plain
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/emberfall-ci-upload.jks
+          STORE_PASSWORD: emberfall-ci-store-only
+          KEY_PASSWORD: emberfall-ci-key-only
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-test-reports
+          if-no-files-found: warn
+          path: |
+            app/build/test-results/testDebugUnitTest/
+            app/build/reports/tests/testDebugUnitTest/
+
+      - name: Upload APK and AAB verification artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-build-verification-artifacts
+          if-no-files-found: warn
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
