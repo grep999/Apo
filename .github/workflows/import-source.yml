@@ -42,7 +42,6 @@ jobs:
             mv .github/copilot-instructions.md docs/handoff-v1/copilot-instructions.md
           fi
 
-          # The import token has contents:write but not workflows:write.
           rm -f "$RUNNER_TEMP/emberfall-extracted/Emberfall/.github/workflows/android-ci.yml"
           cp -a "$RUNNER_TEMP/emberfall-extracted/Emberfall/." .
           rm -rf source-import-payload
@@ -66,12 +65,13 @@ jobs:
           SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
           SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n1)"
           test -x "$SDKMANAGER"
-          echo "$SDK_ROOT" >> "$GITHUB_ENV"
           echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
           echo "$(dirname "$SDKMANAGER")" >> "$GITHUB_PATH"
           echo "$SDK_ROOT/platform-tools" >> "$GITHUB_PATH"
+          set +o pipefail
           yes | "$SDKMANAGER" --licenses >/dev/null
+          set -o pipefail
           "$SDKMANAGER" --install 'platforms;android-36.1' 'build-tools;36.0.0' 'platform-tools'
 
       - name: Set up Gradle 9.3.1
