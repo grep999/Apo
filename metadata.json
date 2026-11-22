@@ -1,0 +1,6 @@
+{
+  "name": "Emberfall",
+  "description": "Tactical 7x7 match-group deckbuilder roguelike with three classes, five elemental hues, Prism synthesis, and a three-act campaign.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

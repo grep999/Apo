@@ -1,0 +1,46 @@
+workflow_id: EFB-ART-UI-BASELINE-01
+title: Emberfall Painterly Art, Palette Lock & Fog/Seal/Event UI Integration
+framework: maestro-v0.3.0
+repo_standard: https://github.com/grep999/maestro
+status: VERIFIED_V1
+verified_checks:
+  compile_applet: PASS
+  gradle_testDebugUnitTest: "39/39 passed (including direct board click, Valid Cluster quick buttons, Boss/Shade portraits, Spectrum Wheel dial, Act Map tooltips, Dread tier labels, Fog UI, EventScreen)"
+  custom_painterly_assets: [img_boss_warden.jpg, img_boss_furnace.jpg, img_boss_hearthkeeper.jpg, img_enemy_shade.jpg, img_act_map_backdrop.jpg]
+priority: P1
+
+stages:
+  grounding:
+    baseline_doc: public/assets/aistudio/ART_BASELINE_LOCK_fead5899.md
+    handoff_doc: public/assets/aistudio/ANDROID_ART_INTEGRATION_HANDOFF_1__ae75c779.md
+    source_image: public/assets/aistudio/class_roster_painterly_1__23f2a842.png
+    master_reference_sha256: 2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476
+    class_identity_lock: [ashen_monk, quarry_witch, the_unlit]
+
+  momentum:
+    changed_paths:
+      - app/src/main/res/drawable-nodpi/ef_class_ashen_monk.webp
+      - app/src/main/res/drawable-nodpi/ef_class_quarry_witch.webp
+      - app/src/main/res/drawable-nodpi/ef_class_the_unlit.webp
+      - app/src/main/java/com/example/ui/theme/Color.kt
+      - app/src/main/java/com/example/ui/components/CommonUi.kt
+      - app/src/main/java/com/example/ui/screens/TitleAndClassScreens.kt
+      - app/src/main/java/com/example/ui/screens/CombatArenaScreen.kt
+      - app/src/main/java/com/example/ui/screens/EncounterScreens.kt
+      - app/src/main/java/com/example/ui/navigation/EmberfallNavHost.kt
+      - app/src/main/java/com/example/ui/viewmodel/EmberfallViewModel.kt
+    gate_runner:
+      - compile_applet
+      - gradle :app:testDebugUnitTest --console=plain
+
+  mastery:
+    checklist:
+      - ClassSelect renders extracted painterly portraits (no stale Pyromancer/Cinderknight/Ashweaver references)
+      - Fog visually conceals tile hues & Ink counts while preserving all glyph shapes
+      - Sealed columns render lock state & prevent taps
+      - Branded blocks display Vigil cost badge & pre-tap Vigil cost preview
+      - Defeat navigates directly to RunSummary; EventScreen handles Event map nodes
+      - Generic Ink payment selector lets player pick Spark or specific Ink hue
+
+  repetition:
+    known_limitation: Placeholder files img_class_{pyromancer,cinderknight,ashweaver}.jpg remain unreferenced on disk because container delete_file cannot decode binary jpgs; excluded from all source code & references.

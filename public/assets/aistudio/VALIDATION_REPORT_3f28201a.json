@@ -1,0 +1,50 @@
+{
+  "drop_version": "0.4",
+  "master_reference": "reference/approved_base_visual_identity.png",
+  "master_reference_sha256": "2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476",
+  "screen_count": 10,
+  "component_count": 7,
+  "layer_count": 12,
+  "svg_count": 84,
+  "svg_parse_errors": [],
+  "missing_svg_refs": [],
+  "android_xml_parse_errors": [],
+  "webp_decode_errors": [],
+  "screen_dimension_errors": [],
+  "class_lock": [
+    "Ashen Monk",
+    "Quarry Witch",
+    "The Unlit"
+  ],
+  "class_order_pass": true,
+  "class_portraits": {
+    "Ashen Monk": "painterly concept preserved",
+    "Quarry Witch": "painterly concept candidate",
+    "The Unlit": "new painterly Gold/Ash concept candidate; vector fallback archived"
+  },
+  "preview_count": 10,
+  "android_drawable_resource_count": 78,
+  "checks": [
+    "approved master retained under reference/ only",
+    "full poster excluded from Android res/",
+    "runtime drawable mapping and paths",
+    "Android resource XML parses",
+    "all runtime WebP files decode and match manifest dimensions",
+    "10 screen masters at 390x844 dp",
+    "7 reusable components",
+    "12 independent layers",
+    "class identity and order",
+    "SVG parse and local-reference integrity",
+    "3x screen previews at 1170x2532",
+    "class portraits at 768x1024",
+    "asset SHA256 manifest"
+  ],
+  "errors": [],
+  "warnings": [],
+  "status": "PASS",
+  "not_claimed": [
+    "No Android application source was modified; no playable app was built.",
+    "No physical Android device review was performed.",
+    "Art is concept/candidate grade and requires final art-direction/IP approval."
+  ]
+}

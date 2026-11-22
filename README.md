@@ -1,44 +1,58 @@
-# EMBERFALL — Coding Agent Handoff v1.0
+# Emberfall
 
-This branch is the shared engineering handoff for EMBERFALL, a premium, portrait-first Android roguelike puzzle deckbuilder.
+Emberfall is a single-player Android puzzle-board roguelike deckbuilder. Its core experience combines a deterministic 7×7 elemental match-3 board, turn-based card casting, three playable classes, a three-Act branching campaign, local run persistence, and an offline procedural audio engine. An optional Firebase AI Logic soundtrack path is present in the current source snapshot.
 
-## Start here
+## Project structure
 
-1. [Coding agent production roadmap](engineering/CODING_AGENT_ROADMAP.md) — architecture, implementation sequence, milestones, gates, QA and release.
-2. [Master coding-agent prompt](engineering/MASTER_CODING_AGENT_PROMPT.md) — principal engineer persona and working contract.
-3. [Open decisions](engineering/OPEN_DECISIONS.md) — P0 gameplay questions that block dependent implementation.
-4. [Architecture decisions](engineering/ARCHITECTURE_DECISIONS.md) — accepted constraints and proposed ADRs.
-5. [Implementation WBS](engineering/IMPLEMENTATION_WBS.json) and [CSV](engineering/IMPLEMENTATION_WBS.csv) — 17 epic-level work packages.
-6. [Maestro v0.3 operating guide](maestro/CURRENT_MAESTRO_V0.3_PROCESS.md), [task register](maestro/TASK_REGISTER.md), [17 engineering Task v2 packets](maestro/EMBERFALL_TASKS_V2.json), and [cycle packet templates](maestro/CORE_PACKET_TEMPLATES_V03.json).
-7. [Graphics v0.4 agent handoff](graphics/README.md), [exact visual baseline lock](graphics/ART_BASELINE_LOCK.md), [Android art integration contract](graphics/ANDROID_ART_INTEGRATION_HANDOFF.md), and [graphics Maestro Task v2](graphics/MAESTRO_TASK_EFB_ART_UI_BASELINE_V2.json).
-8. [Graphics pack manifest summary](graphics/ASSET_MANIFEST_SUMMARY.json) — exact base-image and companion archive hashes.
-9. [Original specification — normalized text copy](references/EMBERFALL_GAME_SPEC_v0.2.txt) — structured text transcription of the supplied v0.2 game specification. Compare with the original source attachment in the local full handoff ZIP if exact wording matters.
+- `app/src/main/java/com/example/engine/` — pure-JVM game rules, board engine, campaign generation, content catalogs, and deterministic simulation.
+- `app/src/main/java/com/example/ui/` — Jetpack Compose screens, navigation, components, and ViewModel.
+- `app/src/main/java/com/example/data/` — Room persistence, snapshot codec, and DataStore preferences.
+- `app/src/main/java/com/example/audio/` — procedural audio, SFX, and optional generated soundtrack support.
+- `app/src/main/res/` — runtime artwork, typography, themes, and Android resources.
+- `app/src/test/` — JVM and Robolectric regression tests.
+- `docs/RESTORATION_AUTHORITY_AND_MANDATE.md` — controlling design and restoration authority.
+- `docs/RESTORATION_STATUS.md` — restoration status and latest completion delta.
+- `docs/EXECUTION_BLOCKERS.md` — exact build/device/signing verification blockers for this handoff.
 
-## Repository and workflow baseline
+## Toolchain
 
-- Remote: https://github.com/grep999/Apo
-- Active handoff branch: `handoff/emberfall-coding-agent-v1.0`
-- The default branch contains only the repository bootstrap README.
-- Current Maestro source lock: `grep999/maestro` v0.3.0, observed `main` commit `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
-- Root `AGENTS.md`, `CLAUDE.md` and `.github/copilot-instructions.md` provide agent-specific entry points.
-- No playable game implementation is claimed by this handoff. The initial work is repository/source discovery, reproducible build setup and P0 rules grounding.
-- Graphics v0.4 documents and Task v2 are mirrored here. The 30MB full art-source ZIP and 2.6MB Android resource-only ZIP are companion binary deliverables; their SHA-256 hashes are in `graphics/ASSET_MANIFEST_SUMMARY.json`. Download/extract the companion bundle into the actual game source workspace before integration. They are not embedded as binary Git blobs in this documentation branch.
+- JDK 21 for the current Gradle/Android toolchain.
+- Gradle 9.3.1 (declared in `gradle/wrapper/gradle-wrapper.properties`).
+- Android SDK Platform 36, extension 36.1, and matching build tools.
+- Android Studio or a configured command-line Android SDK.
 
-## Rules for all agents
+**Wrapper bootstrap:** the original source archive omitted `gradlew`, `gradlew.bat`, and `gradle/wrapper/gradle-wrapper.jar`. The GitHub import workflow generates and commits the pinned Gradle 9.3.1 wrapper before running the build. If bootstrapping manually, use:
 
-- Treat the supplied v0.2 game specification as authoritative. Never infer gameplay rules from generated image text.
-- Do not implement a P0 ambiguity without an explicit decision or a separately labelled prototype experiment.
-- Keep the game simulation deterministic and Android-independent.
-- Work in isolated branches/worktrees; bind every candidate to base SHA, candidate SHA and changed paths.
-- Follow Maestro: GROUNDING → MOMENTUM → MASTERY → REPETITION.
-- A Builder cannot review its own candidate. PASS requires actual evidence and required verified gates.
-- Never represent plans, sample outputs or unrun commands as completed implementation.
-- Do not merge, publish, spend, deploy or perform destructive actions without explicit human authorization.
+```bash
+gradle wrapper --gradle-version 9.3.1
+```
 
-## Access
+Then run:
 
-This repository is private. Every human or service agent that needs to collaborate must be granted access through GitHub repository access controls. A branch being present does not automatically grant access to agents whose GitHub identity lacks repository permission.
+```bash
+./gradlew :app:testDebugUnitTest --console=plain
+./gradlew :app:lintDebug :app:lintRelease
+./gradlew :app:assembleDebug
+./gradlew :app:assembleRelease :app:bundleRelease
+```
 
-## Scope and provenance
+## Release signing
 
-Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. The selected base image is the canonical visual design authority, copied byte-for-byte and hash-locked in graphics v0.4. Preserve source/artist/license metadata for every production asset. Final app integration and device verification are still required.
+The release build reads signing configuration from environment variables:
+
+- `KEYSTORE_PATH`
+- `STORE_PASSWORD`
+- `KEY_PASSWORD`
+
+The key alias is `upload`. Supply production credentials through a secrets manager or protected environment; never commit keystores, passwords, App Check debug tokens, or private keys. The CI workflow creates an ephemeral verification-only key and its artifacts are not production upload artifacts.
+
+## Product and data behavior
+
+- One-tap board firing defaults to **OFF**; explicit saved player preferences are retained.
+- Run progression is stored locally in Room; player preferences use DataStore.
+- Backup rules include the Room database and DataStore preferences while excluding generated soundtrack cache files.
+- The core board/game engine and procedural audio path operate offline. The optional generated soundtrack path requires the configured Firebase project and network access.
+
+## Verification status
+
+The supplied environment had no Gradle executable, wrapper JAR/distribution, Android SDK, ADB, emulator, network/DNS, release keystore, or signing credentials. Therefore the modified source has not been built, its 87 declared tests have not been executed, and no APK/AAB has been generated or device-verified. See `docs/EXECUTION_BLOCKERS.md` before treating this source as releasable.

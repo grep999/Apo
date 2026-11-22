@@ -1,0 +1,55 @@
+workflow_id: EFB-RULES-CORRECTIVE-01
+title: Emberfall Rules Fidelity, State Guards & Persistence Corrective Pass
+framework: maestro-v0.3.0
+repo_standard: https://github.com/grep999/maestro
+status: VERIFIED_V1_OWNER_APPROVED
+verified_checks:
+  compile_applet: PASS
+  pure_jvm_engine_imports: 0
+  gradle_testDebugUnitTest: "58/58 passed (37 engine, 17 Robolectric, 3 audio DSP, 1 unit)"
+  v1_catalog_depth: "65 cards, 22 live relics, 6 Shade remnants, 20 enemies, 12 events, Dread 0-3"
+  ci_workflow: ".github/workflows/android-ci.yml (Temurin JDK 21 + Gradle 9.3.1)"
+  remaining_blockers: [BLK-05]
+priority: P0
+
+scope_lock:
+  allowed_classes: [Ashen Monk, Quarry Witch, The Unlit]
+  allowed_hues: [Ember, Gold, Moss, Tide, Violet]
+  neutral_tiles: [Ash, Stone, Prism, Empty]
+  forbidden_additions: [meta_currency, online_multiplayer, cloud_backend, unrequested_card_expansion]
+
+stages:
+  grounding:
+    source_reviews:
+      - public/assets/aistudio/EMBERFALL_emberfall-2_review_318a6143.md
+      - public/assets/aistudio/EMBERFALL_Master_Implementation_Roadmap_2a5134a5.md
+    blocked_upstream_docs:
+      - Design Bible v0.2 (Monk & Witch exact starter cards remain marked PROVISIONAL)
+      - CH01 Creative Vision Experience Contract
+    p0_defects:
+      - P0.1 Ashen Monk Vigil-burn identity & repeated counterattack removal
+      - P0.2 Brand (marked blocks, 2 Vigil/block), Fog (3-Tap color/Ink veil + Gold Eye), Seal (3-turn column lock)
+      - P0.3 Wall overflow (top row full -> -8 Vigil/HP, burn top 2 rows, -1 Flask, skip rise)
+      - P0.4 Echo repeats single primary card effect once only
+      - P0.5 Unlit Covenant & 3-consecutive Ash-only no-card turn Dread true ending
+      - P0.6 Transactional command state transition guards
+
+  momentum:
+    gate_runner:
+      - compile_applet
+      - gradle :app:testDebugUnitTest --console=plain
+    deliverables:
+      - docs/AAA/emberfall/ENGINE_CONTRACT.md
+      - docs/AAA/emberfall/CONTENT_CATALOG.md
+      - docs/AAA/emberfall/DECISION_LOG.md
+      - docs/AAA/emberfall/TEST_STRATEGY.md
+
+  mastery:
+    invariants:
+      - Zero Android/Compose/Room imports in app/src/main/java/com/example/engine
+      - Adversarial out-of-order GameCommand calls rejected with zero state mutation
+      - Room non-destructive migrations v1->v4 tested without data loss
+      - RunSnapshotCodec rejects unknown TileKind instead of defaulting to Ember
+
+  repetition:
+    next_increment: Import Design Bible v0.2 & CH01 to promote provisional Monk/Witch starters to verified canonical definitions.

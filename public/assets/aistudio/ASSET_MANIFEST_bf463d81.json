@@ -1,0 +1,2894 @@
+{
+  "project": "EMBERFALL",
+  "drop_version": "0.4",
+  "master_reference": "reference/approved_base_visual_identity.png",
+  "master_reference_sha256": "2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476",
+  "baseline": "The selected 10-screen EMBERFALL Art & Visual Identity Outlook: torchlit Cairn, stained-glass rose, carved slate, antique gold/iron UI and five hues.",
+  "class_identity_lock": [
+    "Ashen Monk",
+    "Quarry Witch",
+    "The Unlit"
+  ],
+  "class_hues": {
+    "Ashen Monk": [
+      "Ember",
+      "Moss"
+    ],
+    "Quarry Witch": [
+      "Tide",
+      "Violet"
+    ],
+    "The Unlit": [
+      "Gold",
+      "Ash"
+    ]
+  },
+  "shade_is_playable_class": false,
+  "canonical_boss_act_1": "Hollow Warden",
+  "palette": {
+    "ink": "#11131C",
+    "ink2": "#191C29",
+    "ink3": "#252A39",
+    "slate": "#3D4657",
+    "stone": "#6E6B70",
+    "ash": "#AAA7AC",
+    "bone": "#E6DCC8",
+    "gold": "#B98C4C",
+    "gold_hi": "#E3BC74",
+    "ember": "#D95C32",
+    "ember_hi": "#FF9860",
+    "tide": "#3F90BA",
+    "tide_hi": "#8AD5EA",
+    "moss": "#6F9857",
+    "moss_hi": "#B3D78A",
+    "honey": "#D8AD42",
+    "violet": "#8266B8",
+    "violet_hi": "#C9A7F6",
+    "prism": "#C1A6E2",
+    "white": "#F8F2E8"
+  },
+  "design_size_dp": [
+    390,
+    844
+  ],
+  "preview_scale": 3,
+  "screen_count": 10,
+  "component_count": 7,
+  "layer_count": 12,
+  "asset_count": 305,
+  "provenance": "The reference board is user-selected source art. Ashen Monk is retained from Art Drop v0.2. Quarry Witch is a newly generated painterly concept portrait. The Unlit is now a painterly Gold/Ash portrait candidate with preserved source image and a framed SVG master. All three class portraits remain concept-grade pending commercial provenance/IP and art-direction review.",
+  "assets": [
+    {
+      "asset_id": "AGENTS.md",
+      "path": "AGENTS.md",
+      "format": "md",
+      "bytes": 2454,
+      "sha256": "a9f779a267af1b5f390d0ace8de6c59c08666fbf2fad420b9970d23bf182270a",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "ART_BASELINE_LOCK.md",
+      "path": "ART_BASELINE_LOCK.md",
+      "format": "md",
+      "bytes": 5944,
+      "sha256": "fead5899b2c2c732df16861e2575b0cec6760aba8fc4379323349fe5513d8aec",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "ASSET_BROWSER.html",
+      "path": "ASSET_BROWSER.html",
+      "format": "html",
+      "bytes": 19713,
+      "sha256": "0aacc5e188b2ce5d30051f3bbce7caceb19037bac127aac84ace57a20dad691f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "README.md",
+      "path": "README.md",
+      "format": "md",
+      "bytes": 6078,
+      "sha256": "7c8e718adaddc54f5f0dc74a3a168761c72e4f9edc57c5f166ae9f5c1fc3c663",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.ASSET_RESOURCES.csv",
+      "path": "android/ASSET_RESOURCES.csv",
+      "format": "csv",
+      "bytes": 12273,
+      "sha256": "a297b611dc9949e2c386414bd4901684247801334eb4e66ee904f8f4f2d3326d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable.emberfall_button_primary.xml",
+      "path": "android/app/src/main/res/drawable/emberfall_button_primary.xml",
+      "format": "xml",
+      "bytes": 571,
+      "sha256": "fcbe8db9bcfef55480b93efc36d353648c498c5954f10563c28b5e91e21a6970",
+      "status": "ANDROID_RESOURCE_STARTER"
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable.emberfall_button_secondary.xml",
+      "path": "android/app/src/main/res/drawable/emberfall_button_secondary.xml",
+      "format": "xml",
+      "bytes": 487,
+      "sha256": "076cf516440c1eaf84c5622b2d7dbbac304e54724d6df5c76780bb02b5f1a1a6",
+      "status": "ANDROID_RESOURCE_STARTER"
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_brand_app_icon.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_brand_app_icon.webp",
+      "format": "webp",
+      "bytes": 36660,
+      "sha256": "2dd745fef75ea3fcc375d66a47552cc0856e06bca0825a5f5c77aa5957596639",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_brand_emberfall_logo.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_brand_emberfall_logo.webp",
+      "format": "webp",
+      "bytes": 31642,
+      "sha256": "917b4a2c983706c11b2d003a6eed1058463d266435a60a04156281d924c803c2",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 2400,
+      "height": 720
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_ash_alchemy.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_ash_alchemy.webp",
+      "format": "webp",
+      "bytes": 29138,
+      "sha256": "0525c37ce5ce32e6474f481ac4685cb42f4898965178b0822eb1cc0214cce2cc",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_ember_strike.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_ember_strike.webp",
+      "format": "webp",
+      "bytes": 33798,
+      "sha256": "9a504b9393222075302a3a33db0b4d7c08db4b5bea7ca049996162e3aaceb57c",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_golden_claim.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_golden_claim.webp",
+      "format": "webp",
+      "bytes": 43370,
+      "sha256": "e8f98d9488d353837afe87ea868ca5e5e58f48255faa7568f1870bbda3c031ae",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_mossroot.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_mossroot.webp",
+      "format": "webp",
+      "bytes": 30590,
+      "sha256": "ee2cb70bcfb535d6e81cc1b99e3983c921c398f8c66abe519e01006cf0b9af7a",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_prism_seed.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_prism_seed.webp",
+      "format": "webp",
+      "bytes": 33264,
+      "sha256": "c265278ae40680bbb75160c19c735486e16ee0104df47bc443a87319ee95aa1b",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_pyre_column.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_pyre_column.webp",
+      "format": "webp",
+      "bytes": 31760,
+      "sha256": "677dcb7b0d7ee03961e0aa36003a49d9f62c74c691468d4c91d71c6b59a45b10",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_quake_line.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_quake_line.webp",
+      "format": "webp",
+      "bytes": 41816,
+      "sha256": "f3b47f7a23073fc61a39f6ea714cb8769ffd88ebd9a7f1a0afb34057db946b67",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_recolor.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_recolor.webp",
+      "format": "webp",
+      "bytes": 31040,
+      "sha256": "c011e65f604f4e6f05e80de93ecb0a506bed4f0228916c0c3d33fad2a0aa90a2",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_tide_mend.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_tide_mend.webp",
+      "format": "webp",
+      "bytes": 31390,
+      "sha256": "52ee23a3e8050c768ba7fe0bccde4d566e4760b5f6480cca39bf60c41a5127e1",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_card_art_violet_echo.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_card_art_violet_echo.webp",
+      "format": "webp",
+      "bytes": 33228,
+      "sha256": "8352d44b77e97b2eecad7325548a3bea200c5b97e107798a567d506a2be10671",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_character_shade_memory.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_character_shade_memory.webp",
+      "format": "webp",
+      "bytes": 34296,
+      "sha256": "d10fd1eda935437fdee4a4ee718d4d32a42143e511c0691268f1e37a72d591c6",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_character_sister_verrin.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_character_sister_verrin.webp",
+      "format": "webp",
+      "bytes": 35740,
+      "sha256": "3d10ba23bbbe04fccb890d68c5ae86c7e4d777c7421bf1f935bed02198e04cf4",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_class_ashen_monk.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_class_ashen_monk.webp",
+      "format": "webp",
+      "bytes": 253318,
+      "sha256": "24d31749d88c1de30f712fd6453f0aa80f3a61b74adabd507fd61e21a32c50a0",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_class_quarry_witch.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_class_quarry_witch.webp",
+      "format": "webp",
+      "bytes": 261830,
+      "sha256": "7a418cefda0a2bcf30918394882fe3ceb77c2284bd509778e7a94302b4a46ada",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_class_the_unlit.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_class_the_unlit.webp",
+      "format": "webp",
+      "bytes": 263140,
+      "sha256": "2a0d30f382020ee2d6ff1cc09bbb2f2e16fb361f03d1fa409fea539b0e48e41d",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_enemy_ash_caller.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_enemy_ash_caller.webp",
+      "format": "webp",
+      "bytes": 59496,
+      "sha256": "ac55df58ada51b615fc2cfcc2cfd03ad4373d80fef430d784059463acd6172c2",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_enemy_cinder_husk.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_enemy_cinder_husk.webp",
+      "format": "webp",
+      "bytes": 58190,
+      "sha256": "f9e471a006ff62d15ce909f5808f02d6c2099981d331470c5d2c93a6997b15ae",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_enemy_hollow_warden.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_enemy_hollow_warden.webp",
+      "format": "webp",
+      "bytes": 125770,
+      "sha256": "dba575e5e7d9a064f5b5b2b67c8fd9b4533c81ee844ad0f5fe4e8429b97f6ae0",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1800,
+      "height": 2200
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_enemy_memory_leecher.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_enemy_memory_leecher.webp",
+      "format": "webp",
+      "bytes": 57314,
+      "sha256": "25f2a0e22ae263ab1a715667cdf3708a47201d5705778e3990d93786fcdc2448",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_enemy_stone_herald.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_enemy_stone_herald.webp",
+      "format": "webp",
+      "bytes": 50360,
+      "sha256": "8f838b1549a2f12c73ddb492e8247a069eb457385b2ca2ef8cb8e494ed6b8e2b",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_block.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_block.webp",
+      "format": "webp",
+      "bytes": 6508,
+      "sha256": "afac0754e2b50445c2e8f096a651e7024a1486d102dd4053d7ea103a9e81e93d",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_codex.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_codex.webp",
+      "format": "webp",
+      "bytes": 5250,
+      "sha256": "7c022262aa337e238806b731c10f408992b993ec3d01575bc9b394d5d4dcf47b",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_deck.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_deck.webp",
+      "format": "webp",
+      "bytes": 5402,
+      "sha256": "bd13583d712d55d3ce4f4f8b0db934a921b65f9fc0f86e42f27881d965bd570a",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_enemy_intent.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_enemy_intent.webp",
+      "format": "webp",
+      "bytes": 5308,
+      "sha256": "5ca52be0a0da577656c77a17f55bc2e3d2a78214067f57e1c868021c0f318fcd",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_event.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_event.webp",
+      "format": "webp",
+      "bytes": 8854,
+      "sha256": "ec9febddd0b53e887a722fd9bd4d66cfe2dc2e613d063fbf3e449ecd5cef1617",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_flask.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_flask.webp",
+      "format": "webp",
+      "bytes": 7020,
+      "sha256": "210bfbe15aae3fa51c43557192958f06261fe0d5bc1c423c6643d456613595a7",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_ink.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_ink.webp",
+      "format": "webp",
+      "bytes": 8220,
+      "sha256": "b8e09400a245691d0dcf747c7de0d0aeb6447bde409823606b0557c2a253a4d3",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_map.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_map.webp",
+      "format": "webp",
+      "bytes": 6142,
+      "sha256": "838ed86f83b4fa0c6e958d2ca63a79055221e45a6944086ff8e2cc7e4e031913",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_relic.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_relic.webp",
+      "format": "webp",
+      "bytes": 7744,
+      "sha256": "a40114bc4e69d6b09c86eb037f36888a0ab3a9b4e05ea8d2db367d1a4c15bd10",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_run.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_run.webp",
+      "format": "webp",
+      "bytes": 7548,
+      "sha256": "053806f5983fa27720e739e3d0be5698e5580d68359ed3b4e4d4405bee01a585",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_settings.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_settings.webp",
+      "format": "webp",
+      "bytes": 6854,
+      "sha256": "1f39a01d0b2214ac12f6e7f2dc660079a7eafa7b64edac8ddd3ac81974b3245f",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_shop.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_shop.webp",
+      "format": "webp",
+      "bytes": 6280,
+      "sha256": "de1a488989089ca8283545e755f84d7b973d8de19d74f9558fba2c681e8b7daf",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_spark.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_spark.webp",
+      "format": "webp",
+      "bytes": 6770,
+      "sha256": "c615e25cdef2706fb508170c1f0406eaac45ccc5f6759aa3a7e46121a769cd37",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_tap.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_tap.webp",
+      "format": "webp",
+      "bytes": 6820,
+      "sha256": "3a16287dc84b6553ebacbb1713419a79b78cb2197a8e3e458cdf2e6c563659e8",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_icon_vigil.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_icon_vigil.webp",
+      "format": "webp",
+      "bytes": 9090,
+      "sha256": "9f63714e34707c2a685122c2975260f0e9e5310e8346a5340ca2bf1b766551d5",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_ash_ledger.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_ash_ledger.webp",
+      "format": "webp",
+      "bytes": 8948,
+      "sha256": "c32a8e6cfec8760cea0b2f0d5483d2272c409eb0b6a9aa50be714df8175c9b28",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_black_hearth.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_black_hearth.webp",
+      "format": "webp",
+      "bytes": 12116,
+      "sha256": "4e0e1ea7f6d8b429689871333daeb68086d240e7e961ff3bd65229284fcdd220",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_boss.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_boss.webp",
+      "format": "webp",
+      "bytes": 9690,
+      "sha256": "009312c9cbd7a846e4c9b0ce14a31fdbfe935588369a9d1ddb0a2b6a29e1a1e4",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_chisel_wand.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_chisel_wand.webp",
+      "format": "webp",
+      "bytes": 11952,
+      "sha256": "53433e35f073d8d71d7b6d181d32c9ab7198a8454bb701e84c1ad45c48135490",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_cracked_hourglass.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_cracked_hourglass.webp",
+      "format": "webp",
+      "bytes": 11012,
+      "sha256": "02d892b43a6ccf150a4205b372c5a2a30d6fd6c290d5f7f1fd9e26c4c6c914c8",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_drowned_coin.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_drowned_coin.webp",
+      "format": "webp",
+      "bytes": 12610,
+      "sha256": "ca911fc0781011cc63cf750a4c75ae82033fbb70e1330644e02a1981e379d809",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_ember_ring.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_ember_ring.webp",
+      "format": "webp",
+      "bytes": 12616,
+      "sha256": "316b4f7a9af2ed3c0bff26b54dbf11c3d103b7b45be7c0a0e0c50bf1c57972a4",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_glass_prism.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_glass_prism.webp",
+      "format": "webp",
+      "bytes": 12410,
+      "sha256": "04433d08e09f7e9c59a144f86266f6b161dae3271770c3249fad40da3ee22aaa",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_gravedigger_spade.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_gravedigger_spade.webp",
+      "format": "webp",
+      "bytes": 10822,
+      "sha256": "3cd412a01a8837099dff1471bd00eb9e93d4ce8b09c3aec54ceb39d755836370",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_greywatch.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_greywatch.webp",
+      "format": "webp",
+      "bytes": 10702,
+      "sha256": "1c79953d5b95bc51099072abde35ca98caae8518b2e1fb8aa4364d76e7174710",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_hollow_crown.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_hollow_crown.webp",
+      "format": "webp",
+      "bytes": 11804,
+      "sha256": "8463e615201f938f1a6d9dd8ce31de1a790a5ca0c9d3de852c9421f9cce0dd14",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_kindling_box.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_kindling_box.webp",
+      "format": "webp",
+      "bytes": 11344,
+      "sha256": "89f095ed8b9afa2b50f8720214d0218b9859fb116b7d52fce2451ad273b770b8",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_lamplighter.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_lamplighter.webp",
+      "format": "webp",
+      "bytes": 11578,
+      "sha256": "7761c3df17533abfa10f11e0d7d672431ae1dbab6b28671a29202eacc3f2a65f",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_masoned_glove.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_masoned_glove.webp",
+      "format": "webp",
+      "bytes": 11202,
+      "sha256": "466af81627d377378761b0c48858fd07dfc66093080ada6af1ff76b0d1854ac7",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_pact_of_silence.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_pact_of_silence.webp",
+      "format": "webp",
+      "bytes": 12182,
+      "sha256": "a7b32daf8c15e1363a5c4c99761295d953cee32cf8dc9c488ce624371be1f933",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_prayer_beads.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_prayer_beads.webp",
+      "format": "webp",
+      "bytes": 12668,
+      "sha256": "296bc98d4b499cc0bdfdcdf58d744ece363a370649d84563876a1b6b0cabd1f8",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_quarry_chisel.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_quarry_chisel.webp",
+      "format": "webp",
+      "bytes": 12060,
+      "sha256": "cd93823ebb33f8099e60c6c83b9c1201e6de20881e29076922d61d2bffe6ef43",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_quiet_bell.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_quiet_bell.webp",
+      "format": "webp",
+      "bytes": 10724,
+      "sha256": "16d43a1f002fbd65582c1ec5e60a53e2bfb2dcdde36ab9d623f24e68597779fd",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_remnant.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_remnant.webp",
+      "format": "webp",
+      "bytes": 11470,
+      "sha256": "54296a8d9242b68d06f9d86d9641fcac80cd0172bc28a3526f9a2f2dc2df15dc",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_wheel_of_hours.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_wheel_of_hours.webp",
+      "format": "webp",
+      "bytes": 13940,
+      "sha256": "6ac90fb32578c7abaf2a8663124ee033d8a7eeaff3e49a0d474560a34caa1f0b",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_relic_wicker_cage.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_relic_wicker_cage.webp",
+      "format": "webp",
+      "bytes": 10972,
+      "sha256": "b9352c720fb0be73c8829d54fdf5c205028af5850115560ac5740a69f068b3e0",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_scene_act1_fallen_crypt.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_scene_act1_fallen_crypt.webp",
+      "format": "webp",
+      "bytes": 120660,
+      "sha256": "1ac9b40c02a9d83712fb6fb4edd1b6247eab162e71d8ccca583f2e9c5952d259",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_scene_act2_drowned_halls.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_scene_act2_drowned_halls.webp",
+      "format": "webp",
+      "bytes": 120324,
+      "sha256": "465b4144f67eaeafb23c0b261760aa7db0c55c2db291ee8c8d8bb78c04ed1105",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_scene_act3_luminous_spire.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_scene_act3_luminous_spire.webp",
+      "format": "webp",
+      "bytes": 126788,
+      "sha256": "0ebb418dcb7021dc8d95a01dba09246bd5072f055a225b3e1126d4e9e4ca7201",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_ash.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_ash.webp",
+      "format": "webp",
+      "bytes": 18902,
+      "sha256": "0c07597d77c113a0fadeee124c078db37928e8b0ea4baeaaf91c7a21b050cf29",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_ember.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_ember.webp",
+      "format": "webp",
+      "bytes": 15120,
+      "sha256": "3b89fc40036c1b5408354fc65414de1d0b05a70b6bf4a999d7778ecc586f78ee",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_gold.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_gold.webp",
+      "format": "webp",
+      "bytes": 17462,
+      "sha256": "bbc2414dd6c2617fe57465b1009847ef5bcbfbc20e9647db1351b6e7bfde64e2",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_moss.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_moss.webp",
+      "format": "webp",
+      "bytes": 20002,
+      "sha256": "e8dfa85f1a20760fd83ccdd8453416c42ee82cbaeb5dddedb46d99dfc8c3f09b",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_prism.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_prism.webp",
+      "format": "webp",
+      "bytes": 19424,
+      "sha256": "05674bf3daeeb98db5ced1b17875ca1f6a4ca35623a1f89293eaff2fb879cc98",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_stone.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_stone.webp",
+      "format": "webp",
+      "bytes": 13794,
+      "sha256": "95b1bd19dc2b89b7a70e199e40d591028a7b9aa5fbbb2a03caddaf8128030fca",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_tide.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_tide.webp",
+      "format": "webp",
+      "bytes": 18566,
+      "sha256": "6b3414594d69c1e074bd263516b6d422a974a6c97b99b2c125e7ef37ca590d73",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_tile_violet.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_tile_violet.webp",
+      "format": "webp",
+      "bytes": 17338,
+      "sha256": "881325a5a754b7ded0275ec761346fce30039b59629f72a218dcb805d63e12e3",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_ink_gain.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_ink_gain.webp",
+      "format": "webp",
+      "bytes": 16012,
+      "sha256": "88cd3110e1f90023e90341d3dd4b0bfe47dcb70f8b43de9c41170176b96f7ced",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_pop_burst.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_pop_burst.webp",
+      "format": "webp",
+      "bytes": 25134,
+      "sha256": "81e07ee99396c2734b195e90ec396d79867473ff8b73d19d9d0ea6fe03084116",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_recolor_wave.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_recolor_wave.webp",
+      "format": "webp",
+      "bytes": 42588,
+      "sha256": "33b2339e6b6f335d12db7d6c71422a2d8b6ad292a7fbde9af484528b0c9d8c4d",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_spectrum_arc.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_spectrum_arc.webp",
+      "format": "webp",
+      "bytes": 33958,
+      "sha256": "595f00eb77cb81d56afee853cab58dcf6a0db11370d09ef8ddd8ab2cf5e83b26",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_stone_shatter.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_stone_shatter.webp",
+      "format": "webp",
+      "bytes": 32874,
+      "sha256": "c5f1c4f764c337ab1546d3b162c028beffa5b1b10adc5ce14c1e092f855992ec",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.ef_vfx_wall_rise.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/ef_vfx_wall_rise.webp",
+      "format": "webp",
+      "bytes": 22538,
+      "sha256": "5d9808ef5e2c9d0bf7114afd05155a55cff77143c3864add1d82c8decdef87cf",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.emberfall_bg_act1_fallen_crypt.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/emberfall_bg_act1_fallen_crypt.webp",
+      "format": "webp",
+      "bytes": 35824,
+      "sha256": "f2719cdce2991c6ce9ad7f2c79eeea6da5272a733cdff4bbd44447ca7aec236d",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.emberfall_bg_act2_drowned_halls.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/emberfall_bg_act2_drowned_halls.webp",
+      "format": "webp",
+      "bytes": 34872,
+      "sha256": "f16af944b13460706f453aa7f863c5c94a3e1a6c085e1245286978a7cc03776c",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "android.app.src.main.res.drawable-nodpi.emberfall_bg_act3_luminous_spire.webp",
+      "path": "android/app/src/main/res/drawable-nodpi/emberfall_bg_act3_luminous_spire.webp",
+      "format": "webp",
+      "bytes": 36580,
+      "sha256": "af65d5d83cefeb2b15bd37ab7f3e493b83b564acb5b911cc3c86d9a93be6ff49",
+      "status": "ANDROID_RESOURCE_STARTER",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "android.app.src.main.res.values.colors.xml",
+      "path": "android/app/src/main/res/values/colors.xml",
+      "format": "xml",
+      "bytes": 917,
+      "sha256": "93f18857207f670c8c9e3c0b3e434b409638b305e749cefbef16261167ccf29c",
+      "status": "ANDROID_RESOURCE_STARTER"
+    },
+    {
+      "asset_id": "android.app.src.main.res.values.dimens.xml",
+      "path": "android/app/src/main/res/values/dimens.xml",
+      "format": "xml",
+      "bytes": 662,
+      "sha256": "0d707329e3eb4ea1555c04fab6b54ccb468cc12fcc1b2be6398e6d016c84ecf5",
+      "status": "ANDROID_RESOURCE_STARTER"
+    },
+    {
+      "asset_id": "android.sample.EmberfallArtResources.kt",
+      "path": "android/sample/EmberfallArtResources.kt",
+      "format": "kt",
+      "bytes": 1801,
+      "sha256": "f0cd8e4ddf72fff60fe0933a046631c819b3a846130060044009d8a3006c2fbd",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.sample.EmberfallClassSelectScreen.kt",
+      "path": "android/sample/EmberfallClassSelectScreen.kt",
+      "format": "kt",
+      "bytes": 8055,
+      "sha256": "4ff8dbed94a3eadf4f7767e5aaa7455363325d22dcaf5e2ea8d03da41a72f351",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.sample.EmberfallCombatScreen.kt",
+      "path": "android/sample/EmberfallCombatScreen.kt",
+      "format": "kt",
+      "bytes": 11668,
+      "sha256": "f7932456eb9c78b69c3eb65627e5505339247b04ee4d4b3e7abb6768236331f6",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.sample.EmberfallOrnateComponents.kt",
+      "path": "android/sample/EmberfallOrnateComponents.kt",
+      "format": "kt",
+      "bytes": 3359,
+      "sha256": "695842454d7751b19abe1768fa4abda16d5320f13896743c0f84fb3417fc928f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "android.sample.README.md",
+      "path": "android/sample/README.md",
+      "format": "md",
+      "bytes": 1349,
+      "sha256": "01d83b3a8b4d44e5e5cd1359b82a1cf0272d1bcf2693e7237f349f3de60f1ceb",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.backgrounds.cairn_key_art.jpg",
+      "path": "art/backgrounds/cairn_key_art.jpg",
+      "format": "jpg",
+      "bytes": 702395,
+      "sha256": "93849a5e2f240ab4af808a7f5f9bc4c2e88800f0b0a723e330ce88c811b892ad",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1080,
+      "height": 1620
+    },
+    {
+      "asset_id": "art.brand.app_icon.png",
+      "path": "art/brand/app_icon.png",
+      "format": "png",
+      "bytes": 82119,
+      "sha256": "11ea73403cab6df3b96c8a583d092ac4410a6a12a0b0242d6da1e49d6893bd8f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.brand.app_icon.svg",
+      "path": "art/brand/app_icon.svg",
+      "format": "svg",
+      "bytes": 853,
+      "sha256": "10a3cc46d4cf1d358c168762a9c76e42ce61e5348bf543908fd982d9ce41cec3",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.brand.emberfall_logo.png",
+      "path": "art/brand/emberfall_logo.png",
+      "format": "png",
+      "bytes": 66394,
+      "sha256": "29b76d0a7afa91e3464c95506ce1fcadcb86ea46978a2ff180d55438d0e346e6",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 2400,
+      "height": 720
+    },
+    {
+      "asset_id": "art.brand.emberfall_logo.svg",
+      "path": "art/brand/emberfall_logo.svg",
+      "format": "svg",
+      "bytes": 915,
+      "sha256": "3f159d092db779028704a2f28a156bc0a11d3df377cf27cc170c093334689252",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.ash_alchemy.png",
+      "path": "art/cards/ash_alchemy.png",
+      "format": "png",
+      "bytes": 172285,
+      "sha256": "d474b7e279299391753919e2cd1e657aa0da20604b283f0be5736040c9a8f1c5",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.ash_alchemy.svg",
+      "path": "art/cards/ash_alchemy.svg",
+      "format": "svg",
+      "bytes": 1481,
+      "sha256": "7da17e5cc6f01ea3789c71a0ecbafb429e7186ac4182afc278d04161cc82b219",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.ember_strike.png",
+      "path": "art/cards/ember_strike.png",
+      "format": "png",
+      "bytes": 172772,
+      "sha256": "184339adeb94424e252d3c229548b680646f5a56e10f3dffb37b54ece8844632",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.ember_strike.svg",
+      "path": "art/cards/ember_strike.svg",
+      "format": "svg",
+      "bytes": 1344,
+      "sha256": "7ba932b82b7611c0cf6eb0f8a4c5783cfef008d98c380eab385f716491d02d8c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.golden_claim.png",
+      "path": "art/cards/golden_claim.png",
+      "format": "png",
+      "bytes": 188826,
+      "sha256": "73ea0ecca8fa1cb4a1bc3da1ca5fea863937dc07f00c385a667a796a83d0b9df",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.golden_claim.svg",
+      "path": "art/cards/golden_claim.svg",
+      "format": "svg",
+      "bytes": 1415,
+      "sha256": "7e703dc2f45856b5dddb9437e2881238504b09ed855d9f26a4d5d3cd3a4a7a89",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.mossroot.png",
+      "path": "art/cards/mossroot.png",
+      "format": "png",
+      "bytes": 137843,
+      "sha256": "698a95ab3b03cd287472ef99b636572a29957575d58429f405b2a7d2b114c77c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.mossroot.svg",
+      "path": "art/cards/mossroot.svg",
+      "format": "svg",
+      "bytes": 1433,
+      "sha256": "b266ad833b5c90d1dbb6bf8420ff1a53f8dfff0da2f0d9b9a95eb86977a4c528",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.prism_seed.png",
+      "path": "art/cards/prism_seed.png",
+      "format": "png",
+      "bytes": 221315,
+      "sha256": "b0dce44a72a4b7b2a860caf75f9ba2aef6d11c424f9076ecdbfa52ff840f5038",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.prism_seed.svg",
+      "path": "art/cards/prism_seed.svg",
+      "format": "svg",
+      "bytes": 1386,
+      "sha256": "1b2a02118d0869b7a4dabc788988195c7a0a826e4e4b7e67c0d1abaa1c1c39f7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.pyre_column.png",
+      "path": "art/cards/pyre_column.png",
+      "format": "png",
+      "bytes": 134124,
+      "sha256": "bc711216a922c526f69d8fffae41a835eda5add210a64872fd0f223697b4bb29",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.pyre_column.svg",
+      "path": "art/cards/pyre_column.svg",
+      "format": "svg",
+      "bytes": 1433,
+      "sha256": "1c3025dbc538d603f52c1a345319dce858305d82238de5b503e8303428e91de5",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.quake_line.png",
+      "path": "art/cards/quake_line.png",
+      "format": "png",
+      "bytes": 185708,
+      "sha256": "fab00d4b2d3ee5c421711709ab9f13551b3b4437a333ac36b826726a10ea5e4c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.quake_line.svg",
+      "path": "art/cards/quake_line.svg",
+      "format": "svg",
+      "bytes": 1408,
+      "sha256": "df0586008b420fb0542ad675227de0c800d5846e2e719ecdf468808fc3953f39",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.recolor.png",
+      "path": "art/cards/recolor.png",
+      "format": "png",
+      "bytes": 170670,
+      "sha256": "484ab034218825ae742a5073731321119c63b8d81dd6c901d659cf95d7441d14",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.recolor.svg",
+      "path": "art/cards/recolor.svg",
+      "format": "svg",
+      "bytes": 1381,
+      "sha256": "bd4d35be4de7e96258c377661f4df97b59deee3f41353f7e66a972a58ba3a3b7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.tide_mend.png",
+      "path": "art/cards/tide_mend.png",
+      "format": "png",
+      "bytes": 185594,
+      "sha256": "c55f4e4b4c091e250257e95bbfcea50eab3b10739bb33a402dbe69a4aa7d8fd7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.tide_mend.svg",
+      "path": "art/cards/tide_mend.svg",
+      "format": "svg",
+      "bytes": 1381,
+      "sha256": "d9900b83a216f16bb3334b728804dc5d07bc26c44eebdc69ed6cd241428dfeef",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.cards.violet_echo.png",
+      "path": "art/cards/violet_echo.png",
+      "format": "png",
+      "bytes": 213816,
+      "sha256": "66a7481c23b00cf7fb13739639ca7558c93cac6cb7ce29395e3f075d6e0e1160",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "asset_id": "art.cards.violet_echo.svg",
+      "path": "art/cards/violet_echo.svg",
+      "format": "svg",
+      "bytes": 1394,
+      "sha256": "ed9ccc0d3a366fffaa6bba7cbd136adf1eac0502008fb3aeb9cf25ae7453bbf0",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.characters.ashen_monk_painterly_source.png",
+      "path": "art/characters/ashen_monk_painterly_source.png",
+      "format": "png",
+      "bytes": 2716586,
+      "sha256": "74db1b97e2ee781221ea0d0bf68ab1fc75d8e25b6586a658f33c1667622d0921",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_PRESERVED",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "asset_id": "art.characters.ashen_monk_portrait.jpg",
+      "path": "art/characters/ashen_monk_portrait.jpg",
+      "format": "jpg",
+      "bytes": 343059,
+      "sha256": "2191a9954926d772aceeec98b3aff1d35390bd5a1f8c3f752cec005b5c62feeb",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_PRESERVED",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.quarry_witch_portrait.jpg",
+      "path": "art/characters/quarry_witch_portrait.jpg",
+      "format": "jpg",
+      "bytes": 346010,
+      "sha256": "f0bb18c44063b728168b556ba166ecdcf6f066dece2b9306e803449492870b4a",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_CANDIDATE",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.quarry_witch_portrait_master.svg",
+      "path": "art/characters/quarry_witch_portrait_master.svg",
+      "format": "svg",
+      "bytes": 260,
+      "sha256": "fca364d2496e5a013ec8c211167ad70f282b580f7ee90cdbf673d47eb13dd16c",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_CANDIDATE"
+    },
+    {
+      "asset_id": "art.characters.shade_memory.png",
+      "path": "art/characters/shade_memory.png",
+      "format": "png",
+      "bytes": 75339,
+      "sha256": "24920e8746f6b06fe9a510e29ee53688d728662c15fde23d2fedbda9c8372ef5",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.shade_memory.svg",
+      "path": "art/characters/shade_memory.svg",
+      "format": "svg",
+      "bytes": 1857,
+      "sha256": "6e6fb0ffcfa2d863e35f04d4bbde5a3d737d82a39bc0ce47221f4388d05863b7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.characters.sister_verrin.png",
+      "path": "art/characters/sister_verrin.png",
+      "format": "png",
+      "bytes": 71910,
+      "sha256": "594907ad103eeb80d1ed2050f869f3dd8aefe118ead6fa0deb07c9a43a20da4f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.sister_verrin.svg",
+      "path": "art/characters/sister_verrin.svg",
+      "format": "svg",
+      "bytes": 1858,
+      "sha256": "71e5726e8bb9a35e1a3c6beef90c2b65a24b4609d2c9a70034cc7dcfd75fd42e",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.characters.the_unlit_painterly_source.png",
+      "path": "art/characters/the_unlit_painterly_source.png",
+      "format": "png",
+      "bytes": 2800250,
+      "sha256": "5a5a7a47e1461727bfb78d2a886d9d70d896e0c8e3516dcfceeacdb2d08720c9",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_SOURCE",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "asset_id": "art.characters.the_unlit_portrait.jpg",
+      "path": "art/characters/the_unlit_portrait.jpg",
+      "format": "jpg",
+      "bytes": 421573,
+      "sha256": "131495252b5e43d45cc0d7eb80b6308a15744a972aeb803442f793caf21c1b60",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_CANDIDATE",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.the_unlit_portrait_master.svg",
+      "path": "art/characters/the_unlit_portrait_master.svg",
+      "format": "svg",
+      "bytes": 789,
+      "sha256": "c8fef842214272eb42c20a30555e89c2bd8205dff425323360d6950cf68c7ca3",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_CANDIDATE"
+    },
+    {
+      "asset_id": "art.characters.the_unlit_portrait_render.png",
+      "path": "art/characters/the_unlit_portrait_render.png",
+      "format": "png",
+      "bytes": 17927,
+      "sha256": "2dee029e04c744169e09e7b80faa51bda060bd09fdc2194b15ca111e8d61ac06",
+      "status": "CANONICAL_CLASS_PAINTERLY_CONCEPT_CANDIDATE",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "asset_id": "art.characters.the_unlit_portrait_vector_fallback.svg",
+      "path": "art/characters/the_unlit_portrait_vector_fallback.svg",
+      "format": "svg",
+      "bytes": 5007,
+      "sha256": "e1abf5267397fb8121e4d26cd173ac577f55e0c36c7b0818cc5bff5abfb340e5",
+      "status": "ARCHIVED_VECTOR_FALLBACK_NOT_RUNTIME"
+    },
+    {
+      "asset_id": "art.enemies.ash_caller.png",
+      "path": "art/enemies/ash_caller.png",
+      "format": "png",
+      "bytes": 169962,
+      "sha256": "c82c902458245c9be24c4eb5cb9634bc09a3db0bf8f0f1fd83dc363b659fc548",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "art.enemies.ash_caller.svg",
+      "path": "art/enemies/ash_caller.svg",
+      "format": "svg",
+      "bytes": 2534,
+      "sha256": "e34d8d2df10bc8db511ddb4eef903469279fe00b25160c0333a51d3e88125a88",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.enemies.cinder_husk.png",
+      "path": "art/enemies/cinder_husk.png",
+      "format": "png",
+      "bytes": 153161,
+      "sha256": "14fbf8fd15647d89b3dbdb88ea16bbe0200b1ff693fe608ca6b4099b46558bea",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "art.enemies.cinder_husk.svg",
+      "path": "art/enemies/cinder_husk.svg",
+      "format": "svg",
+      "bytes": 2549,
+      "sha256": "af92e8b0d379cef76f58479e37d2ac85232b339a488362672633ebfc167e9374",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.enemies.hollow_warden.png",
+      "path": "art/enemies/hollow_warden.png",
+      "format": "png",
+      "bytes": 272234,
+      "sha256": "ce825835edbefdb818e0d5d8a33f3b336e833ad1c0e5376ad5b526d1b3af7a1f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1800,
+      "height": 2200
+    },
+    {
+      "asset_id": "art.enemies.hollow_warden.svg",
+      "path": "art/enemies/hollow_warden.svg",
+      "format": "svg",
+      "bytes": 2901,
+      "sha256": "e07645aed0f4a660a84ac0c729fe3bb6f0185126909a9d25319db8ca149b07b8",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.enemies.memory_leecher.png",
+      "path": "art/enemies/memory_leecher.png",
+      "format": "png",
+      "bytes": 168191,
+      "sha256": "5d70a46f56874b91c24367dd8a597ee33a44495fb0d0e5d3191a36826c513082",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "art.enemies.memory_leecher.svg",
+      "path": "art/enemies/memory_leecher.svg",
+      "format": "svg",
+      "bytes": 2585,
+      "sha256": "37dee16c9e05671c6fb035c515c07922beaab6fa48c5c2b34bca3c5029eb4a1c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.enemies.stone_herald.png",
+      "path": "art/enemies/stone_herald.png",
+      "format": "png",
+      "bytes": 155539,
+      "sha256": "c510ad3afb5cfb8aa14cfe93e62c56684160fa063b7c437c0c6586d5ec515f8c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 1280,
+      "height": 1600
+    },
+    {
+      "asset_id": "art.enemies.stone_herald.svg",
+      "path": "art/enemies/stone_herald.svg",
+      "format": "svg",
+      "bytes": 2597,
+      "sha256": "ebd1b52b8530545b1c418848db1fab78f74b91669b8767f52d7a0d0f0f79508d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.environments.act1_fallen_crypt.png",
+      "path": "art/environments/act1_fallen_crypt.png",
+      "format": "png",
+      "bytes": 306874,
+      "sha256": "385e077720fad7cf65bb145dc8cdbe0038d95ad104e4b56f8d58fee2fae0e95e",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "art.environments.act1_fallen_crypt.svg",
+      "path": "art/environments/act1_fallen_crypt.svg",
+      "format": "svg",
+      "bytes": 3161,
+      "sha256": "2ce8dd6fe7acc683d6631d0a1384e514dcb4efc9614ec896d811939c5fc00dda",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.environments.act2_drowned_halls.png",
+      "path": "art/environments/act2_drowned_halls.png",
+      "format": "png",
+      "bytes": 320422,
+      "sha256": "5562e63af05697ee4f09299c7396069353aeb66e63d4b7bc70210774c4df49d9",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "art.environments.act2_drowned_halls.svg",
+      "path": "art/environments/act2_drowned_halls.svg",
+      "format": "svg",
+      "bytes": 3162,
+      "sha256": "b71e89c6ed6f3735cc67fe943d30def03b89f8b61d0ccb19460ee22fd6386647",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.environments.act3_luminous_spire.png",
+      "path": "art/environments/act3_luminous_spire.png",
+      "format": "png",
+      "bytes": 320222,
+      "sha256": "14487312ee6cc9bd53de992a33ba33e4fba20cc10171ab591826d2ba6dc6947a",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 2160,
+      "height": 3840
+    },
+    {
+      "asset_id": "art.environments.act3_luminous_spire.svg",
+      "path": "art/environments/act3_luminous_spire.svg",
+      "format": "svg",
+      "bytes": 3163,
+      "sha256": "36ccadf707751443663aa8c54be897215e505903ee434a0ebc4ad10e315eb78d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.block.png",
+      "path": "art/icons/block.png",
+      "format": "png",
+      "bytes": 16106,
+      "sha256": "6f4d5fe19a81a2129f8106519f57299ab4f26e5dfee1d67879b27f05d51aebe7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.block.svg",
+      "path": "art/icons/block.svg",
+      "format": "svg",
+      "bytes": 383,
+      "sha256": "1d5749e2ef2e9432a1b7c78785ea2d721b49fa52e039509ff216d89d94d81b69",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.boss.svg",
+      "path": "art/icons/boss.svg",
+      "format": "svg",
+      "bytes": 379,
+      "sha256": "714426c60749b2f33610d1948e211bb456652ea02be8253a98ac2db9724c9793",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.codex.png",
+      "path": "art/icons/codex.png",
+      "format": "png",
+      "bytes": 11183,
+      "sha256": "2da0722b79019e211abde52923f9c1aae0b98864815b7547310cebd88cf8e5da",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.codex.svg",
+      "path": "art/icons/codex.svg",
+      "format": "svg",
+      "bytes": 394,
+      "sha256": "c08210dd1640d608766d21458e8829ebbd991cce1cc4f6e869f1cdbc0d250a09",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.deck.png",
+      "path": "art/icons/deck.png",
+      "format": "png",
+      "bytes": 11609,
+      "sha256": "7833f37bc78dbc012c269bcb150481faaf55f85882979a894fdf1a14b810dafb",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.deck.svg",
+      "path": "art/icons/deck.svg",
+      "format": "svg",
+      "bytes": 409,
+      "sha256": "4328bdb02f2b5e19736bc19bb12a789cb6170d44ed758da7e2bb3c7725fb89de",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.enemy_intent.png",
+      "path": "art/icons/enemy_intent.png",
+      "format": "png",
+      "bytes": 12329,
+      "sha256": "ba2e177ef4d6c2a318edea3f5d842dd20599297fc0e7709a5570bd3e94ffd9fa",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.enemy_intent.svg",
+      "path": "art/icons/enemy_intent.svg",
+      "format": "svg",
+      "bytes": 363,
+      "sha256": "08bf852c920635857a8395fac6dc282bc437bcffcb96e7f593e343092ba67f9f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.event.png",
+      "path": "art/icons/event.png",
+      "format": "png",
+      "bytes": 19750,
+      "sha256": "8ad7533e36c7c3c3641612581efde4780a5f92d02b0faf3f1c9752345e108551",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.event.svg",
+      "path": "art/icons/event.svg",
+      "format": "svg",
+      "bytes": 460,
+      "sha256": "e171a5f03c4667cec1a161d845cf16670dbeafebf4ec6d942e67d5cc42c0b88d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.flask.png",
+      "path": "art/icons/flask.png",
+      "format": "png",
+      "bytes": 15204,
+      "sha256": "6a91d729f2cd62a49940fbfa854af316541cfe54fa276c16ea8465cfb4021879",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.flask.svg",
+      "path": "art/icons/flask.svg",
+      "format": "svg",
+      "bytes": 383,
+      "sha256": "2e407b8a0cb33d433523f41e6fdabcffd47c5d3899c399667a8d4c919d5e34f8",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.ink.png",
+      "path": "art/icons/ink.png",
+      "format": "png",
+      "bytes": 17842,
+      "sha256": "b85cf6657c6b8ee4bb3b4740543ddfa700098a5ca9ca839938cee5f9cb80d773",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.ink.svg",
+      "path": "art/icons/ink.svg",
+      "format": "svg",
+      "bytes": 364,
+      "sha256": "c7410ce2472c08d4526c50ee5a6a040380917f54e5935abd24543a51f28a9726",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.map.png",
+      "path": "art/icons/map.png",
+      "format": "png",
+      "bytes": 12483,
+      "sha256": "d99689a5be3dab30c216e97f3cde6d61522197a5d275876b11d4890dda2ea0bc",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.map.svg",
+      "path": "art/icons/map.svg",
+      "format": "svg",
+      "bytes": 379,
+      "sha256": "00e2d23626e21480e2edce7461a0d283b62ca53d5068064ac582ffe09f7349f0",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.relic.png",
+      "path": "art/icons/relic.png",
+      "format": "png",
+      "bytes": 18706,
+      "sha256": "80d6f92d90fbfe13322c062fae0c6a84121cfae4acaf5b1b940470b8db1a706a",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.relic.svg",
+      "path": "art/icons/relic.svg",
+      "format": "svg",
+      "bytes": 390,
+      "sha256": "ee180f4f98e271d747f6c9f75b48c9725a50870099ea2262d8129a25a5237381",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.run.png",
+      "path": "art/icons/run.png",
+      "format": "png",
+      "bytes": 17184,
+      "sha256": "e6e1ec49aca2eeab36d0be087016f22d601cd28eb2715c30f40fa8b4574bf1af",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.run.svg",
+      "path": "art/icons/run.svg",
+      "format": "svg",
+      "bytes": 373,
+      "sha256": "bdf000d10bb52853e82e0847402b26c43ac4f498105e4ad3133ef1052d3e4e88",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.settings.png",
+      "path": "art/icons/settings.png",
+      "format": "png",
+      "bytes": 16546,
+      "sha256": "6bce692dbdc9559e858ed65adb78332c3c8df55a83575361ac84caf17c812ae9",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.settings.svg",
+      "path": "art/icons/settings.svg",
+      "format": "svg",
+      "bytes": 436,
+      "sha256": "e26aa7a352208d44d77296f8dc1d41a1feaac19718304bb8bcbe3385178b2ce9",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.shop.png",
+      "path": "art/icons/shop.png",
+      "format": "png",
+      "bytes": 12800,
+      "sha256": "2a000fc0069648b92a2977cc2bb5e9f4abc52cf9ffdfe1ef6ec696b6ced2a27b",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.shop.svg",
+      "path": "art/icons/shop.svg",
+      "format": "svg",
+      "bytes": 384,
+      "sha256": "eb878fc038e62b83f7c26e367fce2935d77dd07bf4605db8defd5c913055103d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.spark.png",
+      "path": "art/icons/spark.png",
+      "format": "png",
+      "bytes": 15605,
+      "sha256": "fa8afeba74c17e1fb5d56e9403ccf263f687b814c19a283d73508e9f14e9590e",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.spark.svg",
+      "path": "art/icons/spark.svg",
+      "format": "svg",
+      "bytes": 358,
+      "sha256": "bd7d35c39680570ac412fd6d86ceef275793898229ba2a6e3258e3b0c0ba4529",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.tap.png",
+      "path": "art/icons/tap.png",
+      "format": "png",
+      "bytes": 14452,
+      "sha256": "1a92acaa5c9342632fb23e8a71a7adb8260158e19e22fd2ba87bf764a26c342f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.tap.svg",
+      "path": "art/icons/tap.svg",
+      "format": "svg",
+      "bytes": 387,
+      "sha256": "cc3c70c5ecd76e86d6c0bbf7f2fec50d6b7c0e7c074e963d30836dbafb9b27ba",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.icons.vigil.png",
+      "path": "art/icons/vigil.png",
+      "format": "png",
+      "bytes": 19692,
+      "sha256": "4d42fc21eff32f6ee8acdfee75007f87cca8cf51b354980180301eccc3ad227f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.icons.vigil.svg",
+      "path": "art/icons/vigil.svg",
+      "format": "svg",
+      "bytes": 405,
+      "sha256": "c0ca9a978bd0c9cfc9a3a4d1a840af2328f2d6fab12b463a8edc8caee67bd7a8",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.relics.ash_ledger.png",
+      "path": "art/relics/ash_ledger.png",
+      "format": "png",
+      "bytes": 24980,
+      "sha256": "d8d7d4832a2b0fd63e92307b536e1db0cc84ba04751c56496e1be7df83a7d5a9",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.black_hearth.png",
+      "path": "art/relics/black_hearth.png",
+      "format": "png",
+      "bytes": 36103,
+      "sha256": "29df0b4770030528cec2e403b4d657a3809a5009f1d28abce682d5a54e5c5bd1",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.boss.png",
+      "path": "art/relics/boss.png",
+      "format": "png",
+      "bytes": 15465,
+      "sha256": "ec900b60717ce7409e0b09a1898eca4abff23246ad4a9511c5febeda5b8535b8",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.chisel_wand.png",
+      "path": "art/relics/chisel_wand.png",
+      "format": "png",
+      "bytes": 34526,
+      "sha256": "fb9c214291c43a7f55e41ae825cf22fc530ef26a852cc00abce5430345425a86",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.cracked_hourglass.png",
+      "path": "art/relics/cracked_hourglass.png",
+      "format": "png",
+      "bytes": 30950,
+      "sha256": "08831db4ecb242597814f4fcb56b91d6145b37d203f568be23ae592c280bf1c2",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.drowned_coin.png",
+      "path": "art/relics/drowned_coin.png",
+      "format": "png",
+      "bytes": 35212,
+      "sha256": "11bf135e1240f3d6f66eaa1f65d07a00aab1022320184c9c31b7e15f0d4fa67c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.ember_ring.png",
+      "path": "art/relics/ember_ring.png",
+      "format": "png",
+      "bytes": 36265,
+      "sha256": "864f1d9d26ac7e2f4e3b846365d80c5696c3bf837736fa8ff6a906594cf59f20",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.glass_prism.png",
+      "path": "art/relics/glass_prism.png",
+      "format": "png",
+      "bytes": 34006,
+      "sha256": "03a98f774c65de9b55602c6dfbe6886c4bef5a333a4292fbd67657709c1995c2",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.gravedigger_spade.png",
+      "path": "art/relics/gravedigger_spade.png",
+      "format": "png",
+      "bytes": 33043,
+      "sha256": "5dbfe75a382d92cda180169d3bea736a34af896e88d8f8684af19c6cc377bcae",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.greywatch.png",
+      "path": "art/relics/greywatch.png",
+      "format": "png",
+      "bytes": 30426,
+      "sha256": "c22b483d54bf0557218f6015415958c2ab798098b3058fa299b4093c05c92972",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.hollow_crown.png",
+      "path": "art/relics/hollow_crown.png",
+      "format": "png",
+      "bytes": 31357,
+      "sha256": "b4711853b3f9678f75166372e9d2f33919613cd06c531ee2bc733785dd2e9274",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.kindling_box.png",
+      "path": "art/relics/kindling_box.png",
+      "format": "png",
+      "bytes": 32308,
+      "sha256": "f53343c7ad3ea69aec88a0268d3b641a0e4be99a0128fa3c9d7b057b3ec39f40",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.lamplighter.png",
+      "path": "art/relics/lamplighter.png",
+      "format": "png",
+      "bytes": 32677,
+      "sha256": "535d47bae61a3c60fe38f37936735e075e5cdb079e0c5032e0877866ad3dc231",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.masoned_glove.png",
+      "path": "art/relics/masoned_glove.png",
+      "format": "png",
+      "bytes": 32227,
+      "sha256": "b1698c80493fb48a9d062e1f25d19b5f056eb515a2116b93315d3c61232a630f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.pact_of_silence.png",
+      "path": "art/relics/pact_of_silence.png",
+      "format": "png",
+      "bytes": 32370,
+      "sha256": "23a2e5b8e1cd2436fc6a815f458e4036916a77a69f6089e3eb6bc1fabaa7735c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.prayer_beads.png",
+      "path": "art/relics/prayer_beads.png",
+      "format": "png",
+      "bytes": 36345,
+      "sha256": "1634b0537ea016a8e2ebed25c523216d5b27fedc2ccf69eb77af77eff957f0e2",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.quarry_chisel.png",
+      "path": "art/relics/quarry_chisel.png",
+      "format": "png",
+      "bytes": 35039,
+      "sha256": "fb891be245cc8fa4e23cafe615f04196dd995fa0d6bb7ef7c6fa5948f17c2edb",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.quiet_bell.png",
+      "path": "art/relics/quiet_bell.png",
+      "format": "png",
+      "bytes": 31349,
+      "sha256": "b54ff825eee2d28da663739e1301c03307c7c14f8847df1c7e14448c6b535acd",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.remnant.png",
+      "path": "art/relics/remnant.png",
+      "format": "png",
+      "bytes": 33759,
+      "sha256": "3e9d8b5407057e1c7cefc82ea8cbe37f26bd46be54e5855d78dd77cb2c5b4ffe",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.wheel_of_hours.png",
+      "path": "art/relics/wheel_of_hours.png",
+      "format": "png",
+      "bytes": 36790,
+      "sha256": "32e5a240ba861e5c3b7bc836ba2a059cb0f41ceb20422d268c8a0f3e65f92570",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.relics.wicker_cage.png",
+      "path": "art/relics/wicker_cage.png",
+      "format": "png",
+      "bytes": 28442,
+      "sha256": "ef0e5edc6aa1ae5b0fbbc01d0fa9f084c9f7d6ca2d2e691dff309266a738dd4a",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_ash.png",
+      "path": "art/tiles/tile_ash.png",
+      "format": "png",
+      "bytes": 31442,
+      "sha256": "7d662078434b93ad63f86ff162f09689edd034b3966963f46b0af22ef1b2f8fd",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_ash.svg",
+      "path": "art/tiles/tile_ash.svg",
+      "format": "svg",
+      "bytes": 1177,
+      "sha256": "079d5cdbf1aab81f3af7adb7f6400273ab3dd094f3245e1a91f83271b795c629",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_ember.png",
+      "path": "art/tiles/tile_ember.png",
+      "format": "png",
+      "bytes": 24360,
+      "sha256": "6b2712c0ee574083fe9a4dea43eaf994b0bb523c5a9d08e504022357093389a8",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_ember.svg",
+      "path": "art/tiles/tile_ember.svg",
+      "format": "svg",
+      "bytes": 1171,
+      "sha256": "5b08e96446d135bf00ea607de1532398b21800817fdf0a30718d35346b87d259",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_gold.png",
+      "path": "art/tiles/tile_gold.png",
+      "format": "png",
+      "bytes": 28419,
+      "sha256": "b9a97ae522f841485ae93f30878995fc38a10710109e58fa5cd4e70c491c7c63",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_gold.svg",
+      "path": "art/tiles/tile_gold.svg",
+      "format": "svg",
+      "bytes": 1131,
+      "sha256": "f478d3a6dea2e96cc5647402069713ac1b45697d8ca4b6eb703ae27f4de59427",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_moss.png",
+      "path": "art/tiles/tile_moss.png",
+      "format": "png",
+      "bytes": 33472,
+      "sha256": "513b72fcf62c3627ab709e1f87d11f5d00544f3610b309f1b29254f078a3f583",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_moss.svg",
+      "path": "art/tiles/tile_moss.svg",
+      "format": "svg",
+      "bytes": 1226,
+      "sha256": "961e5cb1d793450ac0e1262987fcb226afcc9d2b6032b823f057bad3ce8b54df",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_prism.png",
+      "path": "art/tiles/tile_prism.png",
+      "format": "png",
+      "bytes": 33984,
+      "sha256": "8f948a9bf2e717424c12884cfc28a5a71eef20eb8cc49193d61d8a63dc616605",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_prism.svg",
+      "path": "art/tiles/tile_prism.svg",
+      "format": "svg",
+      "bytes": 1213,
+      "sha256": "27368887da2de8f365c7073db20828758c906b50cf863b446003d57cf1c8ca78",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_stone.png",
+      "path": "art/tiles/tile_stone.png",
+      "format": "png",
+      "bytes": 24518,
+      "sha256": "cecf0e7db8d9cfcbdc02c1773b8ab0f8c30c7d73a23ab6d68d80bb92eb792225",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_stone.svg",
+      "path": "art/tiles/tile_stone.svg",
+      "format": "svg",
+      "bytes": 1179,
+      "sha256": "d0428304f920aa1ab0e18b5cc04834f31973c4f8a3545a0a0672fbfa79567c5f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_tide.png",
+      "path": "art/tiles/tile_tide.png",
+      "format": "png",
+      "bytes": 29964,
+      "sha256": "ff2a9e7debabebf1117e339c60e378b78452f6ae43633307685d44d354528f71",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_tide.svg",
+      "path": "art/tiles/tile_tide.svg",
+      "format": "svg",
+      "bytes": 1174,
+      "sha256": "a9229daeaa9016c991316277fadef9c4a0ff63d8c9d6a356cdd2e82c269cea44",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.tiles.tile_violet.png",
+      "path": "art/tiles/tile_violet.png",
+      "format": "png",
+      "bytes": 28451,
+      "sha256": "c30bbf858d50505abd54a8d206d4d8e9f442ebe3c1ca1124a421df2b251b1a3d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "asset_id": "art.tiles.tile_violet.svg",
+      "path": "art/tiles/tile_violet.svg",
+      "format": "svg",
+      "bytes": 1239,
+      "sha256": "257163e27711f1dff33b0c77b069edf48c27916bf1793a1d6d54da19f1d16ec1",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.ink_gain.png",
+      "path": "art/vfx/ink_gain.png",
+      "format": "png",
+      "bytes": 29815,
+      "sha256": "76d6fb2830d040ea523ef836e4326242d801a777519eeaaacc191fbd7bcaed7f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.ink_gain.svg",
+      "path": "art/vfx/ink_gain.svg",
+      "format": "svg",
+      "bytes": 560,
+      "sha256": "e803b4ff1df5e5b09a80b7689952067c013f1f7f19f5fa9012b9a944722c29ae",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.pop_burst.png",
+      "path": "art/vfx/pop_burst.png",
+      "format": "png",
+      "bytes": 35816,
+      "sha256": "5bbdd093d9fefd8663a0a0dfb7f1ba5aa1042829ac6ff7349217a6066f983b68",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.pop_burst.svg",
+      "path": "art/vfx/pop_burst.svg",
+      "format": "svg",
+      "bytes": 608,
+      "sha256": "85f81f33a523afa6fc2c874d2d753462cfb93a33ad7a0b143e4ae7a57947468f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.recolor_wave.png",
+      "path": "art/vfx/recolor_wave.png",
+      "format": "png",
+      "bytes": 63322,
+      "sha256": "8115dc0f2765315a1a77b2b96b0c18f2baf346476ae905a18bd8850f13cde00f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.recolor_wave.svg",
+      "path": "art/vfx/recolor_wave.svg",
+      "format": "svg",
+      "bytes": 612,
+      "sha256": "4a23fb65c7e65a11e104dd44d68149a71aada8f92d0c2bdae0d17d77fd12bd85",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.spectrum_arc.png",
+      "path": "art/vfx/spectrum_arc.png",
+      "format": "png",
+      "bytes": 47917,
+      "sha256": "822c838848f0d251653b167d5dad2bc9eefb8ec8ce77a8e045ecc25258bb2084",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.spectrum_arc.svg",
+      "path": "art/vfx/spectrum_arc.svg",
+      "format": "svg",
+      "bytes": 704,
+      "sha256": "2fc938f8e468b2dcfff9a6fe6f97327dc78841394af0f337b0a0d8beddfb71d7",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.stone_shatter.png",
+      "path": "art/vfx/stone_shatter.png",
+      "format": "png",
+      "bytes": 63177,
+      "sha256": "13ca0788816200c0ca4f64aa8e3db7c0c6a884b244bca6079ef9a48f3e939611",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.stone_shatter.svg",
+      "path": "art/vfx/stone_shatter.svg",
+      "format": "svg",
+      "bytes": 603,
+      "sha256": "8719261d604e43f5b05bc77e93dd1ae786f75b07417bf618f3648df702dcfa42",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "art.vfx.wall_rise.png",
+      "path": "art/vfx/wall_rise.png",
+      "format": "png",
+      "bytes": 34109,
+      "sha256": "61f84e92c4d31280de3e0696e4fdeb183cb6a099400e7043b85000f38ce4c02c",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "asset_id": "art.vfx.wall_rise.svg",
+      "path": "art/vfx/wall_rise.svg",
+      "format": "svg",
+      "bytes": 663,
+      "sha256": "25749b759542d34ff8c8b051ab586c454a3db8b1a650400bcc36ea0b94d39a89",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "docs.ASSET_PROVENANCE_REGISTER.md",
+      "path": "docs/ASSET_PROVENANCE_REGISTER.md",
+      "format": "md",
+      "bytes": 2592,
+      "sha256": "7d95618dbe887c9cde4a7bf107be3b6c8f2e9aa05fcd4f517589246853e1609f",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "docs.SCREEN_STATE_MAP.md",
+      "path": "docs/SCREEN_STATE_MAP.md",
+      "format": "md",
+      "bytes": 3845,
+      "sha256": "2efa4dcd06154b7514f1af5e9f35d52aecc98716bb6060ad9d360eadd7970d85",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "handoff.ANDROID_ART_INTEGRATION_HANDOFF.md",
+      "path": "handoff/ANDROID_ART_INTEGRATION_HANDOFF.md",
+      "format": "md",
+      "bytes": 8307,
+      "sha256": "ae75c7790a177ac6e2437e466b168fdae924cd22f540ae156c1f9c8367aa3081",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "handoff.ANDROID_IMPORT_STEPS.md",
+      "path": "handoff/ANDROID_IMPORT_STEPS.md",
+      "format": "md",
+      "bytes": 2389,
+      "sha256": "1950a03fa96def3debba59c4df124f5cfee6eba4d44d7947602acda15fd723a3",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "handoff.ANDROID_UI_INTEGRATION.md",
+      "path": "handoff/ANDROID_UI_INTEGRATION.md",
+      "format": "md",
+      "bytes": 9401,
+      "sha256": "5a1dd5e38eb561dd0f0090ae6dd23ec2c885cecf28ad80ac42901a9785ad54f6",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "handoff.MAESTRO_GRAPHICS_TASK_STATUS.md",
+      "path": "handoff/MAESTRO_GRAPHICS_TASK_STATUS.md",
+      "format": "md",
+      "bytes": 1230,
+      "sha256": "50830456415043f8620312b9caad4925cd36b7fd95d6326c65984a720115abf4",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "handoff.MAESTRO_TASK_EFB_ART_UI_BASELINE_V2.json",
+      "path": "handoff/MAESTRO_TASK_EFB_ART_UI_BASELINE_V2.json",
+      "format": "json",
+      "bytes": 3451,
+      "sha256": "2958bfdfaa3cf9928c44a9425db3caa1961ae0a904cc279ddcd8a01ee7ac41e4",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "reference.approved_base_visual_identity.png",
+      "path": "reference/approved_base_visual_identity.png",
+      "format": "png",
+      "bytes": 3158935,
+      "sha256": "2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476",
+      "status": "APPROVED_BASELINE_REFERENCE",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "asset_id": "reference.reference_01_visual_identity.png",
+      "path": "reference/reference_01_visual_identity.png",
+      "format": "png",
+      "bytes": 502834,
+      "sha256": "7b51167b1126dad05efe1fc09a562d4ef6356ef6fcab2828464367bef94b0ea9",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 820,
+      "height": 325
+    },
+    {
+      "asset_id": "reference.reference_02_core_screens.png",
+      "path": "reference/reference_02_core_screens.png",
+      "format": "png",
+      "bytes": 878196,
+      "sha256": "a9707a7a07074e4d1a3fa2a6b3c39bc830663eb7b32e1e5d518bc0c94867315e",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 1536,
+      "height": 285
+    },
+    {
+      "asset_id": "reference.reference_03_classes_enemies.png",
+      "path": "reference/reference_03_classes_enemies.png",
+      "format": "png",
+      "bytes": 366770,
+      "sha256": "ac4c3e3fb0c63cd500cb0805b3b5654102ec4f50934a2322b94b9fc1920871e6",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 1080,
+      "height": 170
+    },
+    {
+      "asset_id": "reference.reference_04_tiles_cards_icons.png",
+      "path": "reference/reference_04_tiles_cards_icons.png",
+      "format": "png",
+      "bytes": 511991,
+      "sha256": "16fede3415c53a6e6b931d2bf3d674a40b9edd4d9cb38d59fd51dabb1ddcfbf9",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 1536,
+      "height": 185
+    },
+    {
+      "asset_id": "reference.reference_05_production_mobile.png",
+      "path": "reference/reference_05_production_mobile.png",
+      "format": "png",
+      "bytes": 281302,
+      "sha256": "6ee0aaa8daddf39410417a936654d256c0e3c5cc1fff1d61e71d3d2a09278cbc",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 1536,
+      "height": 104
+    },
+    {
+      "asset_id": "reference.reference_class_select_detail.png",
+      "path": "reference/reference_class_select_detail.png",
+      "format": "png",
+      "bytes": 99348,
+      "sha256": "bba4b2fcc5d089d6a0a9b6eafb6e67c0f09a39f0f2fd4f94db2a7109fed0e7c8",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 170,
+      "height": 285
+    },
+    {
+      "asset_id": "reference.reference_combat_detail.png",
+      "path": "reference/reference_combat_detail.png",
+      "format": "png",
+      "bytes": 139439,
+      "sha256": "c295e9151d711db77ddd1468fac5c14f196d42e67df3ce82eede3ea166ab7db2",
+      "status": "VISUAL_REFERENCE_ONLY",
+      "width": 230,
+      "height": 285
+    },
+    {
+      "asset_id": "tools.create_the_unlit_portrait.py",
+      "path": "tools/create_the_unlit_portrait.py",
+      "format": "py",
+      "bytes": 2014,
+      "sha256": "de9ce907ca5afe097121439186919650ea8b394bb1de21459e51cdd6932e8f4d",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "tools.export_android_resources.py",
+      "path": "tools/export_android_resources.py",
+      "format": "py",
+      "bytes": 3115,
+      "sha256": "bc1e2f8ea1584202fd3e8c7f7b528c38c21d30701e6b98b44a754bd120165df2",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "tools.render_previews.py",
+      "path": "tools/render_previews.py",
+      "format": "py",
+      "bytes": 1176,
+      "sha256": "4f6812fed39b65b3ad14147a854eebe59d2e61bfb2f559b1847829e79cb651ff",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "tools.validate_graphics.py",
+      "path": "tools/validate_graphics.py",
+      "format": "py",
+      "bytes": 13252,
+      "sha256": "65ac5c228daef7088e2e58070411048153af51dea50e076b5404f1cf94caa8e2",
+      "status": "CONCEPT_ASSET_REQUIRES_ART_DIRECTION_AND_PROVENANCE_REVIEW"
+    },
+    {
+      "asset_id": "ui.components.board_bezel.svg",
+      "path": "ui/components/board_bezel.svg",
+      "format": "svg",
+      "bytes": 3466,
+      "sha256": "6f2cb8e7944301c6de1ff322b1391e236a0e481a2f4ece00b773a5d3e0d6c81c",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.button_primary.svg",
+      "path": "ui/components/button_primary.svg",
+      "format": "svg",
+      "bytes": 3287,
+      "sha256": "08e74b48896cc9bd0bf59daf9469ac67ce50f502f9a158ab620268d0335983d5",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.button_secondary.svg",
+      "path": "ui/components/button_secondary.svg",
+      "format": "svg",
+      "bytes": 3258,
+      "sha256": "5f9875a572d845e7d5d59d80b1ea182b74653d8a0770622f8f09f594d40d56ab",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.hand_tray.svg",
+      "path": "ui/components/hand_tray.svg",
+      "format": "svg",
+      "bytes": 3323,
+      "sha256": "3996ae203fac947bc030f79de17645d2226cf184732a45ab22955e4f51958c51",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.hud_vigil_bar.svg",
+      "path": "ui/components/hud_vigil_bar.svg",
+      "format": "svg",
+      "bytes": 3281,
+      "sha256": "7e2f8c244502d513fb1f86bd71732aae5fd549b28e4a7870eb7467b9d0779512",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.intent_plaque.svg",
+      "path": "ui/components/intent_plaque.svg",
+      "format": "svg",
+      "bytes": 3591,
+      "sha256": "a77225d6b551fc18395288151749083f281c6c0cd811b597547e06e3209cdc79",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.components.panel_ornate.svg",
+      "path": "ui/components/panel_ornate.svg",
+      "format": "svg",
+      "bytes": 3323,
+      "sha256": "e8b9d97b4d27617dd993bde30179e76cf9534344ca534b560b3eb0e0fa1fdc7d",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.card_shell_dynamic.svg",
+      "path": "ui/layers/card_shell_dynamic.svg",
+      "format": "svg",
+      "bytes": 3777,
+      "sha256": "6e0235cf70a4f59f978861fd67458888f8f6122d2aaea35ca91004cf646c57c4",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.corridor_arch_layer.svg",
+      "path": "ui/layers/corridor_arch_layer.svg",
+      "format": "svg",
+      "bytes": 4535,
+      "sha256": "eb6742289f7918a25df1a1f41d008cdc47811f2ffb0e2d2f367c6896b8a9af61",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_ash.svg",
+      "path": "ui/layers/glass_tile_ash.svg",
+      "format": "svg",
+      "bytes": 3370,
+      "sha256": "6b4a9cdbd8364ed05225e5d3940caaa94bd79d74d74ce1e9b011e373904b5a95",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_ember.svg",
+      "path": "ui/layers/glass_tile_ember.svg",
+      "format": "svg",
+      "bytes": 3428,
+      "sha256": "2d9ac45c8f14d9bf9bc48150863e4e4f7d72cce92698df43ad9bea21ba86a222",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_gold.svg",
+      "path": "ui/layers/glass_tile_gold.svg",
+      "format": "svg",
+      "bytes": 3364,
+      "sha256": "e0cb643d68e3a1a587a85b4b76c024eab130c398eb6f288f9132d633d4d198e2",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_moss.svg",
+      "path": "ui/layers/glass_tile_moss.svg",
+      "format": "svg",
+      "bytes": 3411,
+      "sha256": "897bdd2eae039588b25f92848ee89c8aa0206e06ca9af80537dfa824a07a4223",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_prism.svg",
+      "path": "ui/layers/glass_tile_prism.svg",
+      "format": "svg",
+      "bytes": 3437,
+      "sha256": "20e792248b7dbd1c08502878dac776a82bec889256d80f32cf86ccc7f13796a6",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_stone.svg",
+      "path": "ui/layers/glass_tile_stone.svg",
+      "format": "svg",
+      "bytes": 3392,
+      "sha256": "acf683b9988af40fa4d59093cb46b8997ad6d1dea0ce900f17b775b834875f30",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_tide.svg",
+      "path": "ui/layers/glass_tile_tide.svg",
+      "format": "svg",
+      "bytes": 3486,
+      "sha256": "c80d5deeb0d62652f7ea090e139b49ffde34474f374ea5a2f8180b4955603585",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.glass_tile_violet.svg",
+      "path": "ui/layers/glass_tile_violet.svg",
+      "format": "svg",
+      "bytes": 3383,
+      "sha256": "4a8fc13cebf762ab1004de7b77c8cebf5f1e510851a081d65d1fde14a578ee11",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.intent_left_layer.svg",
+      "path": "ui/layers/intent_left_layer.svg",
+      "format": "svg",
+      "bytes": 3579,
+      "sha256": "9f4b498ef5e69b014f2e963056d4c1241dff70a91591af14082530abf2edaa79",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.layers.intent_right_layer.svg",
+      "path": "ui/layers/intent_right_layer.svg",
+      "format": "svg",
+      "bytes": 3577,
+      "sha256": "ae8d9e83d5e15a42d4f1086a5b0f12ad2b259354a0bd82aba4386f1044cd52ec",
+      "status": "REUSABLE_GRAPHIC_LAYER_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.previews.01_title_main_menu_3x.png",
+      "path": "ui/previews/01_title_main_menu_3x.png",
+      "format": "png",
+      "bytes": 3386146,
+      "sha256": "87708e5654d25b140a35893bba95744b64e7b1799848f858ef2564fce903e1e9",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.02_class_select_3x.png",
+      "path": "ui/previews/02_class_select_3x.png",
+      "format": "png",
+      "bytes": 1509047,
+      "sha256": "96f52923818e19b87d04fb5d085021a5b63a5ac5182c7359190131ba4da412a8",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.03_run_map_3x.png",
+      "path": "ui/previews/03_run_map_3x.png",
+      "format": "png",
+      "bytes": 184118,
+      "sha256": "5b41a80615bb1da6142645f6ff1eb58880648288019e6ee5fe3cf58b8e0e1d55",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.04_combat_glass_board_3x.png",
+      "path": "ui/previews/04_combat_glass_board_3x.png",
+      "format": "png",
+      "bytes": 597026,
+      "sha256": "d8473c6903f9a2963a612a01a58d86b145e86c036a9751839249d74bbaece8cd",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.05_card_detail_3x.png",
+      "path": "ui/previews/05_card_detail_3x.png",
+      "format": "png",
+      "bytes": 303786,
+      "sha256": "bafb415cdeb08d6d4c728ebf736bc507ae34fe2f9856e101eb3620a52882abfc",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.06_relic_gallery_3x.png",
+      "path": "ui/previews/06_relic_gallery_3x.png",
+      "format": "png",
+      "bytes": 299210,
+      "sha256": "b79f4f3e51378ac5cb2ef750fe2f35263018fa9bcf6fba9555a996768c0e37d7",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.07_event_encounter_3x.png",
+      "path": "ui/previews/07_event_encounter_3x.png",
+      "format": "png",
+      "bytes": 209888,
+      "sha256": "c21466b4daa0192157dfe8816cb5820fffc10eb8098440c2a6740a3a544a72fd",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.08_bonfire_rest_3x.png",
+      "path": "ui/previews/08_bonfire_rest_3x.png",
+      "format": "png",
+      "bytes": 157216,
+      "sha256": "9dcede7a089cd412c2e5ca64218c1164f2b20a68bb01da3df9cfa99ae19c9bfc",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.09_shade_encounter_3x.png",
+      "path": "ui/previews/09_shade_encounter_3x.png",
+      "format": "png",
+      "bytes": 275542,
+      "sha256": "169b40d9a380c3dfcaaf765764e09177ddd1b794b9cc5f4e42f2ffb3c6f0409d",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.10_boss_hollow_warden_3x.png",
+      "path": "ui/previews/10_boss_hollow_warden_3x.png",
+      "format": "png",
+      "bytes": 549669,
+      "sha256": "2614964b07a65e46906d3733757f3c6a15a5a259472f7d1f04d0bd7c04ece06f",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 2532
+    },
+    {
+      "asset_id": "ui.previews.board_bezel_3x.png",
+      "path": "ui/previews/board_bezel_3x.png",
+      "format": "png",
+      "bytes": 22536,
+      "sha256": "f5274d9e889e0b7cc62f78ee1a71953d17bcff4b8b43035a272cc7d8cdd70416",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1092,
+      "height": 1092
+    },
+    {
+      "asset_id": "ui.previews.button_primary_3x.png",
+      "path": "ui/previews/button_primary_3x.png",
+      "format": "png",
+      "bytes": 11946,
+      "sha256": "8a10e20c1abe0487e471056de67d3f2f04e87077c32943252b99db8c6be5550e",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 720,
+      "height": 168
+    },
+    {
+      "asset_id": "ui.previews.button_secondary_3x.png",
+      "path": "ui/previews/button_secondary_3x.png",
+      "format": "png",
+      "bytes": 13507,
+      "sha256": "24af486529494bc2ed94ebc1e352380cf8306b6c8c7b6428ef5130cc13c820ee",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 720,
+      "height": 168
+    },
+    {
+      "asset_id": "ui.previews.card_shell_dynamic_3x.png",
+      "path": "ui/previews/card_shell_dynamic_3x.png",
+      "format": "png",
+      "bytes": 35313,
+      "sha256": "851b2b778bd139f8f3bf8c70ecd3f0b7f316a8fe190f2c6705406f868f898c7e",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 252,
+      "height": 426
+    },
+    {
+      "asset_id": "ui.previews.class_roster_painterly.png",
+      "path": "ui/previews/class_roster_painterly.png",
+      "format": "png",
+      "bytes": 987760,
+      "sha256": "23f2a8421daaa99b98ed7ce9f9cf43a0190adc24ea89f95312be20fbe65bfd4e",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1120,
+      "height": 650
+    },
+    {
+      "asset_id": "ui.previews.contact_sheet.png",
+      "path": "ui/previews/contact_sheet.png",
+      "format": "png",
+      "bytes": 774064,
+      "sha256": "cffb8df2a61296c35f1661f3efc6b6bb1c476701ba33ebd4fa233573b3eadf96",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1150,
+      "height": 980
+    },
+    {
+      "asset_id": "ui.previews.corridor_arch_layer_3x.png",
+      "path": "ui/previews/corridor_arch_layer_3x.png",
+      "format": "png",
+      "bytes": 64322,
+      "sha256": "221455fabc6622963c287698bfc4c2427e1b2ec63e08d5f7bbafcfd8a9ed7df7",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1170,
+      "height": 840
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_ash_3x.png",
+      "path": "ui/previews/glass_tile_ash_3x.png",
+      "format": "png",
+      "bytes": 7980,
+      "sha256": "b299eb03218cc9b425700757196ff8eace245dec22a61115fb09154b5d72f8ca",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_ember_3x.png",
+      "path": "ui/previews/glass_tile_ember_3x.png",
+      "format": "png",
+      "bytes": 6594,
+      "sha256": "4ff8d656a233dbaed2bb52e94f5d6a2ec155af21e559e3d75e20ef2663a5558d",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_gold_3x.png",
+      "path": "ui/previews/glass_tile_gold_3x.png",
+      "format": "png",
+      "bytes": 6991,
+      "sha256": "46b2a0943e2901ce9883e01920724b320bb07735eec5799f8ce24d1bd926d543",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_moss_3x.png",
+      "path": "ui/previews/glass_tile_moss_3x.png",
+      "format": "png",
+      "bytes": 7253,
+      "sha256": "f8d76bef2025b41690b30715d3b2f7d6fd7201b909b3fb2df3d95036e9ba7667",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_prism_3x.png",
+      "path": "ui/previews/glass_tile_prism_3x.png",
+      "format": "png",
+      "bytes": 7707,
+      "sha256": "89e53cd1178fd471292ab245f73b18180598ef6cf80046045963e8b32bd303d0",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_stone_3x.png",
+      "path": "ui/previews/glass_tile_stone_3x.png",
+      "format": "png",
+      "bytes": 8323,
+      "sha256": "d52b0b2bd58b6a8e135151ef360c1b20f1288ed6ed40514b606d74225cbded4c",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_tide_3x.png",
+      "path": "ui/previews/glass_tile_tide_3x.png",
+      "format": "png",
+      "bytes": 9524,
+      "sha256": "5ca366d720d62972d67e4db7fd05c56430370a3ba2f0d88461e947599742e4a0",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.glass_tile_violet_3x.png",
+      "path": "ui/previews/glass_tile_violet_3x.png",
+      "format": "png",
+      "bytes": 9134,
+      "sha256": "5691ae29db683ea8feeccd86be7bf107b752960fe88e803bb4075fe3b16b3866",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 144,
+      "height": 144
+    },
+    {
+      "asset_id": "ui.previews.hand_tray_3x.png",
+      "path": "ui/previews/hand_tray_3x.png",
+      "format": "png",
+      "bytes": 12297,
+      "sha256": "9f71e137089e006faab9098a11b9ea6332102299b7e6d13d6c5d369b43407e25",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 1092,
+      "height": 570
+    },
+    {
+      "asset_id": "ui.previews.hud_vigil_bar_3x.png",
+      "path": "ui/previews/hud_vigil_bar_3x.png",
+      "format": "png",
+      "bytes": 7918,
+      "sha256": "677ec94b5880f2fef3639ac92f4de0ee97f33b928359c9a9b5e73bbd18a0e1eb",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 960,
+      "height": 126
+    },
+    {
+      "asset_id": "ui.previews.intent_left_layer_3x.png",
+      "path": "ui/previews/intent_left_layer_3x.png",
+      "format": "png",
+      "bytes": 9514,
+      "sha256": "bc5d0e51bc7e190acbfe0d21b2641fe9fd03ee697c442c13ef8a8731fe2fe40d",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 330,
+      "height": 222
+    },
+    {
+      "asset_id": "ui.previews.intent_plaque_3x.png",
+      "path": "ui/previews/intent_plaque_3x.png",
+      "format": "png",
+      "bytes": 12232,
+      "sha256": "8acaa0577075100fdf4353a03a80612203b0fda191da18f00666d6413da1af71",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 444,
+      "height": 276
+    },
+    {
+      "asset_id": "ui.previews.intent_right_layer_3x.png",
+      "path": "ui/previews/intent_right_layer_3x.png",
+      "format": "png",
+      "bytes": 9949,
+      "sha256": "c3d6b40c716955316fc301d2d7a867564305e0c707fdb4df33bca8e4439c6861",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 330,
+      "height": 222
+    },
+    {
+      "asset_id": "ui.previews.panel_ornate_3x.png",
+      "path": "ui/previews/panel_ornate_3x.png",
+      "format": "png",
+      "bytes": 11632,
+      "sha256": "f994a0f7b82aef489e2a4211b99b01c76272c6c65b1d11db9c79805147b72c54",
+      "status": "VISUAL_REGRESSION_FIXTURE",
+      "width": 900,
+      "height": 540
+    },
+    {
+      "asset_id": "ui.screens.01_title_main_menu.svg",
+      "path": "ui/screens/01_title_main_menu.svg",
+      "format": "svg",
+      "bytes": 5891,
+      "sha256": "b5cf53b73e95ed51a46f8117b3adaeea24f54d24322f81f561c21d3879ee09c4",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.02_class_select.svg",
+      "path": "ui/screens/02_class_select.svg",
+      "format": "svg",
+      "bytes": 11098,
+      "sha256": "564d077c1dd0bd2470466a049b3c05e80c9e4533687b2854e19f94fc88dc68c6",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.03_run_map.svg",
+      "path": "ui/screens/03_run_map.svg",
+      "format": "svg",
+      "bytes": 10034,
+      "sha256": "4059209bdb14a8995ca34f1710b8c082a8a9dd75c0930026084323f76695c95d",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.04_combat_glass_board.svg",
+      "path": "ui/screens/04_combat_glass_board.svg",
+      "format": "svg",
+      "bytes": 39206,
+      "sha256": "ef9b548fe298c81594a17dca1e7a511d53d07f5f59a2c3d9676ca77c5dfb136b",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.05_card_detail.svg",
+      "path": "ui/screens/05_card_detail.svg",
+      "format": "svg",
+      "bytes": 7430,
+      "sha256": "aab068c8fec3ced2a9973b85942c489d68214218b1ed08ea65a98bc8b696b4cf",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.06_relic_gallery.svg",
+      "path": "ui/screens/06_relic_gallery.svg",
+      "format": "svg",
+      "bytes": 13269,
+      "sha256": "f5006cb9fa2c4be1365162bbcd25b8e890cd3fa042149c6044ef086f8e76f30f",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.07_event_encounter.svg",
+      "path": "ui/screens/07_event_encounter.svg",
+      "format": "svg",
+      "bytes": 7619,
+      "sha256": "d64b3915922feb0e2ad2f1472a4a83c4020ba6ddcbee9fc9ed81e8a2c6985b9c",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.08_bonfire_rest.svg",
+      "path": "ui/screens/08_bonfire_rest.svg",
+      "format": "svg",
+      "bytes": 8576,
+      "sha256": "e93d364b6f4d9884f4b457ffd1905bdfedd68f9063f4eb79a9d8f60a7f19f68c",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.09_shade_encounter.svg",
+      "path": "ui/screens/09_shade_encounter.svg",
+      "format": "svg",
+      "bytes": 9700,
+      "sha256": "dfa7e1db83dd571fe8e21f2d87417320d931c5935c074a229d0877d14433ce6d",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    },
+    {
+      "asset_id": "ui.screens.10_boss_hollow_warden.svg",
+      "path": "ui/screens/10_boss_hollow_warden.svg",
+      "format": "svg",
+      "bytes": 35579,
+      "sha256": "8108bfb75e88b9302e9adf190d26d023ab30c18d2f60131a0b5c0e9eb1a87c95",
+      "status": "SCREEN_RECONSTRUCTION_CANDIDATE"
+    }
+  ]
+}

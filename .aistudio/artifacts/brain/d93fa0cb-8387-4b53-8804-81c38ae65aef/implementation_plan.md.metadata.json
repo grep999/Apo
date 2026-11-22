@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for Emberfall's original Lyria 3 instrumental soundtrack system (Exploration & Combat ~2-minute loops via lyria-3-pro-preview, 30-second sketches via lyria-3-clip-preview), local persistent caching, dual-deck crossfading with subtle SFX ducking, Firebase AI Logic + App Check provisioning, and an integrated Copperplate Soundtrack Studio.",
+  "updatedAt":  "2026-11-22T12:22:01.925405511Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
