@@ -1,0 +1,1 @@
+Retry Android verification after correcting SDK setup.
