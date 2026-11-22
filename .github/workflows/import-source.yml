@@ -38,9 +38,11 @@ jobs:
             mv .github/copilot-instructions.md docs/handoff-v1/copilot-instructions.md
           fi
 
+          # The import token has contents:write but not workflows:write.
+          # Keep the existing import workflow unchanged; install the app CI workflow separately.
+          rm -f "$RUNNER_TEMP/emberfall-extracted/Emberfall/.github/workflows/android-ci.yml"
           cp -a "$RUNNER_TEMP/emberfall-extracted/Emberfall/." .
           rm -rf source-import-payload
-          rm -f .github/workflows/import-source.yml
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
