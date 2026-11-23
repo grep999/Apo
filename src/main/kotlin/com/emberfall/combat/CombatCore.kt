@@ -12,6 +12,7 @@ const val STARTING_FLASKS = 2
 const val MAX_FLASKS = 5
 const val FLASK_HEAL = 30
 const val INK_CAP_PER_HUE = 8
+const val COMBAT_RULES_VERSION = "emberfall-v0.2-combat-1"
 
 enum class CombatPhase { DRAW, WEAVE, CAST, WALL, ENEMY, CLEANUP, VICTORY, DEFEAT }
 
@@ -446,10 +447,48 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
     private fun rejectPhase() = CombatResult.Rejected(CombatRejection.WRONG_PHASE)
 }
 
+
+data class CombatReplayFrame(
+    val state: CombatState,
+    val events: List<CombatEvent>,
+    val rejection: CombatRejection?,
+    val digest: String
+)
+
+class CombatReplay(private val engine: CombatEngine = CombatEngine()) {
+    fun replay(initial: CombatState, commands: List<CombatCommand>): List<CombatReplayFrame> {
+        var state = initial
+        val frames = mutableListOf(
+            CombatReplayFrame(state, emptyList(), null, CombatStateDigest.sha256(state))
+        )
+        for (command in commands) {
+            when (val result = engine.transition(state, command)) {
+                is CombatResult.Accepted -> {
+                    state = result.state
+                    frames += CombatReplayFrame(
+                        state,
+                        Collections.unmodifiableList(result.events.toList()),
+                        null,
+                        CombatStateDigest.sha256(state)
+                    )
+                }
+                is CombatResult.Rejected -> frames += CombatReplayFrame(
+                    state,
+                    emptyList(),
+                    result.reason,
+                    CombatStateDigest.sha256(state)
+                )
+            }
+        }
+        return Collections.unmodifiableList(frames.toList())
+    }
+}
+
 /** Stable replay identity over the accepted board digest and all combat-relevant state. */
 object CombatStateDigest {
     fun sha256(state: CombatState): String {
         val canonical = buildString {
+            append(COMBAT_RULES_VERSION).append('|')
             append(BoardStateDigest.sha256(state.board, state.spectrum)).append('|')
             append(state.phase.name).append('|').append(state.turn).append('|').append(state.tapsRemaining).append('|')
             append(state.player.vigil).append('|').append(state.player.block).append('|').append(state.player.flasks).append('|')
