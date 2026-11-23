@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "project_id": "EMBERFALL",
+  "task_id": "EFB-ART-UI-BASELINE-01",
+  "title": "Integrate approved Emberfall layered Android UI baseline v0.4",
+  "outcome": "Rebuild the exact approved 10-screen EMBERFALL visual master as separate, data-driven Android UI components and graphic layers, preserving source class/world identities.",
+  "baseline": {
+    "type": "document",
+    "ref": "graphics/ART_BASELINE_LOCK.md + approved source image SHA-256",
+    "version": "EMBERFALL Graphics v0.4; master SHA-256 2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476"
+  },
+  "stage": "GROUNDING",
+  "owner": "BUILDER",
+  "reviewer": "INDEPENDENT_REVIEWER",
+  "scope": [
+    "Inspect the actual game Android app repository and current GameState/content architecture before copying files.",
+    "Import EMBERFALL_ANDROID_GRAPHICS_v0.4.zip and merge its Android resources.",
+    "Implement all ten screens as native, interactive Android UI using the SVG masters as layout references and graphic layers as reusable visual sources.",
+    "Preserve Ashen Monk (Ember/Moss), Quarry Witch (Tide/Violet), The Unlit (Gold/Ash) in that order; Ashen Monk must remain first.",
+    "Use painterly The Unlit image and archive prior vector fallback.",
+    "Implement Combat from actual GameState: 49 visible cells, two engine-provided intents, live Ink/Run/Wall/Vigil/Block/Flasks and real cards.",
+    "Bind all numbers and rules text to content/state; no game rules in the UI module.",
+    "Run actual Gradle/GateRunner checks and device screenshot/accessibility/performance checks."
+  ],
+  "exclusions": [
+    "Do not remove Ashen Monk.",
+    "Do not introduce replacement classes or make Shade playable.",
+    "Do not use the master poster as a full-screen runtime bitmap.",
+    "Do not use generated mockup text or values as game-rule authority.",
+    "Do not claim Android build/device acceptance until those checks run in the real app repo."
+  ],
+  "dependencies": [
+    "EFB-009-ANDROID-CLIENT",
+    "EFB-010-ART-ASSET-PIPELINE",
+    "EFB-001-RULES-ADR"
+  ],
+  "acceptance": [
+    "All ten screens are implemented as native, data-driven UI using separate visual layers.",
+    "Class Select shows Ashen Monk, Quarry Witch, The Unlit in original order with correct hue pairs.",
+    "Shade remains a prior-deck encounter; Act I boss remains The Hollow Warden.",
+    "Combat renders a live 7x7 board, two engine-generated intents and a live card hand.",
+    "Master-art hierarchy, palette, material and screen composition are reviewed against the exact source hash.",
+    "Screenshots at 360x800, 390x844 and 412x915 are reviewed; accessibility and touch targets pass.",
+    "Gradle build/lint/tests and physical-device performance evidence pass.",
+    "Independent Mastery review is recorded against the exact app candidate SHA."
+  ],
+  "evidence_required": [
+    "app baseline SHA and candidate SHA",
+    "changed paths and asset manifest diff",
+    "Gradle GateRunner logs with exit code and log hash",
+    "10 screen screenshot comparison",
+    "accessibility and 48dp touch-target report",
+    "physical Android frame-time/performance evidence",
+    "independent Mastery review against exact candidate_ref"
+  ],
+  "risk": "R1",
+  "state": "INBOX"
+}

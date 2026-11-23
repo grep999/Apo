@@ -1,0 +1,41 @@
+{
+  "purpose": "Establish the authoritative Emberfall v0.2 repository/source baseline and determine which parts of the existing SLAY! prototype can be reused without importing its swap-match-3 rules.",
+  "sources": [
+    "git:handoff/emberfall-coding-agent-v1.0@fe94e61e3d676a57d45aec5f11022c54dbb79b95",
+    "sha:fe94e61e3d676a57d45aec5f11022c54dbb79b95",
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+    "engineering/IMPLEMENTATION_WBS.json",
+    "engineering/OPEN_DECISIONS.md",
+    "maestro/EMBERFALL_TASKS_V2.json",
+    "legacy prototype: implementation/emberfall-latest-source@e3610946ecf4caf91f0e1d2a232af714b88e65c2"
+  ],
+  "constraints": [
+    "Work only in an isolated branch or worktree.",
+    "Treat the v0.2 specification and current handoff branch as design authority.",
+    "Treat implementation/emberfall-latest-source as a legacy prototype; reuse architecture only after review.",
+    "Do not import swap-match-3 board rules into v0.2.",
+    "Do not bypass unresolved P0 decisions.",
+    "Do not treat simulated persona review as human playtest evidence.",
+    "No unapproved merge, publish or deploy.",
+    "No secrets in commits or logs."
+  ],
+  "dependencies": [],
+  "risks": [
+    "R1: prototype gameplay rules materially diverge from v0.2.",
+    "R1: handoff branch has no Android source/build, so Android gates are not applicable yet.",
+    "R1: legacy Gradle wrapper script/JAR are absent.",
+    "R1: independent EFB-000 review remains pending on the current PR #4 head; every new head supersedes previous review and CI evidence."
+  ],
+  "acceptance": [
+    "Branch inventory, source provenance and exact baseline SHAs are recorded.",
+    "Legacy prototype architecture and rule divergence are evidenced from source.",
+    "Toolchain/build applicability is explicit; missing build is not reported as PASS.",
+    "WBS and Maestro task bundle IDs/dependencies validate.",
+    "ADR counts and QA discrepancy are recorded.",
+    "Pinned Maestro v0.3.0 bootstrap, tests and contract validator pass in GitHub Actions.",
+    "GateRunner output includes VERIFIED evidence, runner identity, ran_on_sha and log hashes.",
+    "Independent reviewer examines the current PR #4 head and its latest successful E00 workflow artifact; the artifact must report baseline_sha and matching VERIFIED GateRunner ran_on_sha."
+  ],
+  "next_increment": "After EFB-000 independent review accepts the current PR #4 head with matching successful E00 evidence, and EFB-001 Product Owner ADR resolution is accepted, execute EFB-002-BOARD-CORE using maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json. Resolve dependency SHAs from the accepted PR merge commits; never pin a moving PR head inside its own packet. Do not implement board resolution before both gates.",
+  "baseline_ref": "fe94e61e3d676a57d45aec5f11022c54dbb79b95"
+}

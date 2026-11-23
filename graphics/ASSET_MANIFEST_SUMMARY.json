@@ -1,0 +1,75 @@
+{
+  "project": "EMBERFALL",
+  "graphics_version": "0.4",
+  "reference_image": {
+    "path": "reference/approved_base_visual_identity.png",
+    "dimensions_px": [
+      1536,
+      1024
+    ],
+    "sha256": "2d12913ff593a528473d50c80f252a05598f40c959e9c8e9400cf537614ed476",
+    "role": "approved design reference only; excluded from Android runtime drawables"
+  },
+  "class_lock": [
+    {
+      "order": 1,
+      "id": "ashen_monk",
+      "name": "Ashen Monk",
+      "hues": [
+        "Ember",
+        "Moss"
+      ],
+      "status": "painterly concept preserved"
+    },
+    {
+      "order": 2,
+      "id": "quarry_witch",
+      "name": "Quarry Witch",
+      "hues": [
+        "Tide",
+        "Violet"
+      ],
+      "status": "painterly concept candidate"
+    },
+    {
+      "order": 3,
+      "id": "the_unlit",
+      "name": "The Unlit",
+      "hues": [
+        "Gold",
+        "Ash"
+      ],
+      "status": "painterly concept candidate"
+    }
+  ],
+  "shade_is_playable_class": false,
+  "act_i_boss": "The Hollow Warden",
+  "inventory": {
+    "screen_masters_svg": 10,
+    "screen_previews_3x_png": 10,
+    "reusable_component_svg": 7,
+    "independent_layer_svg": 12,
+    "total_svg": 84,
+    "android_webp_drawables": 78,
+    "android_sample_files": 4
+  },
+  "static_validation": {
+    "status": "PASS",
+    "errors": 0,
+    "svg_parse_errors": 0,
+    "missing_svg_references": 0
+  },
+  "companion_archives": {
+    "full_source": "EMBERFALL_ANDROID_GRAPHICS_v0.4.zip",
+    "full_source_sha256": "ed6844778bc52f01ac9be2d4985c653d4fa0507f058e8cdd50ef46a50f96327d",
+    "android_resource_only": "EMBERFALL_ANDROID_RESOURCES_v0.4.zip",
+    "android_resource_only_sha256": "6776274de05dd77607283bacd7986804b595813d85d7d0dc4c86c825a41c6ef3",
+    "full_source_size_bytes": 30704426,
+    "android_resource_only_size_bytes": 2717551
+  },
+  "not_verified": [
+    "No playable Android app build",
+    "No physical-device review",
+    "No independent Maestro Mastery review"
+  ]
+}
