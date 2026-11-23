@@ -382,3 +382,38 @@ class CombatCoreTest {
         assertEquals(TileKind.ASH, state.board.incoming[6]?.kind)
     }
 
+    @Test fun lethalOverflowStopsRemainingSurgeRise() {
+        val board = boardWith(
+            Coord(0, 0) to Cell.ash(),
+            Coord(0, 2) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Surge))
+        state = state.copy(
+            phase = CombatPhase.WALL,
+            player = PlayerState(vigil = 8, flasks = 0),
+            wallRisesNextTurn = 2
+        )
+        val result = accepted(engine.transition(
+            state,
+            CombatCommand.ResolveWall(listOf(List(7) { null }, List(7) { Cell.ash() }))
+        ))
+        assertEquals(CombatPhase.DEFEAT, result.state.phase)
+        assertEquals(0, result.state.player.vigil)
+        assertEquals(Cell.hue(Hue.EMBER), result.state.board[Coord(0, 2)])
+        assertTrue(result.events.contains(CombatEvent.WallResolved(true, 1)))
+    }
+
+    @Test fun BrandReportsActualVigilLostWhenCostExceedsRemainingVigil() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER, branded = true),
+            Coord(1, 6) to Cell.hue(Hue.EMBER, branded = true)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(player = PlayerState(vigil = 1, flasks = 0))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        val result = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6))))
+        assertEquals(0, result.state.player.vigil)
+        assertTrue(result.events.contains(CombatEvent.VigilLost(1, "Brand")))
+        assertEquals(CombatPhase.DEFEAT, result.state.phase)
+    }
+
