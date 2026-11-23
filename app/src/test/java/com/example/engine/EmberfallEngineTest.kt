@@ -351,7 +351,7 @@ class EmberfallEngineTest {
 
     val accepted = GameEngine.execute(eventRun, GameCommand.ChooseEventOption("affordable"))
     assertTrue(accepted.accepted)
-    assertEquals("Affordable", accepted.run.activeEvent?.resolvedSummary?.substringBefore(" ") ?: "Affordable")
+    assertNotNull("Accepted event choice must record a resolved outcome", accepted.run.activeEvent?.resolvedSummary)
   }
   @Test
   fun `ADR-009 colored pip cost rejects Spark while generic pip accepts Spark and preferred Hue`() {
