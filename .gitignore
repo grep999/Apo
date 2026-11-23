@@ -1,0 +1,20 @@
+# Gradle and Kotlin build output
+.gradle/
+build/
+**/build/
+
+# IDE state
+.idea/
+*.iml
+
+# Local Android SDK configuration (future client module)
+local.properties
+
+# Local Maestro workflow database and attestations
+.maestro/
+
+# Local environment and secrets
+.env
+.env.*
+*.jks
+*.keystore
