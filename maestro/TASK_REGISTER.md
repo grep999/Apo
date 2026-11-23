@@ -6,10 +6,10 @@ The machine-readable task seed is `maestro/EMBERFALL_TASKS_V2.json`; the epic re
 
 | ID | Increment | Owner | Risk | Current portfolio state |
 |---|---|---|---|---|
-| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; independent merged-tree review pending |
-| EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; PO baseline present; review evidence reconciliation pending |
-| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | Exact candidate CI verified; independent Mastery pending |
-| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet prepared; blocked on EFB-002 acceptance |
+| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; Maestro GROUNDING active (2 READY items); Mastery not started |
+| EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; ADR validator PASS; native Maestro workflow not created |
+| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | Exact candidate CI verified; Maestro MASTERY active; review assignment PROPOSED, not assigned |
+| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet prepared; blocked on EFB-002 acceptance and Maestro dispatch readiness |
 | EFB-004-CARD-EFFECTS | Typed data-driven card/effect engine | BUILDER | R1 | Not started; blocked on EFB-002/003 |
 | EFB-005-CLASSES-STARTER | Three classes and starter decks | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-004 |
 | EFB-006-ENEMIES-BOSSES | Enemies, elites, phased bosses | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-003/004 |
@@ -27,12 +27,19 @@ The machine-readable task seed is `maestro/EMBERFALL_TASKS_V2.json`; the epic re
 
 ## Current Maestro state
 
-- EFB-002 workflow: `b856a095-5d26-4aeb-8c52-82f36dcde6e6`.
-- Stage `MASTERY`, status `ACTIVE`, revision 5.
-- Three Momentum work items complete; one independent Mastery work item pending.
-- Review assignment is `PROPOSED`, not assigned or completed.
-- Exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`.
-- Exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing; see `engineering/RELEASE_READINESS.md`.
+- EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments.
+- EFB-001: exact-head ADR validation run `45180407668` passed; no native Maestro workflow artifact exists.
+- EFB-002 workflow: `b856a095-5d26-4aeb-8c52-82f36dcde6e6`; ACTIVE / MASTERY / revision 5; three Momentum work items complete; independent-review assignment PROPOSED, not assigned.
+- EFB-002 exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`.
+- EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing; see `engineering/RELEASE_READINESS.md`.
+
+## Workflow-control-plane actions
+
+- [ ] Complete EFB-000 Grounding/Momentum and submit a merged-tree review packet.
+- [ ] Reconcile EFB-001 into a native Maestro task state without reopening accepted ADRs.
+- [ ] Persist and resume the same Maestro DB/workflow ID across candidate pushes.
+- [ ] Configure a real independent-review adapter; PROPOSED is not ASSIGNED.
+- [ ] Require candidate file hashes, exact SHA, VERIFIED gates, distinct reviewer identity and Repetition before acceptance.
 
 ## Graphics task baseline
 
@@ -52,4 +59,4 @@ Use `graphics/MAESTRO_TASK_EFB_ART_UI_BASELINE_V2.json` and the exact image/arch
 
 The upstream Maestro engine persists workflow state and specialist dispatch packets; it does not start agents by itself. An adapter must be configured and observable before a task is claimed assigned/running. A `PROPOSED` assignment is not a reviewer.
 
-**Do not start EFB-003 implementation until EFB-002 acceptance and Repetition are complete.**
+**Do not start EFB-003 implementation until EFB-002 acceptance and Repetition are complete and the review-dispatch path is operational.**

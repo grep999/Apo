@@ -7,21 +7,30 @@
   "evidence_policy": "Only exact-candidate VERIFIED evidence and independent Mastery can satisfy acceptance. Merged is not equivalent to accepted.",
   "baseline": {
     "efb000": {
-      "status": "PARTIAL_MERGED_REVIEW_PENDING",
+      "status": "PARTIAL_MERGED_MAESTRO_GROUNDING_ACTIVE_REVIEW_NOT_STARTED",
       "pr": 4,
       "merge_sha": "5130215cb0a033345752311903de7f9c08aced4d",
       "review_submissions": 0,
-      "required_next": "Independent review of merged tree plus matching E00 workflow evidence."
+      "required_next": "Independent review of merged tree plus matching E00 workflow evidence.",
+      "maestro_workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
+      "maestro_stage": "GROUNDING",
+      "maestro_revision": 1,
+      "ready_work_items": 2,
+      "assignments": 0,
+      "e00_run_id": 45179968109,
+      "e00_artifact_id": 14819098938
     },
     "efb001": {
-      "status": "MERGED_RULES_BASELINE_PRESENT_REVIEW_EVIDENCE_ABSENT",
+      "status": "MERGED_VALIDATOR_PASS_MAESTRO_WORKFLOW_NOT_CREATED_REVIEW_NOT_RECORDED",
       "pr": 5,
       "merge_sha": "f9a41aa373d36d41a0c134c8005fb5984fecd2b3",
       "review_submissions": 0,
-      "required_next": "Preserve accepted Product Owner decisions; reconcile Mastery evidence record without reopening rules."
+      "required_next": "Preserve accepted Product Owner decisions; reconcile Mastery evidence record without reopening rules.",
+      "validation_run_id": 45180407668,
+      "validation_artifact_id": 14821425791
     },
     "efb002": {
-      "status": "IMPLEMENTED_EXACT_CI_VERIFIED_MASTERY_PENDING",
+      "status": "IMPLEMENTED_EXACT_CI_VERIFIED_MASTERY_PENDING_ASSIGNMENT_PROPOSED",
       "pr": 11,
       "candidate_sha": "3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
       "draft": true,
@@ -32,7 +41,7 @@
       "revision": 5,
       "completed_momentum_items": 3,
       "pending_mastery_items": 1,
-      "review_assignment_status": "PROPOSED",
+      "review_assignment_status": "PROPOSED_NOT_ASSIGNED",
       "required_checks": [
         {
           "name": "gradle-junit-exact-candidate",
@@ -183,5 +192,12 @@
     "EFB-014 full content",
     "EFB-015 optional backend",
     "EFB-016 QA/release"
-  ]
+  ],
+  "maestro_governance": {
+    "state_continuity": "NEEDS_FIX_BEFORE_NEXT_INCREMENT",
+    "reason": "Current EFB-002 push workflow creates a new coding-start workflow/database on each push instead of resuming a durable workflow.",
+    "reviewer_dispatch": "NOT_OPERATIONAL",
+    "reason_reviewer": "EFB-002 assignment remains PROPOSED; no reviewer adapter has confirmed execution.",
+    "next_action": "Fix state persistence and reviewer dispatch before EFB-003 implementation."
+  }
 }
