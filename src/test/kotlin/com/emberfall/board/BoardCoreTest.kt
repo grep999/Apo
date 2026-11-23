@@ -153,7 +153,7 @@ class BoardCoreTest {
     }
 
     @Test fun largeGroupInkUsesHalfRateAboveEight() {
-        val entries = (0..8).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) }.toTypedArray()
+        val entries = ((0..6).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) } + (0..1).map { Coord(it, 1) to Cell.hue(Hue.VIOLET) }).toTypedArray()
         val nine = assertIs<TapOutcome.Accepted>(engine.tap(board(*entries), Coord(0,0))).result
         assertEquals(8, nine.baseInk)
         assertEquals(8, nine.inkPayout)
