@@ -1,6 +1,6 @@
 # EFB-005 — Class Identity and Starter Decks
 
-**Status:** IMPLEMENTED — exact-SHA CI pending  
+**Status:** IMPLEMENTED — exact-SHA CI PASS  
 **Branch:** `feat/efb005-class-starters`  
 **Base:** `feat/efb004-card-engine` at `f699767c54dd86373855935b36d5e7adeb2cac04`
 
@@ -22,3 +22,7 @@ Signature relic rules are represented as validated content contracts in this inc
 ## Verification
 
 `.github/workflows/efb005-class-starters.yml` runs the complete Kotlin/JVM test suite and pure-JVM boundary check against the exact pushed SHA.
+
+
+**Verified candidate:** `9afb2fb4cb2dca5ff7f5d59ffc64a6454508584a`  
+**GitHub Actions run:** [45292799130](https://github.com/grep999/Apo/actions/runs/45292799130) — full Kotlin/JVM test suite PASS; pure-JVM boundary PASS.
