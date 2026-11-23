@@ -60,9 +60,13 @@ assert "EFB-000 independent review" in resolution
 epics = {e["id"]: e for e in wbs["epics"]}
 assert epics["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
 assert "EFB-002-BOARD-CORE" in epics
-assert board_packet["current_status"] == "BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW"
-assert board_packet["no_implementation_authorized"] is True
-assert "EFB-000-BASELINE: independent review accepted" in board_packet["dependencies"]
+assert board_packet["current_status"] in {"READY_FOR_GROUNDING", "GROUNDING_COMPLETE_MOMENTUM_CANDIDATE"}
+assert board_packet["no_implementation_authorized"] is False
+assert any(
+    dependency.startswith("EFB-000-BASELINE: PR #4 merged")
+    and "independent review still required for acceptance" in dependency
+    for dependency in board_packet["dependencies"]
+)
 assert "Do not implement or route live combat through SwapCells" in " ".join(board_packet["constraints"])
 # Dependency evidence must resolve through accepted PR merge commits, not moving
 # branch-head SHAs embedded in this packet. This prevents stale/self-referential
@@ -86,7 +90,7 @@ result = {
     "non_blocking_open": ["ADR-021"],
     "missing": missing,
     "invalid": invalid,
-    "implementation_gate": "EFB-000 independent review accepted",
+    "implementation_gate": "isolated EFB-002 implementation may begin; EFB-000 independent review is required before EFB-002 acceptance/merge",
 }
 out = ROOT / "artifacts/efb-001-adr-resolution-validation.json"
 out.parent.mkdir(parents=True, exist_ok=True)
