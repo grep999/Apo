@@ -186,6 +186,7 @@ data class DeckHueProfile(val deckSize: Int, val cardCounts: Map<Hue, Int>) {
 }
 
 class DeterministicRng(seed: Long) {
+    private val initialSeed = seed
     private var state = seed
     fun nextLong(): Long {
         state += -7046029254386353131L
@@ -204,7 +205,7 @@ class DeterministicRng(seed: Long) {
         }
     }
     fun fork(stream: Long): DeterministicRng {
-        var z = nextLong() xor stream
+        var z = initialSeed xor stream
         z = (z xor (z ushr 30)) * -4658895280553007687L
         z = (z xor (z ushr 27)) * -7723592293110705685L
         return DeterministicRng(z xor (z ushr 31))
