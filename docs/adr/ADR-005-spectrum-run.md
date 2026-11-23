@@ -15,7 +15,7 @@ The spec defines the wheel and multiplier but leaves anchor/reset edge cases imp
 
 ## Acceptance tests
 
-Table-driven tests for first pop, ordered chain, wrap, repeated/out-of-order hue, reset, Prism substitution, rounding once at final payout.
+Table-driven tests for first pop, ordered chain, wrap, repeated/out-of-order hue, reset, Prism substitution, round-half-up at final payout, including exact .5 ties.
 
 ## Change control
 
