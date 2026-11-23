@@ -1,9 +1,9 @@
 # EFB-002 Board Core — Implementation Status
 
 **Status:** IMPLEMENTATION CANDIDATE — NOT ACCEPTED  
-**Base:** `f9a41aa373d36d41a0c134c8005fb5984fecd2b3`  
-**Branch:** `feat/efb-002-board-core-victory`  
-**PR:** #9 (draft)
+**Base:** `21143925687ab7a28519196b7225e98acb1433ab` (current handoff branch)  
+**Branch:** `feat/efb-002-board-core-reconciled`  
+**PR:** #10 (draft)
 
 ## Delivered
 
@@ -21,7 +21,7 @@
 
 ## Local verification performed
 
-Environment: OpenJDK 21.0.12.1, Kotlin compiler 1.9.0.
+Environment: OpenJDK 21.0.12.1, Kotlin compiler 1.9.0. These local checks ran against a local source mirror of the committed implementation, not a checkout of the exact GitHub candidate; they are recorded as OBSERVED, not VERIFIED.
 
 1. Main Kotlin sources compiled with `kotlinc`: PASS.
 2. Deterministic generation smoke over seeds 0–99,999: PASS.
@@ -35,7 +35,7 @@ Environment: OpenJDK 21.0.12.1, Kotlin compiler 1.9.0.
    - Tide: 28.2521% vs 28.2166%
    - Violet: 7.6810% vs 7.6752%
 
-The local smoke and statistical harnesses were run directly with the Kotlin compiler/runtime. They are not represented as Gradle/JUnit CI evidence.
+The local smoke and statistical harnesses were run directly with the Kotlin compiler/runtime. Log hashes are recorded in `maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json`. They are not represented as Gradle/JUnit CI evidence.
 
 ## Known gaps before acceptance
 
