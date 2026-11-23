@@ -1,6 +1,6 @@
 # EFB-003 — Turn / Combat Core
 
-**Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
+**Status:** EXACT-SHA CI VERIFIED — independent Mastery and Repetition pending  
 **Candidate SHA:** `e9864637575275323aeb1104f9bd0a606c94a80a`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
