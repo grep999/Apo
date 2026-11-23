@@ -96,7 +96,9 @@ class ClassCatalogTest {
             .copy(phase = CombatPhase.WEAVE)
         val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.ASHEN_MONK, 5L)
         val engine = CardEngine(ClassCardCatalog.cards)
-        val first = assertIs<CardBattleResult.Accepted>(engine.transition(state, CardBattleCommand.Tap(Coord(0, 6)))).state
+        val firstResult = assertIs<CardBattleResult.Accepted>(engine.transition(state, CardBattleCommand.Tap(Coord(0, 6))))
+        val first = firstResult.state
+        assertTrue(firstResult.events.any { it == CardEvent.RelicTriggered("relic_prayer_beads", RelicTriggerResource.INK, 2) })
         assertEquals(4, first.combat.player.immutableInk.getValue(Hue.EMBER))
         assertTrue(first.prayerBeadsUsedThisTurn)
         val second = assertIs<CardBattleResult.Accepted>(engine.transition(first, CardBattleCommand.Tap(Coord(3, 6)))).state
@@ -114,9 +116,11 @@ class ClassCatalogTest {
             .copy(phase = CombatPhase.WEAVE)
         val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.QUARRY_WITCH, 6L)
         val engine = CardEngine(ClassCardCatalog.cards)
-        val result = assertIs<CardBattleResult.Accepted>(engine.transition(
+        val recolorResult = assertIs<CardBattleResult.Accepted>(engine.transition(
             state, CardBattleCommand.UseSignatureRecolor(Coord(2, 3), Hue.TIDE)
-        )).state
+        ))
+        val result = recolorResult.state
+        assertTrue(recolorResult.events.any { it == CardEvent.RelicTriggered("relic_chisel_wand", RelicTriggerResource.BOARD, 1) })
         assertEquals(Hue.TIDE, result.combat.board[Coord(2, 3)]?.hue)
         assertTrue(result.combat.board[Coord(2, 3)]?.branded == true)
         assertTrue("relic_chisel_wand" in result.usedRelicIds)
@@ -133,9 +137,11 @@ class ClassCatalogTest {
             .copy(phase = CombatPhase.CAST, player = PlayerState(spark = 1))
         val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.THE_UNLIT, 7L)
             .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, "unlit_pop_shot")))
-        val result = assertIs<CardBattleResult.Accepted>(
+        val popResult = assertIs<CardBattleResult.Accepted>(
             CardEngine(ClassCardCatalog.cards).transition(state, CardBattleCommand.Play(0))
-        ).state
+        )
+        val result = popResult.state
+        assertTrue(popResult.events.any { it == CardEvent.RelicTriggered("relic_hollow_crown", RelicTriggerResource.SPARK, 2) })
         assertEquals(2, result.combat.player.spark)
         assertNull(result.combat.board[Coord(0, 6)])
         assertNull(result.combat.board[Coord(1, 6)])
