@@ -128,6 +128,21 @@ class BoardCoreTest {
         assertTrue(weights.values.all { it > 0L })
     }
 
+    @Test fun sealExpiresAfterExactlyThreeEnemyPhases() {
+        var b = BoardState.empty().sealColumn(4)
+        assertTrue(4 in b.sealedColumns)
+        assertEquals(3, b.sealTurnsRemaining[4])
+        b = b.advanceSealDurations()
+        assertTrue(4 in b.sealedColumns)
+        assertEquals(2, b.sealTurnsRemaining[4])
+        b = b.advanceSealDurations()
+        assertTrue(4 in b.sealedColumns)
+        assertEquals(1, b.sealTurnsRemaining[4])
+        b = b.advanceSealDurations()
+        assertTrue(4 !in b.sealedColumns)
+        assertTrue(4 !in b.sealTurnsRemaining)
+    }
+
     @Test fun randomStreamsAreIndependentOfDerivationOrder() {
         val first = DeterministicStreams.fromSeed(991L)
         val second = DeterministicStreams.fromSeed(991L)
