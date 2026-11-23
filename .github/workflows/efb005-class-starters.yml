@@ -1,0 +1,47 @@
+name: Emberfall EFB-005 Class Starters
+
+on:
+  push:
+    branches: [feat/efb005-class-starters]
+    paths: ['src/**', 'build.gradle.kts', 'settings.gradle.kts', '.github/workflows/efb005-class-starters.yml']
+  pull_request:
+    branches: [feat/efb004-card-engine]
+    paths:
+      - 'src/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - '.github/workflows/efb005-class-starters.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-efb005-classes-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  pure-jvm:
+    name: Exact-SHA class content tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Verify pure JVM boundary
+        run: |
+          if grep -R -nE 'android\\.|androidx\\.|compose\\.' src/main/kotlin; then
+            echo 'Android/Compose dependency found in domain core' >&2
+            exit 1
+          fi
+      - name: Run complete Kotlin/JVM test suite
+        run: gradle --no-daemon clean test
