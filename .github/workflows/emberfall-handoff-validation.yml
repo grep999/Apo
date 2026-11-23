@@ -50,24 +50,30 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .maestro artifacts
-          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 coding-start \
-            EMBERFALL \
-            "EFB-000 repository, source inventory and build baseline" \
-            "Establish authoritative v0.2 source, classify the legacy prototype, validate toolchain and evidence, and record build applicability." \
-            --workspace . --risk R1 --actor orchestrator \
-            > .maestro/efb-000-start.json
-          WID="$(python -c 'import json; print(json.load(open(".maestro/efb-000-start.json"))["id"])')"
-          REV="$(python -c 'import json; print(json.load(open(".maestro/efb-000-start.json"))["revision"])')"
-          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 coding-seed-work "$WID" --revision "$REV" \
-            > .maestro/efb-000-seeded-work.json
-          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 show "$WID" \
-            > .maestro/efb-000-workflow-state.json
+          (
+            cd "$GITHUB_WORKSPACE/../maestro"
+            .venv/bin/maestro --db "$GITHUB_WORKSPACE/.maestro/state.sqlite3" coding-start \
+              EMBERFALL \
+              "EFB-000 repository, source inventory and build baseline" \
+              "Establish authoritative v0.2 source, classify the legacy prototype, validate toolchain and evidence, and record build applicability." \
+              --workspace "$GITHUB_WORKSPACE" --risk R1 --actor orchestrator \
+              > "$GITHUB_WORKSPACE/.maestro/efb-000-start.json"
+            START="$GITHUB_WORKSPACE/.maestro/efb-000-start.json"
+            WID="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$START")"
+            REV="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["revision"])' "$START")"
+            .venv/bin/maestro --db "$GITHUB_WORKSPACE/.maestro/state.sqlite3" coding-seed-work "$WID" --revision "$REV" \
+              > "$GITHUB_WORKSPACE/.maestro/efb-000-seeded-work.json"
+            .venv/bin/maestro --db "$GITHUB_WORKSPACE/.maestro/state.sqlite3" show "$WID" \
+              > "$GITHUB_WORKSPACE/.maestro/efb-000-workflow-state.json"
+          )
 
       - name: Run Maestro VERIFIED smoke gate on Apo handoff workspace
-        run: ../maestro/.venv/bin/maestro run-checks --workspace . --preset smoke > artifacts/emberfall-handoff-gate-report.json
+        working-directory: ${{ github.workspace }}/../maestro
+        run: .venv/bin/maestro run-checks --workspace "$GITHUB_WORKSPACE" --preset smoke > "$GITHUB_WORKSPACE/artifacts/emberfall-handoff-gate-report.json"
 
       - name: Run Maestro VERIFIED Python gate on pinned Maestro checkout
-        run: ../maestro/.venv/bin/maestro run-checks --workspace ../maestro --preset python > artifacts/maestro-v03-gate-report.json
+        working-directory: ${{ github.workspace }}/../maestro
+        run: .venv/bin/maestro run-checks --workspace "$GITHUB_WORKSPACE/../maestro" --preset python > "$GITHUB_WORKSPACE/artifacts/maestro-v03-gate-report.json"
 
       - name: Assert GateRunner evidence is VERIFIED and passed
         shell: bash
