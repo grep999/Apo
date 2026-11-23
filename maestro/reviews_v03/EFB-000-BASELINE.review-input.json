@@ -62,25 +62,37 @@
   "target_merged_tree_sha": "46ab2989e863f9bb165d75404e35cbeb2e2c02b5",
   "pr_head_tree_sha": "01bfd33543581fffacb0894b9c1421f488e05b02",
   "pre_review_findings": {
-    "evidence_class": "ORCHESTRATOR_PRECHECK_NOT_INDEPENDENT_REVIEW",
-    "merged_tree_reconciliation": {
-      "target_merged_commit": "5130215cb0a033345752311903de7f9c08aced4d",
-      "target_tree_sha": "46ab2989e863f9bb165d75404e35cbeb2e2c02b5",
-      "pr_head_sha": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
-      "pr_head_tree_sha": "01bfd33543581fffacb0894b9c1421f488e05b02",
-      "merge_parents": [
-        "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
-        "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce"
-      ],
-      "comparison": "PR head to merged commit adds only .github/workflows/efb001-adr-proposal-validation.yml from the base side; EFB-000 report, grounding packet and validator are the EFB-000 change set.",
-      "evidence_boundary": "E00 artifact validates exact PR head 3555..., not merge commit 513...; reviewer must inspect the merged tree and explicitly reconcile this single additional workflow file."
+    "evidence_class": "PRODUCT_OWNER_ORCHESTRATOR_PRE_REVIEW_NOT_INDEPENDENT_MASTERY",
+    "exact_target": "5130215cb0a033345752311903de7f9c08aced4d",
+    "findings": [
+      {
+        "id": "E00-P1-LICENSE-PROVENANCE",
+        "severity": "P1",
+        "status": "OPEN_UNTIL_RIGHTS_CONFIRMED",
+        "location": [
+          "engineering/E00_REPOSITORY_SOURCE_BASELINE_2026-11-23.md Sections 1,3,7",
+          "scripts/validate_emberfall_handoff.py"
+        ],
+        "finding": "The report identifies legacy prototype code as reusable architecture candidates, but neither inspected tree contains LICENSE/COPYING/NOTICE and repository metadata has no declared license. The validator does not inspect provenance. This does not prove lack of ownership; it means reuse/redistribution rights are not evidenced.",
+        "required_action": "Confirm ownership and reuse rights; until then prohibit copying, incorporation and redistribution of legacy code. Governance follow-up records the gap."
+      },
+      {
+        "id": "E00-P2-MUTABLE-LEGACY-REF",
+        "severity": "P2",
+        "status": "FOLLOW_UP_PATCHED_IN_PR12_PENDING_CI",
+        "location": [
+          "scripts/validate_emberfall_handoff.py:13,100-110"
+        ],
+        "finding": "EFB-000 validator reads a mutable remote branch name without asserting it resolves to the exact legacy snapshot e3610946ecf4caf91f0e1d2a232af714b88e65c2 recorded in the report.",
+        "required_action": "Pin and assert expected legacy commit; emit resolved commit and license inventory. Follow-up patch is in PR #12."
+      }
+    ],
+    "dispatch": {
+      "efb000_run": 45264179355,
+      "efb002_run": 45264204838,
+      "result": "HTTP_412_INSUFFICIENT_PREMIUM_QUOTA_TO_CREATE_ASSIGNMENT",
+      "reviewer_session_created": false
     },
-    "license_provenance": {
-      "finding": "No LICENSE, COPYING or NOTICE file exists in the EFB-000 merged tree or the inspected legacy prototype tree; GitHub repository metadata reports license=null.",
-      "impact": "No repository-level open-source license grant is visible. Do not copy or redistribute legacy prototype code until ownership and reuse rights are explicitly confirmed.",
-      "severity": "P1 provenance/reuse gate",
-      "validator_gap": "scripts/validate_emberfall_handoff.py does not check or record license metadata/files."
-    },
-    "status": "No independent verdict recorded. These are factual pre-review observations for the designated independent reviewer."
+    "status": "Independent review remains pending; no independent verdict recorded."
   }
 }
