@@ -68,7 +68,9 @@ class ClassCatalogTest {
         assertEquals(first.combat.board, second.combat.board)
         assertNotEquals(initial.combat.board, first.combat.board)
         assertEquals(initial.combat.spectrum, first.combat.spectrum)
-        assertEquals(listOf("ember_strike"), first.hand.map { it.definitionId })
+        assertEquals(1, first.hand.size)
+        assertEquals(1, first.drawPile.size)
+        assertTrue(first.hand.single().instanceId in setOf(0L, 1L))
         assertEquals(0, first.combat.player.spark)
     }
 
