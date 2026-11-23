@@ -1,18 +1,20 @@
 {
   "purpose": "EFB-002 Momentum delivery: deterministic pure Kotlin/JVM board-core candidate with explicit remaining acceptance gates.",
-  "candidate_ref": "git:493e3d4aa97f8534b755dde688f9d0dba27e3a5e",
-  "outcome": "Implemented the first coherent board-core vertical slice: immutable 7x7 state, deterministic deck-weighted generation, orthogonal Tap/Pop, Prism/Ash/Stone, gravity, Brand, three-turn Seal, Spectrum payout, Wall/Overflow and replay digest. Local source-mirror compilation and seeded mechanics/statistical simulations passed. Exact repository Gradle/JUnit CI and independent review remain pending.",
+  "candidate_ref": "pending: exact SHA injected by scripts/record_efb002_maestro_gates.py",
+  "outcome": "Implemented the deterministic pure Kotlin/JVM board-core candidate and bounded remediation. Exact-candidate Gradle/JUnit and pure-JVM boundary evidence is injected by the PR workflow at runtime. Independent Mastery review, EFB-000 merged-tree review and durable Maestro state continuity remain pending.",
   "changed_artifacts": [
     "src/main/kotlin/com/emberfall/board/BoardCore.kt",
     "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt",
     "build.gradle.kts",
     "settings.gradle.kts",
     ".gitignore",
+    ".github/workflows/efb002-board-core.yml",
     "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json",
     "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
     "README.md",
-    ".github/workflows/efb002-maestro-workflow.yml",
     "scripts/record_efb002_maestro_gates.py",
+    "scripts/finalize_efb002_maestro.py",
     "scripts/validate_efb001_adr_proposals.py"
   ],
   "checks": [
@@ -66,7 +68,7 @@
     },
     {
       "name": "gradle-junit-exact-candidate",
-      "outcome": "not_run",
+      "outcome": "pending",
       "required": true,
       "command": "gradle --no-daemon clean test on exact PR candidate",
       "exit_code": null,
@@ -78,11 +80,11 @@
     }
   ],
   "risks": [
-    "Local compile/simulation evidence was generated from a local source mirror, not a checkout of the exact GitHub candidate; do not upgrade OBSERVED to VERIFIED.",
-    "Gradle/JUnit exact-candidate CI has no returned workflow-run evidence yet.",
+    "Local compile/simulation evidence was generated from a local source mirror, not an exact GitHub checkout; retain OBSERVED classification.",
+    "Exact-SHA CI evidence is generated at runtime and must be read from the matching PR workflow artifact, never from a stale committed packet.",
     "EFB-000 merged baseline still lacks independent Mastery evidence.",
     "ADR-002 references neutral-block rules without quantified initial spawn probabilities; no probabilities are invented and initial generation samples playable hues only.",
-    "Full acceptance requires remaining golden/property vectors and exact candidate review.",
-    "Independent Mastery is a separate stage and must be performed by an actor different from the builder; it is not a builder-side Momentum check."
+    "Independent Mastery is a separate stage and must be performed by an actor different from the builder; the current Maestro assignment is proposed, not dispatched.",
+    "Maestro state continuity across PR workflow runs remains unresolved; each run currently creates a fresh workflow/database."
   ]
 }
