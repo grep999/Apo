@@ -1,6 +1,6 @@
 # EFB-002 Board Core — Implementation Status
 
-**Status:** IMPLEMENTATION CANDIDATE — P1 PAYOUT FIX APPLIED; INDEPENDENT MASTERY PENDING  
+**Status:** ACCEPTED BY PRODUCT OWNER — FURTHER EFB-002 MASTERY ROUND WAIVED  
 **Base:** `handoff/emberfall-coding-agent-v1.0` (current base SHA is recorded in PR #14 metadata)  
 **Branch:** `feat/efb002-remediation-rebased`  
 **PR:** #14 (draft)  
@@ -56,3 +56,7 @@ The integration candidate preserves that exact remediation commit in its ancestr
 ## Acceptance position
 
 EFB-002 is an implemented pure-JVM board-core candidate, not a complete game milestone and not a playable release. Keep PR #14 in draft. Do not merge until the latest exact-SHA CI, independent Mastery review, EFB-000 merged-tree review and required Maestro governance gates are satisfied.
+
+## Product Owner disposition
+
+The Product Owner acceptance is recorded at https://github.com/grep999/Apo/pull/14#issuecomment-7114277343. Repetition is recorded at `maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json` on the governance branch. EFB-002 is accepted; do not reopen its review absent new reproducible evidence.
