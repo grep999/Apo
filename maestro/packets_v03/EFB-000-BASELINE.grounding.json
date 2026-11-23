@@ -24,7 +24,7 @@
     "R1: prototype gameplay rules materially diverge from v0.2.",
     "R1: handoff branch has no Android source/build, so Android gates are not applicable yet.",
     "R1: legacy Gradle wrapper script/JAR are absent.",
-    "R1: independent EFB-000 review remains pending on exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031."
+    "R1: independent EFB-000 review remains pending on the current PR #4 head; every new head supersedes previous review and CI evidence."
   ],
   "acceptance": [
     "Branch inventory, source provenance and exact baseline SHAs are recorded.",
@@ -34,8 +34,8 @@
     "ADR counts and QA discrepancy are recorded.",
     "Pinned Maestro v0.3.0 bootstrap, tests and contract validator pass in GitHub Actions.",
     "GateRunner output includes VERIFIED evidence, runner identity, ran_on_sha and log hashes.",
-    "Independent reviewer examines exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031 after latest E00 workflow run 45152074759."
+    "Independent reviewer examines the current PR #4 head and its latest successful E00 workflow artifact; the artifact must report baseline_sha and matching VERIFIED GateRunner ran_on_sha."
   ],
-  "next_increment": "After EFB-000 independent review accepts exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031 and EFB-001 Product Owner ADR resolution is accepted, execute EFB-002-BOARD-CORE using maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json. Do not implement board resolution before both gates.",
+  "next_increment": "After EFB-000 independent review accepts the current PR #4 head with matching successful E00 evidence, and EFB-001 Product Owner ADR resolution is accepted, execute EFB-002-BOARD-CORE using maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json. Resolve dependency SHAs from the accepted PR merge commits; never pin a moving PR head inside its own packet. Do not implement board resolution before both gates.",
   "baseline_ref": "fe94e61e3d676a57d45aec5f11022c54dbb79b95"
 }
