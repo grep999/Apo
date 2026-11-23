@@ -3,7 +3,7 @@
 **Project:** EMBERFALL  
 **Baseline date:** 2026-11-23  
 **Task:** EFB-000-BASELINE  
-**Status:** IN PROGRESS — repository reconciliation documented; Maestro validation gate pending  
+**Status:** BUILDER COMPLETE — E00 validation passed on candidate SHA `3159b6231eb806fabe10c61a4aa1500a0f91f40d`; independent review pending  
 **Authority:** `handoff/emberfall-coding-agent-v1.0` and `references/EMBERFALL_GAME_SPEC_v0.2.txt`
 
 ## 1. Executive finding
@@ -20,13 +20,14 @@ Apo contains three materially different project surfaces. They must not be confl
 
 | Branch | Commit | Contents | Baseline interpretation |
 |---|---|---|---|
-| `main` | `beace27f8de11cbac0d1680ad4cb58a8c1591789` | Control/docs branch plus CI workflow files added during legacy investigation | Not a game source branch |
-| `handoff/emberfall-coding-agent-v1.0` | `fe94e61e3d676a57d45aec5f11022c54dbb79b95` | v0.2 specification, WBS, decision register, art references, Maestro v0.3 bootstrap and task packets | Current design/implementation authority |
+| `main` | `1fc6d313728f46ab9c478b643e52374ed137d65b` | Control/docs branch plus three CI workflows | Not a game source branch |
+| `handoff/emberfall-coding-agent-v1.0` | `af7ca237b85c7b8fc2ecb38ce163d46c259e1b1d` | v0.2 specification, WBS, decision register, art references, Maestro v0.3 bootstrap and EFB-000 workflow | Current design authority; no Android source |
 | `qa/five-persona-first-run-audit` | `bbeb5215dbe455e92177756661af65123a70bfa2` | Handoff snapshot plus simulated first-run audit and QA notes | Design critique evidence; not human playtest evidence |
 | `implementation/emberfall-latest-source` | `e3610946ecf4caf91f0e1d2a232af714b88e65c2` | Kotlin/Android source, engine, assets, tests and Gradle build files | Legacy prototype to inspect and selectively reuse |
 | `feat/emberfall-multi-policy-balance-lab` | `911e2272da14371c1fc271ead406c8bcaa04b145` | Legacy reward-flow/persistence and policy-matrix candidate | Draft PR #3; HOLD, do not merge |
+| `audit/e00-repository-source-baseline` | `3159b6231eb806fabe10c61a4aa1500a0f91f40d` | EFB-000 inventory, validator, Maestro packet and workflow | Draft PR #4; builder evidence passed, review pending |
 
-The handoff branch has 30 tracked paths and no `app/`, `settings.gradle.kts`, root `build.gradle.kts`, Gradle wrapper or Android test source. The legacy implementation branch has 224 tracked paths and a Kotlin Android application.
+At the original handoff baseline SHA `fe94e61e...`, the handoff branch had 30 tracked paths; it now has 31 after adding the EFB-000 workflow. It has no `app/`, `settings.gradle.kts`, root `build.gradle.kts`, Gradle wrapper or Android test source. The legacy implementation branch has 224 tracked paths and a Kotlin Android application.
 
 ## 3. Authoritative v0.2 source
 
@@ -119,9 +120,9 @@ The following are not reusable without replacement or explicit ADR approval:
 | ADR register counted and discrepancy logged | COMPLETE | Section 4 |
 | Toolchain/build applicability recorded | COMPLETE | Section 5 |
 | Upstream Maestro v0.3 pinned | COMPLETE | `bootstrap_current_maestro.sh` pin |
-| Maestro bootstrap, contracts and GateRunner checks pass in CI | PENDING | E00 workflow run required |
-| Independent reviewer verifies exact candidate SHA | PENDING | Must be a different reviewer from builder |
-| EFB-000 marked complete in Maestro state | PENDING | Only after verified gates and review |
+| Maestro bootstrap, contracts and GateRunner checks pass in CI | COMPLETE | Run `45150676282`; pinned Maestro tests 19/19, contracts 3/3, GateRunner smoke VERIFIED on candidate SHA |
+| Independent reviewer verifies exact candidate SHA | PENDING | Must be a different reviewer from builder; candidate `3159b6231eb806fabe10c61a4aa1500a0f91f40d` |
+| EFB-000 marked complete in Maestro state | PENDING | Maestro artifact state is ACTIVE / GROUNDING, revision 1; do not complete before independent review |
 
 ## 9. Next increment
 
@@ -133,3 +134,37 @@ No game code or gameplay rules are changed by this baseline report.
 ## 10. Validation workflow placement
 
 The EFB-000 workflow is present on the default branch, the handoff base branch and this audit candidate so GitHub can evaluate push and pull-request events. It validates the docs-led handoff and pinned Maestro runtime; it deliberately does not invoke Android Gradle tasks while the handoff branch has no Android source.
+
+
+## 10. EFB-000 GitHub Actions evidence
+
+Workflow run: `45150676282`  
+Candidate SHA: `3159b6231eb806fabe10c61a4aa1500a0f91f40d`
+
+- Pinned upstream Maestro v0.3.0 bootstrap completed at `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
+- Maestro unit tests: **19 passed**.
+- Maestro contract validation: **3/3 passed**.
+- Adapter inventory and echo adapter health check completed.
+- Apo handoff GateRunner smoke check: **passed**, `evidence_class=VERIFIED`, runner identity `gate-runner@runnervm0hi8g`, `ran_on_sha=3159b6231eb806fabe10c61a4aa1500a0f91f40d`, log hash `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- Source inventory validator: **passed** — 17 WBS epics, 17 Maestro tasks, 23 ADR rows, 19 OPEN/BLOCKING.
+- Android build gate: `NOT_APPLICABLE_NO_ANDROID_SOURCE`; this is explicitly not a build pass.
+- Maestro state artifact: workflow `ca2ec870-f582-43d8-865e-ab0a87c5a216`, ACTIVE / GROUNDING, revision 1. The state is intentionally not advanced to completion pending independent review.
+
+## 11. Legacy prototype matrix — diagnostic only
+
+The legacy-only matrix workflow run `45147504116` completed **900 campaigns** (20 seeds × 3 classes × 15 route/combat cells): **900 wins, 0 incomplete**. This is bot simulation of the old swap-match-3 prototype, not human playtesting and not evidence for v0.2.
+
+| Route policy | Campaigns | Wins | Incomplete | Avg level | Avg Cinders | Avg deck |
+|---|---:|---:|---:|---:|---:|---:|
+| Balanced | 180 | 180 | 0 | 13.14 | 1,592.96 | 18.43 |
+| Survival | 180 | 180 | 0 | 13.14 | 1,594.52 | 18.43 |
+| Elite hunter | 180 | 180 | 0 | 13.67 | 1,751.18 | 18.09 |
+| Treasure seeker | 180 | 180 | 0 | 13.18 | 1,596.57 | 18.44 |
+| Deck curator | 180 | 180 | 0 | 13.14 | 1,592.96 | 18.43 |
+
+Every route/combat cell averaged all 12 passives, all 3 support sockets and all 8 artifacts. `DECK_CURATOR` produced exactly the same aggregate metrics as `BALANCED` in this sample, so it did not demonstrate a distinct policy outcome. The legacy prototype is progression-saturated under these bot policies. No balance values were changed from this evidence.
+
+## 12. Current EFB-000 disposition
+
+Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The exact candidate SHA for review is `3159b6231eb806fabe10c61a4aa1500a0f91f40d`. The reviewer must verify the source classification, the v0.2/legacy rule divergence, the ADR-count discrepancy, and the GitHub Actions evidence. Only after that review should the Maestro workflow advance from GROUNDING.
+
