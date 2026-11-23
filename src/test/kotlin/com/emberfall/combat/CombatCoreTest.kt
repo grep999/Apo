@@ -351,3 +351,22 @@ class CombatCoreTest {
         assertEquals(Cell.ash(), command.rows[0][0])
     }
 
+    @Test fun simultaneousLethalPopAndBrandPenaltyResolveAsPlayerDefeat() {
+        val cells = List(49) { Cell.hue(Hue.EMBER, branded = true) }
+        val board = BoardState(cells, List(7) { null })
+        var state = CombatState.start(board, EnemyDefinition("simultaneous", 1, listOf(EnemyIntent.Strike(1))))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 0)))).state
+        assertEquals(0, state.enemy.vigor)
+        assertEquals(0, state.player.vigil)
+        assertEquals(CombatPhase.DEFEAT, state.phase)
+    }
+
+    @Test fun combatDigestBindsEnemyDefinitionHealthAndNotOnlyCurrentHealth() {
+        val first = CombatState.start(BoardState.empty(), EnemyDefinition("same-id", 40, listOf(EnemyIntent.Strike(3))))
+        val second = CombatState.start(BoardState.empty(), EnemyDefinition("same-id", 41, listOf(EnemyIntent.Strike(3))))
+        val aligned = second.copy(enemy = EnemyState(40))
+        assertEquals(first.enemy.vigor, aligned.enemy.vigor)
+        assertNotEquals(CombatStateDigest.sha256(first), CombatStateDigest.sha256(aligned))
+    }
+
