@@ -118,9 +118,12 @@ sealed interface TapOutcome {
 }
 data class PopResult(
     val board: BoardState, val orderedCells: List<Coord>, val resolvedHue: Hue?, val isAsh: Boolean,
-    val groupSize: Int, val baseInk: Int, val inkPayout: Int, val chipDamage: Int,
+    val groupSize: Int, val baseInkHalfUnits: Int, val inkPayout: Int, val chipDamage: Int,
     val brandVigilCost: Int, val brokenStoneCells: List<Coord>, val spectrum: SpectrumState
-)
+) {
+    /** Base Ink before Spectrum, represented exactly in half-Ink units. */
+    val baseInk: Double get() = baseInkHalfUnits / 2.0
+}
 data class WallOutcome(val board: BoardState, val vigilDamage: Int, val flasksConsumed: Int,
                        val overflow: Boolean, val incomingRetained: Boolean)
 
@@ -192,13 +195,17 @@ class BoardEngine {
         val settled = gravity(board.copy(cells = next))
         val containsPrism = group.any { board[it]?.kind == TileKind.PRISM }
         val runState = advance(spectrum, hue, containsPrism)
-        val base = if (ash) 0 else minOf(group.size, 8) + maxOf(group.size - 8, 0) / 2
-        val payout = if (base == 0) 0 else
-            ((base.toLong() * (2L + runState.run.toLong()) + 1L) / 2L)
+        // Keep half-Ink precision until after the Spectrum multiplier. The
+        // denominator is four: (base half-units / 2) * ((2 + run) / 2).
+        val baseInkHalfUnits = if (ash) 0 else
+            2 * minOf(group.size, 8) + maxOf(group.size - 8, 0)
+        val payout = if (baseInkHalfUnits == 0) 0 else
+            ((baseInkHalfUnits.toLong() * (2L + runState.run.toLong()) + 2L) / 4L)
                 .coerceAtMost(Int.MAX_VALUE.toLong())
                 .toInt()
-        return PopResult(settled, Collections.unmodifiableList(group.toList()), hue, ash, group.size, base, payout, group.size - 1,
-            cells.count { it.branded } * 2, Collections.unmodifiableList(stones.toList()), runState)
+        return PopResult(settled, Collections.unmodifiableList(group.toList()), hue, ash, group.size,
+            baseInkHalfUnits, payout, group.size - 1, cells.count { it.branded } * 2,
+            Collections.unmodifiableList(stones.toList()), runState)
     }
 
     fun resetSpectrumAtTurnBoundary(): SpectrumState = SpectrumState()
