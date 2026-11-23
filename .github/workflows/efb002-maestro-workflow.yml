@@ -11,20 +11,13 @@ on:
       - 'maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json'
       - 'maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json'
       - '.github/workflows/efb002-maestro-workflow.yml'
-  push:
-    branches: [feat/efb-002-board-core-exactsha]
-    paths:
-      - 'scripts/record_efb002_maestro_gates.py'
-      - 'maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json'
-      - 'maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json'
-      - '.github/workflows/efb002-maestro-workflow.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: emberfall-efb002-maestro-${{ github.ref }}
+  group: emberfall-efb002-maestro-singleton
   cancel-in-progress: true
 
 jobs:
