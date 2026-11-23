@@ -128,3 +128,8 @@ The following are not reusable without replacement or explicit ADR approval:
 After the E00 validation workflow passes, proceed to **EFB-001-RULES-ADR**. Draft the blocking rule decisions as explicit ADR proposals with examples and testable acceptance criteria. Do not implement EFB-002 board behavior until the P0 rule contract is approved.
 
 No game code or gameplay rules are changed by this baseline report.
+
+
+## 10. Validation workflow placement
+
+The EFB-000 workflow is present on the default branch, the handoff base branch and this audit candidate so GitHub can evaluate push and pull-request events. It validates the docs-led handoff and pinned Maestro runtime; it deliberately does not invoke Android Gradle tasks while the handoff branch has no Android source.
