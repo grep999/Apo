@@ -1,0 +1,52 @@
+{
+  "purpose": "Collect bounded specialist proposals for missing class starter cards, the Unlit Hollow Crown card/relic presentation collision, and the M0 board-only tutorial enemy. Proposals only; no content is accepted or implemented by this packet.",
+  "sources": [
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+    "engineering/PRODUCT_OWNER_GOVERNANCE.md",
+    "engineering/PRODUCT_OWNER_DECISION_BASELINE.md",
+    "engineering/CONTENT_REVIEW_QUEUE.md",
+    "docs/adr/ADR-001-turn-phases.md",
+    "docs/adr/ADR-003-hue-weighting.md",
+    "docs/adr/ADR-006-ash-pop.md",
+    "docs/adr/ADR-014-unlit-starter-deck.md",
+    "docs/adr/ADR-017-fast-true-ending.md",
+    "GitHub issue: https://github.com/grep999/Apo/issues/7"
+  ],
+  "specialist_roles": [
+    {
+      "role": "Game Systems Designer",
+      "deliverable": "Propose two missing starter cards each for Ashen Monk and Quarry Witch to meet the v0.2 12-card starter recipe. Provide IDs, names, frame hue, cost, type, rarity, effects, upgrades, board interactions, counterplay, synergy risks and golden tests."
+    },
+    {
+      "role": "Narrative/Content Designer",
+      "deliverable": "Propose 3–5 alternative display names/presentation treatments for the Unlit Hollow Crown starter card only. Preserve the separate signature relic's canonical name and both entities' IDs/effects. Include lore, readability, localization and UI differentiation."
+    },
+    {
+      "role": "Encounter Designer",
+      "deliverable": "Propose one original M0 tutorial enemy and a 3–4 turn board-only encounter script teaching group Pop, chip damage, vertical gravity and Wall pressure. No Ink/cards before the spec's fight-2 onboarding beat; show two intents ahead."
+    }
+  ],
+  "constraints": [
+    "Proposal-only: do not edit production code, content data, ADRs or canonical game spec.",
+    "Do not change settled mechanics, class identities, hue count, starter-deck size, progression economy, platform scope or release gates.",
+    "Do not import SwapCells/match-3 rules or balance values from the legacy prototype.",
+    "Use the exact accepted ADRs as constraints; if a proposal appears to conflict, explain the conflict rather than changing the ADR.",
+    "Use original content; do not copy named characters, lore, card text or proprietary systems from other games.",
+    "Clearly label facts, inference and assumptions; cite external research sources for any borrowed design principle.",
+    "No simulated persona or bot output may be described as human playtest evidence."
+  ],
+  "acceptance": [
+    "At least two meaningfully different alternatives for each new card/name/encounter choice.",
+    "Every card includes effect text, cost, frame hue, upgrade, board interaction, counterplay and golden-test cases.",
+    "Every enemy intent has a telegraph, player counterplay and testable resolution.",
+    "Content supports the deck-paints-board pillar and original Emberfall tone.",
+    "Cross-system interactions, exploits, degenerate loops and accessibility/readability are checked.",
+    "Product Owner accepts/rejects each proposal explicitly before catalogue changes."
+  ],
+  "dependencies": [
+    "EFB-001 Product Owner ADR resolution candidate"
+  ],
+  "current_status": "WAITING_FOR_SPECIALIST_AGENT_OUTPUT",
+  "no_content_accepted": true,
+  "no_implementation_authorized": true
+}
