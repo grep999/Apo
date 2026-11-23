@@ -7,11 +7,11 @@
   "evidence_policy": "Only exact-candidate VERIFIED evidence and independent Mastery can satisfy acceptance. Merged is not equivalent to accepted.",
   "baseline": {
     "efb000": {
-      "status": "MERGED_BASELINE_REVIEW_PENDING_LICENSE_PROVENANCE_GAP",
+      "status": "MERGED_BASELINE_REVIEW_PENDING_LICENSE_PROVENANCE",
       "pr": 4,
       "merge_sha": "5130215cb0a033345752311903de7f9c08aced4d",
       "review_submissions": 0,
-      "required_next": "Independent review of exact merged tree plus matching E00 evidence; document missing license/IP provenance and prohibit legacy prototype code reuse until rights are confirmed.",
+      "required_next": "Independent review of exact merged tree 5130215... plus matching E00 evidence. PR #12 follow-up validator now pins original baseline 26f0e9... and legacy commit e3610946..., reports no license files, and passed run 45265389152; rights confirmation remains open.",
       "maestro_workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
       "maestro_stage": "GROUNDING",
       "maestro_revision": 1,
@@ -19,7 +19,19 @@
       "assignments": 0,
       "e00_run_id": 45179968109,
       "e00_artifact_id": 14819098938,
-      "review_input": "maestro/reviews_v03/EFB-000-BASELINE.review-input.json"
+      "review_input": "maestro/reviews_v03/EFB-000-BASELINE.review-input.json",
+      "follow_up_validation": {
+        "run_id": 45265389152,
+        "head_sha": "0e33494e5285e78bf269d28665c55bdaf93c5835",
+        "status": "success",
+        "artifact_id": 14861569882,
+        "artifact_sha256": "ae91952f9d7a029e6524cc1a3765751307db7f724fa423c249a89bd6a082bb6b",
+        "source_baseline_commit": "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
+        "legacy_prototype_commit": "e3610946ecf4caf91f0e1d2a232af714b88e65c2",
+        "handoff_license_files": [],
+        "legacy_license_files": [],
+        "reuse_authorization": "NOT_ESTABLISHED"
+      }
     },
     "efb001": {
       "status": "MERGED_PRODUCT_OWNER_ADR_VALIDATION_PASS_NO_FORMAL_REVIEW_SUBMISSION",
@@ -32,12 +44,12 @@
       "review_input": "maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json"
     },
     "efb002": {
-      "status": "IMPLEMENTED_CURRENT_HEAD_EXACT_CI_PASS_MASTERY_REVIEW_PENDING",
+      "status": "IMPLEMENTED_PAYOUT_CORRECTED_EXACT_CI_PASS_MASTERY_PENDING",
       "pr": 14,
-      "candidate_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
+      "candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
       "draft": true,
       "mergeable": true,
-      "workflow_id": "ea293bf8-83a8-4d49-a6fd-ac722008f0b4",
+      "workflow_id": "18096733-d9eb-4ce6-bac5-c3c77a947e60",
       "workflow_stage": "MASTERY",
       "workflow_status": "ACTIVE",
       "revision": 5,
@@ -49,42 +61,46 @@
           "name": "gradle-junit-exact-candidate",
           "status": "VERIFIED",
           "exit_code": 0,
-          "run_id": 45261280913,
-          "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
-          "log_sha256": "ebbe3976800a97c366258c5e0c286443e7bb3e647769ae2566928f5f7a6d68f8"
+          "run_id": 45265105467,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+          "log_sha256": "568e0a0033596669f33015617774f4f7f5d7d607c6f204345991ad57971f28fa"
         },
         {
           "name": "pure-jvm-boundary",
           "status": "VERIFIED",
           "exit_code": 0,
-          "run_id": 45261280913,
-          "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
-          "log_sha256": "ce4db7edbc0b3f58a04a8e857be2076d906aea037be04da98da8f4d452d6c2c3"
+          "run_id": 45265105467,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+          "log_sha256": "ce4db7edbc0b3f58a04e8a857be2076d906aea037be04da98da8f4d452d6c2c3"
         },
         {
           "name": "board-core-pr-workflow",
           "status": "SUCCESS",
-          "run_id": 45261282755,
-          "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f"
+          "run_id": 45265105730,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
         },
         {
           "name": "efb001-adr-validator",
           "status": "SUCCESS",
-          "run_id": 45261280912,
-          "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f"
+          "run_id": 45265105426,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
         }
       ],
-      "required_next": "Independent Mastery review of exact current candidate; EFB-000 merged-tree review; then record Repetition/acceptance. Resolve reviewer dispatch and durable Maestro state continuity before EFB-003.",
+      "required_next": "Independent Mastery review of exact current candidate; EFB-000 merged-tree review; then record Repetition/acceptance. Copilot cloud reviewer dispatch currently blocked by HTTP 412 insufficient premium quota.",
       "review_input": "maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json",
       "original_remediation_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
       "branch": "feat/efb002-remediation-rebased",
       "workflow_scope": "RUN_SCOPED_ARTIFACT_NOT_DURABLE_RESUME",
-      "review_assignment_id": "4133762a-64a2-46e7-bdc1-7822e0090ad8",
+      "review_assignment_id": "9cb25ee3-3a1e-43fd-99e4-3eb9fde2a81f",
       "evidence_artifact": {
-        "run_id": 45261280913,
-        "artifact_id": 14860906134,
+        "run_id": 45265105467,
+        "artifact_id": 14861514908,
         "name": "emberfall-efb-002-maestro-evidence",
-        "sha256": "148d32df2af6953e4c2da1b099993241a68e8610411d571d70852e2115a3f129"
+        "sha256": "02d107084f1ea96a750e378d557224af8556c5534eca2c0a202263fd02043f00"
+      },
+      "pre_review_findings": {
+        "half_ink_truncation": "FIXED_IN_CANDIDATE_AND_EXACT_CI_VERIFIED; independent review pending",
+        "hue_weight_test_oracle": "FIXED_WITH_GOLDEN_EXPECTED_VALUES; independent review pending"
       }
     }
   },
@@ -105,7 +121,7 @@
       "id": "EFB-002-BOARD-CORE",
       "status": "PARTIAL",
       "maestro_state": "CANDIDATE",
-      "next": "PR #14 exact-head CI passed; independent Mastery reviewer not assigned; EFB-000 review and Repetition pending."
+      "next": "PR #14 exact-head CI passed after half-Ink payout correction; independent Mastery reviewer not assigned; EFB-000 review and Repetition pending."
     },
     {
       "id": "EFB-003-TURN-COMBAT",
@@ -223,8 +239,8 @@
   "maestro_governance": {
     "state_continuity": "NEEDS_FIX_BEFORE_NEXT_INCREMENT",
     "reason": "PR workflow creates a fresh coding-start workflow/database on each run; latest artifact is run-scoped and does not prove durable resume.",
-    "reviewer_dispatch": "NOT_OPERATIONAL",
-    "reason_reviewer": "EFB-002 assignment 4133762a-64a2-46e7-bdc1-7822e0090ad8 remains PROPOSED; no reviewer adapter has confirmed execution.",
-    "next_action": "Complete independent EFB-000 and EFB-002 reviews, resolve source-license provenance, persist/resume Maestro state and configure an observable independent-review adapter before EFB-003."
+    "reviewer_dispatch": "BLOCKED_PREMIUM_QUOTA",
+    "reason_reviewer": "Both EFB-000 and EFB-002 Copilot cloud-agent dispatch attempts failed HTTP 412: insufficient premium quota to create assignment. No reviewer session exists.",
+    "next_action": "Obtain an actual independent reviewer through an available human or funded agent route; complete EFB-000/EFB-002 reviews, confirm source rights, persist/resume Maestro state, and record Repetition before EFB-003."
   }
 }
