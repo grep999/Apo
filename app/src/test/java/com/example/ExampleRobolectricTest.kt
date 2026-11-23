@@ -1692,6 +1692,42 @@ class ExampleRobolectricTest {
   }
 
   @Test
+  fun `unresolved support and artifact rewards survive Room snapshot save and reload`() = runBlocking {
+    val context = ApplicationProvider.getApplicationContext<Context>()
+    val db = Room.inMemoryDatabaseBuilder(context, EmberfallDatabase::class.java)
+      .allowMainThreadQueries()
+      .build()
+    try {
+      val repository = EmberfallRepository(db.emberfallDao(), SettingsDataStore(context))
+      val base = GameEngine.startNewRun(HeroClass.ASHEN_MONK, "ROOM-PENDING-REWARDS")
+      val pending = base.copy(
+        growth = CharacterGrowthState(
+          level = 3,
+          xp = 7,
+          xpToNextLevel = 30,
+          socketedSupportIds = listOf("sup_echo_strike", "sup_chain_cascade"),
+          maxSockets = 2,
+        ),
+        pendingReward = RewardBundle(
+          cindersEarned = 24,
+          cardChoices = listOf(GameCatalog.starterDeckIds(HeroClass.ASHEN_MONK).first()),
+          relicRewardId = "relic_cinder_tongs",
+          supportChoices = listOf("sup_prism_forge"),
+          supportPicked = false,
+          artifactChoices = listOf("art_rudraksha_mala"),
+          artifactPicked = false,
+        ),
+      )
+      repository.saveActiveRun(pending)
+      val loaded = repository.loadActiveRunResult()
+      assertTrue("Pending reward snapshot must load successfully", loaded is ActiveRunLoadResult.Loaded)
+      assertEquals(pending, (loaded as ActiveRunLoadResult.Loaded).run)
+      assertFalse(loaded.run.pendingReward?.allChoicesResolved ?: true)
+    } finally {
+      db.close()
+    }
+  }
+  @Test
   fun `P0_6 EmberfallViewModel persists rapid sequential player actions in exact FIFO order across reload`() {
     val app = ApplicationProvider.getApplicationContext<Application>()
     val vm = EmberfallViewModel(app)
