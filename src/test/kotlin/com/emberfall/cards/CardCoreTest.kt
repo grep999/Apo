@@ -29,7 +29,7 @@ class CardCoreTest {
         assertEquals(catalog.size, catalog.keys.distinct().size)
         assertEquals(Hue.EMBER, catalog.getValue("ember_strike").frameHue)
         assertEquals(Hue.GOLD, catalog.getValue("ash_ward").frameHue)
-        assertEquals(CardType.CURSE, CardType.CURSE)
+        assertEquals(4, CardType.entries.size)
     }
 
     @Test fun drawFiveIsDeterministicAndEntersWeave() {
@@ -120,7 +120,8 @@ class CardCoreTest {
         val card = ready.hand.single()
         val result = engine.transition(ready, CardBattleCommand.Play(card.instanceId))
         assertEquals(CardRejection.EFFECT_FAILED, assertIs<CardBattleResult.Rejected>(result).reason)
-        assertEquals(ready.combat.player.immutableInk, ready.combat.player.immutableInk)
+        assertEquals(ready.combat.player.immutableInk, (ready.combat.player.copy()).immutableInk)
+        assertEquals(8, ready.combat.player.spark)
         assertEquals(1, ready.hand.size)
         assertEquals(0, ready.exhaustPile.size)
     }
