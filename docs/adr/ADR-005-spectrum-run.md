@@ -7,7 +7,7 @@
 
 ## Decision
 
-At turn start, `run=0` and `lastRunHue=null`. The first pop establishes the anchor and pays at ×1.0. Each subsequent pop of the next hue on Ember→Gold→Moss→Tide→Violet→Ember increments Run by one and uses `1 + 0.5×run`. An out-of-order or repeated hue pays at ×1.0 and becomes the new anchor with Run reset to zero. Reset at Cleanup. A Prism counts as the next expected wheel hue for one step only; multiple Prisms do not grant multiple steps.
+At turn start, `run=0` and `lastRunHue=null`. The first pop establishes the anchor and pays at ×1.0. Each subsequent pop of the next hue on Ember→Gold→Moss→Tide→Violet→Ember increments Run by one and uses `1 + 0.5×run`. An out-of-order or repeated hue pays at ×1.0 and becomes the new anchor with Run reset to zero. Reset at Cleanup. A Prism counts as the next expected wheel hue for one step only; multiple Prisms do not grant multiple steps. Ink is an integer resource: multiply base Ink by the Run factor and round exactly once at final payout using round-half-up (ties go to the higher integer). Implement with integer arithmetic: `(baseInk * (2 + run) + 1) / 2` using non-negative integer division.
 
 ## Rationale and baseline adherence
 
