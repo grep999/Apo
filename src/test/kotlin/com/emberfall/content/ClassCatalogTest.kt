@@ -86,4 +86,59 @@ class ClassCatalogTest {
         assertEquals(2, initial.combat.player.immutableInk.getValue(Hue.MOSS))
         assertEquals(1, initial.hand.size)
     }
+    @Test fun prayerBeadsAddsTwoInkToOnlyTheFirstSuccessfulTapEachTurn() {
+        val board = BoardState.empty()
+            .withCell(Coord(0, 6), Cell.hue(Hue.EMBER))
+            .withCell(Coord(1, 6), Cell.hue(Hue.EMBER))
+            .withCell(Coord(3, 6), Cell.hue(Hue.GOLD))
+            .withCell(Coord(4, 6), Cell.hue(Hue.GOLD))
+        val combat = CombatState.start(board, EnemyDefinition("beads_test", 80, listOf(EnemyIntent.Strike(1))))
+            .copy(phase = CombatPhase.WEAVE)
+        val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.ASHEN_MONK, 5L)
+        val engine = CardEngine(ClassCardCatalog.cards)
+        val first = assertIs<CardBattleResult.Accepted>(engine.transition(state, CardBattleCommand.Tap(Coord(0, 6)))).state
+        assertEquals(4, first.combat.player.immutableInk.getValue(Hue.EMBER))
+        assertTrue(first.prayerBeadsUsedThisTurn)
+        val second = assertIs<CardBattleResult.Accepted>(engine.transition(first, CardBattleCommand.Tap(Coord(3, 6)))).state
+        assertEquals(3, second.combat.player.immutableInk.getValue(Hue.GOLD))
+        val nextTurn = assertIs<CardBattleResult.Accepted>(engine.transition(
+            second.copy(combat = second.combat.copy(phase = CombatPhase.DRAW)),
+            CardBattleCommand.BeginTurn
+        )).state
+        assertFalse(nextTurn.prayerBeadsUsedThisTurn)
+    }
+
+    @Test fun chiselWandRecolorsOneOpenHueBlockOncePerFightWithoutPayment() {
+        val board = BoardState.empty().withCell(Coord(2, 3), Cell.hue(Hue.EMBER, branded = true))
+        val combat = CombatState.start(board, EnemyDefinition("chisel_test", 80, listOf(EnemyIntent.Strike(1))))
+            .copy(phase = CombatPhase.WEAVE)
+        val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.QUARRY_WITCH, 6L)
+        val engine = CardEngine(ClassCardCatalog.cards)
+        val result = assertIs<CardBattleResult.Accepted>(engine.transition(
+            state, CardBattleCommand.UseSignatureRecolor(Coord(2, 3), Hue.TIDE)
+        )).state
+        assertEquals(Hue.TIDE, result.combat.board[Coord(2, 3)]?.hue)
+        assertTrue(result.combat.board[Coord(2, 3)]?.branded == true)
+        assertTrue("relic_chisel_wand" in result.usedRelicIds)
+        assertEquals(CardRejection.WRONG_PHASE, assertIs<CardBattleResult.Rejected>(
+            engine.transition(result, CardBattleCommand.UseSignatureRecolor(Coord(2, 3), Hue.VIOLET))
+        ).reason)
+    }
+
+    @Test fun hollowCrownPaysSparkForEveryAshCellPoppedByACard() {
+        val board = BoardState.empty()
+            .withCell(Coord(0, 6), Cell.ash())
+            .withCell(Coord(1, 6), Cell.ash())
+        val combat = CombatState.start(board, EnemyDefinition("crown_test", 80, listOf(EnemyIntent.Strike(1))))
+            .copy(phase = CombatPhase.CAST, player = PlayerState(spark = 1))
+        val state = PlayerClassCatalog.startBattle(combat, PlayerClassId.THE_UNLIT, 7L)
+            .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, "unlit_pop_shot")))
+        val result = assertIs<CardBattleResult.Accepted>(
+            CardEngine(ClassCardCatalog.cards).transition(state, CardBattleCommand.Play(0))
+        ).state
+        assertEquals(2, result.combat.player.spark)
+        assertNull(result.combat.board[Coord(0, 6)])
+        assertNull(result.combat.board[Coord(1, 6)])
+    }
+
 }
