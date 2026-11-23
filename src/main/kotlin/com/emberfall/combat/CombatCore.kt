@@ -298,7 +298,12 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
         var overflow = false
         val events = mutableListOf<CombatEvent>()
         for (row in rows) {
-            val result = boardEngine.riseWall(board, row, flasks)
+            // BoardEngine preserves sealed board cells but its incoming-row replacement
+            // is global. Carry sealed-column previews through unchanged to honor ADR-012.
+            val effectiveIncoming = row.mapIndexed { column, replacement ->
+                if (column in board.sealedColumns) board.incoming[column] else replacement
+            }
+            val result = boardEngine.riseWall(board, effectiveIncoming, flasks)
             board = result.board
             flasks -= result.flasksConsumed
             if (result.overflow) {
@@ -345,7 +350,10 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                     if (damage > 0) events += CombatEvent.VigilLost(damage, "Strike")
                 }
                 EnemyIntent.AshRow -> {
-                    board = board.copy(incoming = List(BOARD_WIDTH) { Cell.ash() })
+                    val incoming = board.incoming.mapIndexed { column, current ->
+                        if (column in board.sealedColumns) current else Cell.ash()
+                    }
+                    board = board.copy(incoming = incoming)
                     events += CombatEvent.BoardChanged("AshRow")
                 }
                 is EnemyIntent.StoneSeed -> {
