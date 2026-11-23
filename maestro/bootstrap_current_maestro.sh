@@ -25,21 +25,17 @@ python3 -m venv "$MAESTRO_DIR/.venv"
 source "$MAESTRO_DIR/.venv/bin/activate"
 python -c 'import sys; assert sys.version_info >= (3, 10), "Maestro requires Python >=3.10"'
 pip install -e "$MAESTRO_DIR"
+
 # Run from the upstream checkout so Apo's local `maestro/` packet directory
 # cannot shadow the installed upstream Python package during import.
 pushd "$MAESTRO_DIR" >/dev/null
 python -m unittest discover -s tests -v
 python scripts/validate_contracts.py
 # _engine_src_0.py is a generated source-string fixture, not an importable module.
-python -m compileall -q -x '_engine_src_0\\.py
+python -m compileall -q -x '_engine_src_0[.]py$' maestro scripts tests
 maestro adapters
 maestro adapter-health --name echo
 popd >/dev/null
-printf '\nMaestro v0.3.0 verified at %s\n' "$ACTUAL_COMMIT"
-printf 'Use maestro/tasks_v2 and maestro/packets_v03 in this project package.\n'
- maestro scripts tests
-maestro adapters
-maestro adapter-health --name echo
-popd >/dev/null
+
 printf '\nMaestro v0.3.0 verified at %s\n' "$ACTUAL_COMMIT"
 printf 'Use maestro/tasks_v2 and maestro/packets_v03 in this project package.\n'
