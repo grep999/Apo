@@ -9,7 +9,7 @@ on:
       - 'settings.gradle.kts'
       - '.github/workflows/efb002-board-core.yml'
   push:
-    branches: [feat/efb-002-board-core-victory]
+    branches: [feat/efb-002-board-core-victory, feat/efb-002-board-core-exactsha]
   workflow_dispatch:
 
 permissions:

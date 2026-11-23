@@ -11,6 +11,7 @@ on:
       - 'maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json'
       - 'maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json'
       - '.github/workflows/efb002-maestro-workflow.yml'
+      - '.github/workflows/efb002-board-core.yml'
   workflow_dispatch:
 
 permissions:
