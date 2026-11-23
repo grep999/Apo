@@ -146,7 +146,7 @@ fun EmberfallRoot(viewModel: EmberfallViewModel) {
               onToggleAudioMute = { viewModel.toggleAudioMute() },
               onInvalidSwapDrag = { viewModel.onBoardSwapDragAttempted() },
               onUnlockPassive = { viewModel.unlockPassiveNode(it) },
-              onSocketSupport = { viewModel.socketSupport(it) },
+              onSocketSupport = { id, slot -> viewModel.socketSupport(id, slot) },
               onSkipSupport = { viewModel.skipSupportChoice() },
               onBindArtifact = { viewModel.bindArtifact(it) },
               onSkipArtifact = { viewModel.skipArtifactChoice() },
@@ -175,6 +175,10 @@ fun EmberfallRoot(viewModel: EmberfallViewModel) {
               onClaimRelic = { viewModel.claimRewardRelic() },
               onSkipRelic = { viewModel.skipRewardRelic() },
               onFinishRewards = { viewModel.finishRewards() },
+              onSocketSupport = { id, slot -> viewModel.socketSupport(id, slot) },
+              onSkipSupport = { viewModel.skipSupportChoice() },
+              onBindArtifact = { viewModel.bindArtifact(it) },
+              onSkipArtifact = { viewModel.skipArtifactChoice() },
             )
           }
         }
