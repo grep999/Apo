@@ -218,6 +218,8 @@ Inspection of `.github/workflows/efb002-maestro-workflow.yml` and `scripts/final
 - The workflow therefore creates a new workflow ID instead of resuming the EFB-002 lifecycle.
 - `concurrency.cancel-in-progress: true` can terminate a state-mutating run while it is working. State mutation must be serialized without cancelling an in-flight checkpoint writer.
 - The script calls Maestro `assign` and records the resulting reviewer assignment as `PROPOSED`. It writes `artifacts/efb002-review-dispatch.json`, but no provider adapter consumes that packet and no agent session is launched.
+- Maestro v0.3.0 itself has an agent-adapter protocol (`start/stream/result/cancel`) and a generic `SubprocessAdapter`, but the inspected registry auto-registers only the deterministic `echo` adapter. The EFB-002 workflow does not configure a provider adapter. The engine's `assign()` records a `PROPOSED` packet; a separate adapter must transition it through ACCEPTED/RUNNING/RETURNED with a real result.
+- Maestro opens its SQLite database in WAL mode. A durable checkpoint must close writers and explicitly checkpoint/verify the WAL before snapshotting; blindly copying only `state.sqlite3` during an active write risks an incomplete state image. The inspected CLI has no built-in export/import command, so the checkpoint/restore contract must be implemented and tested rather than assumed.
 - The workflow declares only `contents: read`; it has no explicit issue/PR write permissions or configured Copilot/third-party dispatch credential.
 - The evidence artifact is uploaded, but no explicit `retention-days` is declared. Its effective retention therefore depends on repository settings and must be verified.
 
