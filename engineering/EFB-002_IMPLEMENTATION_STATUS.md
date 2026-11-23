@@ -1,6 +1,6 @@
 # EFB-002 Board Core — Implementation Status
 
-**Status:** IMPLEMENTATION CANDIDATE — NOT ACCEPTED  
+**Status:** IMPLEMENTATION CANDIDATE — P1 PAYOUT FIX APPLIED; INDEPENDENT MASTERY PENDING  
 **Base:** `handoff/emberfall-coding-agent-v1.0` (current base SHA is recorded in PR #14 metadata)  
 **Branch:** `feat/efb002-remediation-rebased`  
 **PR:** #14 (draft)  
@@ -33,13 +33,16 @@ The integration candidate preserves that exact remediation commit in its ancestr
 
 ## Verification evidence
 
-- Project-owner local report on remediation SHA `6932b747...`: 37 tests, `gradle check`, and diff checks passed. Local evidence remains owner-reported.
-- Prior Copilot CLI re-review: ACCEPT on remediation SHA `6932b747...`, as reported by the project owner.
-- GitHub Actions on integration SHA `f3fb7c6a3ced364af63c58f8461092fc3ff8cc54`:
-  - Board-core Gradle/JUnit and pure-JVM boundary: PASS, run [45260239285](https://github.com/grep999/Apo/actions/runs/45260239285).
-  - Maestro GateRunner exact-SHA checks: PASS, run [45260239280](https://github.com/grep999/Apo/actions/runs/45260239280).
-  - Gate report bound both required checks to `f3fb7c6a3ced364af63c58f8461092fc3ff8cc54`, with exit code 0, runner identity and log hashes.
-- A subsequent documentation/evidence-script correction changes the PR head; the latest PR head must receive its own fresh exact-SHA checks before acceptance.
+- Project-owner local report on remediation SHA `6932b747...`: 37 tests and Gradle checks passed. Local evidence remains owner-reported.
+- Prior Copilot CLI re-review: ACCEPT on remediation SHA `6932b747...`, as reported by the project owner; it does not cover subsequent payout correction.
+- Current exact integration head `c420506334488bf9b2ff39316342a50a07bf6c85`:
+  - Board-core Gradle/JUnit: PASS, run [45264659205](https://github.com/grep999/Apo/actions/runs/45264659205).
+  - Maestro GateRunner exact-SHA checks: PASS, run [45264659293](https://github.com/grep999/Apo/actions/runs/45264659293).
+  - EFB-001 ADR validator: PASS, run [45264659152](https://github.com/grep999/Apo/actions/runs/45264659152).
+  - GateRunner bound both required checks to the exact SHA with exit code 0, runner identity `github-actions/45264659293` and log hashes.
+- Payout fix: half-Ink is represented as integer half-units through Spectrum multiplication; only final payout rounds half-up. Regression tests cover 9/11/13-cell groups and Run 0/1.
+- Hue-weight tests now assert independently calculated golden normalized weights and a floor-dominated profile, rather than only comparing sampling to the same implementation under test.
+- Exact-head checks do not constitute independent Mastery review.
 
 ## Known gaps before acceptance
 
