@@ -33,22 +33,13 @@
   "checks": [
     {
       "name": "Pure JVM / Android boundary",
-      "status": "PASS_ON_PRIOR_CANDIDATE",
-      "run_id": 45273205685,
-      "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
+      "status": "PASS",
+      "run_id": 45274051704,
+      "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
     },
     {
       "name": "Gradle clean test",
-      "status": "PASS_ON_PRIOR_CANDIDATE",
-      "run_id": 45273205685,
-      "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
-    },
-    {
-      "name": "Final candidate Gradle/JUnit + pure-JVM",
-      "status": "PENDING",
-      "previous_attempt_run_id": 45273418357,
-      "previous_attempt_result": "FAILED_TEST_SOURCE_COMPILE_UNRESOLVED_REFERENCE_ENEMY",
-      "note": "Run seed test had been appended outside CombatCoreTest; corrected by moving it inside the class. The earlier retry also recovered from a Maven 429.",
+      "status": "PASS",
       "run_id": 45274051704,
       "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
     },
@@ -72,7 +63,7 @@
     "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
     "No Android/device evidence is claimed for this pure JVM increment."
   ],
-  "next_action": "Run Gradle/JUnit and pure-JVM gates on final code SHA e9864637575275323aeb1104f9bd0a606c94a80a. Fix any remaining findings, then independent Mastery and Repetition.",
+  "next_action": "Dispatch or obtain an independent Mastery review of exact candidate e9864637575275323aeb1104f9bd0a606c94a80a using the accepted v0.2 specification, ADRs, changed-path diff and raw CI evidence. Resolve any findings, then record Repetition. Do not merge before both gates.",
   "candidate_sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
   "candidate_ref": "git:e9864637575275323aeb1104f9bd0a606c94a80a"
 }
