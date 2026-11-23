@@ -13,11 +13,11 @@
     "docs/adr/ADR-007-stone-break-order.md",
     "docs/adr/ADR-008-wall-and-overflow.md",
     "docs/adr/ADR-012-seal-column.md",
-    "EFB-000 candidate: audit/e00-repository-source-baseline@93a4b27360c043b702624d7d317e7c682a0e7031",
-    "EFB-001 resolved candidate: design/efb-001-rules-adr-proposals@3a4a5ae5092f38e058dd3210a05a68f163c73c49"
+    "EFB-000 baseline dependency: PR #4 accepted merge commit, after independent review of the current head and matching E00 evidence",
+    "EFB-001 rules dependency: PR #5 accepted merge commit containing Product Owner resolutions"
   ],
   "constraints": [
-    "Execution status is BLOCKED until EFB-000 independent review accepts exact SHA 93a4b27360c043b702624d7d317e7c682a0e7031.",
+    "Execution status is BLOCKED until independent review accepts the current PR #4 head with matching successful E00 workflow evidence and PR #5 Product Owner resolutions are accepted.",
     "Use an isolated implementation branch from the accepted v0.2 handoff baseline; do not modify the legacy prototype branch.",
     "The only live player board action is connected-group Tap/Pop. Do not implement or route live combat through SwapCells or match-3 line matching.",
     "Board is 7x7 with orthogonal connectivity and minimum legal pop size 2; one hidden incoming row is maintained separately.",
