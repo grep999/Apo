@@ -19,7 +19,7 @@
     "docs/adr/ADR-010-brand-cost.md"
   ],
   "constraints": [
-    "Execution status is BLOCKED until independent review accepts the current PR #4 head with matching successful E00 workflow evidence and PR #5 Product Owner resolutions are accepted.",
+    "Execution is authorized for the EFB-002 GROUNDING and isolated implementation cycle because PR #4 (EFB-000) and PR #5 (EFB-001) are merged in order. Their merge commits are 5130215cb0a033345752311903de7f9c08aced4d and f9a41aa373d36d41a0c134c8005fb5984fecd2b3. Do not treat merge as independent Mastery approval: exact merged tree still requires independent review before EFB-002 PASS or implementation merge.",
     "Use an isolated implementation branch from the accepted v0.2 handoff baseline; do not modify the legacy prototype branch.",
     "The only live player board action is connected-group Tap/Pop. Do not implement or route live combat through SwapCells or match-3 line matching.",
     "Board is 7x7 with orthogonal connectivity and minimum legal pop size 2; one hidden incoming row is maintained separately.",
@@ -36,15 +36,16 @@
     "No unapproved merge, publish or deploy; no secrets in commits or logs."
   ],
   "dependencies": [
-    "EFB-000-BASELINE: independent review accepted",
-    "EFB-001-RULES-ADR: Product Owner resolutions accepted"
+    "EFB-000-BASELINE: merged PR #4 at 5130215cb0a033345752311903de7f9c08aced4d; source inventory/GateRunner builder evidence passed on reviewed pre-merge head 3555ae5a8e7b74e181c201e0a20482ac8f7a3bce (run 45179968109); merged report/packet records still require post-merge reconciliation and independent review.",
+    "EFB-001-RULES-ADR: merged PR #5 at f9a41aa373d36d41a0c134c8005fb5984fecd2b3; ADR validator passed on pre-merge head 76d07ff80121a465371a785350f7a6a2c6c853fe (run 45180407668); merged rules accepted, implementation contract requires post-merge check."
   ],
   "risks": [
     "R1: legacy SwapCells paths may remain reachable through ViewModel/navigation unless removed or isolated at the command boundary.",
     "R1: Prism direct selection and mixed-adjacency tie-breaks can produce nondeterministic group membership if ordering is implicit.",
     "R1: Seal and Wall rise can create irregular per-column movement if frozen-column rules are not modeled explicitly.",
     "R1: board generation fallback can bias hue distribution if it silently repairs local cells.",
-    "R1: replay divergence can occur if board, enemy and card RNG streams are coupled or advanced inconsistently."
+    "R1: replay divergence can occur if board, enemy and card RNG streams are coupled or advanced inconsistently.",
+    "R1: merged handoff branch has no Android app or Kotlin/Gradle module; EFB-002 must create/reuse a pure Kotlin/JVM module and bootstrap build infrastructure without implying an Android build is currently available."
   ],
   "acceptance": [
     "Board domain model has explicit 7x7 coordinates, one incoming row and sealed-column state.",
@@ -58,14 +59,15 @@
     "Property tests cover coordinate bounds, no duplicate cells, group connectivity, gravity conservation, sealed-column invariants and save/replay.",
     "Statistical test over at least 100,000 seeds validates deck-derived hue weights and records fallback frequency.",
     "Pure-JVM boundary check passes; unit/property/golden tests, formatting, lint and build pass.",
-    "Independent Mastery review examines exact candidate SHA and test artifacts.",
     "Pop resolution returns a deterministic immutable result containing resolved base hue, ordered group cells, group size, base Ink payout, Spectrum Run state/multiplier and chip damage; turn-level payment/application remains outside this increment.",
     "Playable-hue pop Ink follows ADR-003 and ADR-005 exactly: min(n, 8) + floor(max(n - 8, 0) / 2), multiplied by the resolved Run factor with round-half-up exactly once at final payout, ties upward, using integer arithmetic `(baseInk * (2 + run) + 1) / 2`; Ash pays zero base Ink.",
     "Spectrum Run follows ADR-005 golden cases: first pop ×1.0; ordered wheel progression; wrap; repeated/out-of-order reset; Prism substitutes for the next expected hue for one step only; reset at turn boundary.",
     "Pop chip damage is n - 1 and is returned as a board action result; enemy Block application is deferred to EFB-003.",
-    "Board generation follows ADR-002: rows 0–1 empty, rows 2–6 seeded, 32 whole-board retries on the same deterministic RNG stream, then one adjacent-pair fallback with BoardGenerationFallback telemetry; verify fallback rate <0.01% across 100,000 seeds."
+    "Board generation follows ADR-002: rows 0–1 empty, rows 2–6 seeded, 32 whole-board retries on the same deterministic RNG stream, then one adjacent-pair fallback with BoardGenerationFallback telemetry; verify fallback rate <0.01% across 100,000 seeds.",
+    "Independent Mastery review examines the exact EFB-002 candidate SHA and artifacts before its merge; this is the EFB-002 implementation gate, not a precondition to begin Grounding.",
+    "Build and test only at the established handoff baseline; because it contains no Kotlin/Gradle project, first implementation commit must introduce a minimal reproducible pure Kotlin/JVM module and CI workflow, with explicit toolchain pinning and no Android imports."
   ],
-  "next_increment": "After EFB-002 is accepted, EFB-003 consumes the typed board action results to implement Draw/Weave/Cast/Wall/Enemy/Cleanup, Ink resource caps and carry-over, Vigil/Block/Flasks, two-intent enemy state and transactional legal actions. Cards/effect queues remain EFB-004; class/content breadth remains behind the playable first-encounter vertical slice.",
-  "current_status": "BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW",
-  "no_implementation_authorized": true
+  "next_increment": "Start the official Maestro coding-start and Grounding workflow for EFB-002 on the accepted handoff baseline f9a41aa373d36d41a0c134c8005fb5984fecd2b3. Then begin Momentum and build the minimal pure Kotlin/JVM board module with deterministic RNG, BoardState, connected-group resolver and gravity as the first coherent implementation batch. Follow with Ash/Stone/Prism/Seal/Wall/Overflow, payout and seed/replay tests. Do not start EFB-003 combat/cards until EFB-002 passes exact-SHA Mastery and Product Owner acceptance.",
+  "current_status": "READY_FOR_GROUNDING",
+  "no_implementation_authorized": false
 }
