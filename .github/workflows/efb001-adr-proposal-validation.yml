@@ -10,6 +10,7 @@ on:
       - engineering/PRODUCT_OWNER_DECISION_BASELINE.md
       - docs/adr/**
       - maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json
+      - maestro/packets_v03/EFB-CONTENT-001-SPECIALIST-PROPOSALS.grounding.json
       - scripts/validate_efb001_adr_proposals.py
       - .github/workflows/efb001-adr-proposal-validation.yml
   workflow_dispatch:
