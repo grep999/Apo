@@ -39,14 +39,25 @@ items = json.loads((STATE / "efb-002-work-items.json").read_text(encoding="utf-8
 if len(items) != 3:
     raise SystemExit(f"expected three seeded Momentum work items, got {len(items)}")
 
+event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
+pr = event.get("pull_request", {})
+pr_number = pr.get("number", "unknown")
+base_sha = pr.get("base", {}).get("sha", "unknown")
+head_branch = os.environ.get("GITHUB_HEAD_REF", "unknown")
+parents = subprocess.run(
+    ["git", "show", "-s", "--format=%P", "HEAD"],
+    cwd=ROOT, capture_output=True, text=True, check=True
+).stdout.strip().split()
+remediation_parent = parents[1] if len(parents) > 1 else "not-a-merge-parent"
+
 evidence_by_title = {
     "Research implementation context": [
         "Verified EFB-002 target source/test paths and pure Kotlin/JVM build harness on the isolated implementation branch.",
-        "Reconciled the EFB-002 grounding packet against the merged EFB-000/EFB-001 prerequisites and pinned baseline git:handoff/emberfall-coding-agent-v1.0@1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23.",
+        f"Reconciled the EFB-002 grounding packet against EFB-000/EFB-001 prerequisites and current base git:handoff/emberfall-coding-agent-v1.0@{base_sha}; original remediation parent is {remediation_parent}.",
     ],
     "Implement candidate increment": [
-        f"Candidate source, tests and build configuration are committed on feat/efb-002-board-core-exactsha at {candidate_ref}.",
-        "Draft PR #11 contains the isolated EFB-002 implementation; legacy SwapCells prototype was not modified.",
+        f"Candidate source, tests and build configuration are committed on {head_branch} at {candidate_ref}.",
+        f"Draft PR #{pr_number} contains the isolated EFB-002 implementation; legacy SwapCells prototype was not modified.",
     ],
     "Run deterministic gate checks": [
         f"Maestro GateRunner exact-candidate report: {ARTIFACTS / 'efb002-gate-report.json'}.",
