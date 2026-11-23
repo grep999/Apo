@@ -340,7 +340,7 @@ class BoardCoreTest {
         assertEquals(9, nineAtRunZero.inkPayout) // 8.5 rounds half-up once.
 
         val nineAtRunOne = assertIs<TapOutcome.Accepted>(
-            engine.tap(group(9), Coord(0,0), SpectrumState(1, Hue.EMBER))
+            engine.tap(group(9), Coord(0,0), SpectrumState(1, Hue.TIDE))
         ).result
         assertEquals(17, nineAtRunOne.baseInkHalfUnits)
         assertEquals(13, nineAtRunOne.inkPayout) // 8.5 × 1.5 = 12.75.
