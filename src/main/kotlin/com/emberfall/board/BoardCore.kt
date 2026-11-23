@@ -323,7 +323,13 @@ data class DeterministicStreams(val board: DeterministicRng, val enemy: Determin
 
 sealed interface BoardCommand {
     data class Tap(val coord: Coord) : BoardCommand
-    data class WallRise(val nextIncoming: List<Cell?>, val flasks: Int) : BoardCommand
+    class WallRise(nextIncoming: List<Cell?>, val flasks: Int) : BoardCommand {
+        val nextIncoming: List<Cell?> = Collections.unmodifiableList(nextIncoming.toList())
+        override fun equals(other: Any?): Boolean =
+            other is WallRise && nextIncoming == other.nextIncoming && flasks == other.flasks
+        override fun hashCode(): Int = 31 * nextIncoming.hashCode() + flasks
+        override fun toString(): String = "WallRise(nextIncoming=$nextIncoming, flasks=$flasks)"
+    }
     data object TurnBoundary : BoardCommand
     data object EnemyPhaseEnd : BoardCommand
 }

@@ -17,6 +17,18 @@ class BoardCoreTest {
         return b
     }
 
+    @Test fun wallRiseCommandDefensivelyCopiesIncomingRow() {
+        val incoming = MutableList<Cell?>(7) { null }
+        incoming[0] = Cell.ash()
+        val command = BoardCommand.WallRise(incoming, 1)
+        incoming[0] = Cell.hue(Hue.EMBER)
+
+        assertEquals(Cell.ash(), command.nextIncoming[0])
+        assertFailsWith<UnsupportedOperationException> {
+            (command.nextIncoming as MutableList<Cell?>)[0] = null
+        }
+    }
+
     @Test fun boardStateAndDeckProfileDefensivelyCopyMutableInputs() {
         val cells = MutableList<Cell?>(49) { null }
         cells[0] = Cell.hue(Hue.EMBER)
