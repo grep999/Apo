@@ -3,6 +3,12 @@ name: Emberfall Handoff and Maestro v0.3 Validation
 on:
   pull_request:
     branches: [handoff/emberfall-coding-agent-v1.0]
+    paths:
+      - engineering/E00_REPOSITORY_SOURCE_BASELINE_2026-11-23.md
+      - scripts/validate_emberfall_handoff.py
+      - maestro/packets_v03/EFB-000-BASELINE.grounding.json
+      - maestro/bootstrap_current_maestro.sh
+      - .github/workflows/emberfall-handoff-validation.yml
   workflow_dispatch:
 
 permissions:
