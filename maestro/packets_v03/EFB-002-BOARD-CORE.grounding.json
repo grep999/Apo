@@ -1,6 +1,7 @@
 {
   "purpose": "Implement the deterministic Emberfall v0.2 board domain core: 7x7 board, orthogonal connected-group Tap/Pop, Prism/Ash/Stone resolution, vertical-only gravity, sealed-column behavior and Wall pressure.",
   "sources": [
+    "current implementation base: git:handoff/emberfall-coding-agent-v1.0@32edb053f786bdffbf20d978364cdece192bba32",
     "references/EMBERFALL_GAME_SPEC_v0.2.txt",
     "engineering/PRODUCT_OWNER_GOVERNANCE.md",
     "engineering/PRODUCT_OWNER_DECISION_BASELINE.md",
@@ -59,7 +60,7 @@
     "Seed + deck + rules version reproduces byte-identical initial board and action replay.",
     "Property tests cover coordinate bounds, no duplicate cells, group connectivity, gravity conservation, sealed-column invariants and save/replay.",
     "Statistical test over at least 100,000 seeds validates deck-derived hue weights and records fallback frequency.",
-    "Pure-JVM boundary check passes; unit/property/golden tests, formatting, lint and build pass.",
+    "Exact-SHA Gradle/JUnit tests and pure-JVM boundary checks pass; formatting/lint tooling is not configured in this minimal Kotlin/JVM module and must not be claimed as a completed gate.",
     "Pop resolution returns a deterministic immutable result containing resolved base hue, ordered group cells, group size, base Ink payout, Spectrum Run state/multiplier and chip damage; turn-level payment/application remains outside this increment.",
     "Playable-hue pop Ink follows ADR-003 and ADR-005 exactly: min(n, 8) + floor(max(n - 8, 0) / 2), multiplied by the resolved Run factor with round-half-up exactly once at final payout, ties upward, using integer arithmetic `(baseInk * (2 + run) + 1) / 2`; Ash pays zero base Ink.",
     "Spectrum Run follows ADR-005 golden cases: first pop ×1.0; ordered wheel progression; wrap; repeated/out-of-order reset; Prism substitutes for the next expected hue for one step only; reset at turn boundary.",
@@ -69,8 +70,8 @@
     "Build and test only at the established handoff baseline; because it contains no Kotlin/Gradle project, first implementation commit must introduce a minimal reproducible pure Kotlin/JVM module and CI workflow, with explicit toolchain pinning and no Android imports.",
     "Initial board generation must not introduce neutral tiles at guessed probabilities; neutral insertion remains an explicit enemy/effect input until a quantified accepted rule exists."
   ],
-  "next_increment": "Momentum: finish BoardCore golden/property coverage, produce 100,000-seed hue distribution and fallback report, validate exact-candidate CI, then submit the candidate for independent Mastery. EFB-003 begins only after EFB-002 acceptance.",
+  "next_increment": "Independent Mastery review of the exact current EFB-002 candidate and independent EFB-000 merged-tree review. EFB-003 begins only after EFB-002 acceptance, Repetition and all stated prerequisites.",
   "current_status": "GROUNDING_COMPLETE_MOMENTUM_CANDIDATE",
   "no_implementation_authorized": false,
-  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23"
+  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@32edb053f786bdffbf20d978364cdece192bba32"
 }
