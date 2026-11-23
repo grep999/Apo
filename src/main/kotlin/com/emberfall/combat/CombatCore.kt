@@ -87,6 +87,7 @@ class CombatState(
     val turn: Int,
     val tapsRemaining: Int,
     val intentCursor: Long,
+    val runSeed: Long,
     forecast: List<EnemyIntent>,
     val wallRisesNextTurn: Int = 1,
     val fogTapsRemaining: Int = 0,
@@ -112,15 +113,16 @@ class CombatState(
         turn: Int = this.turn,
         tapsRemaining: Int = this.tapsRemaining,
         intentCursor: Long = this.intentCursor,
+        runSeed: Long = this.runSeed,
         forecast: List<EnemyIntent> = this.forecast,
         wallRisesNextTurn: Int = this.wallRisesNextTurn,
         fogTapsRemaining: Int = this.fogTapsRemaining,
         delayedIntents: Int = this.delayedIntents
     ) = CombatState(board, spectrum, phase, player, enemy, enemyDefinition, turn, tapsRemaining,
-        intentCursor, forecast, wallRisesNextTurn, fogTapsRemaining, delayedIntents)
+        intentCursor, runSeed, forecast, wallRisesNextTurn, fogTapsRemaining, delayedIntents)
 
     companion object {
-        fun start(board: BoardState, enemy: EnemyDefinition, spectrum: SpectrumState = SpectrumState()): CombatState =
+        fun start(board: BoardState, enemy: EnemyDefinition, spectrum: SpectrumState = SpectrumState(), runSeed: Long = 0L): CombatState =
             CombatState(
                 board = board,
                 spectrum = spectrum,
@@ -131,6 +133,7 @@ class CombatState(
                 turn = 0,
                 tapsRemaining = BASE_TAPS_PER_TURN,
                 intentCursor = 0,
+                runSeed = runSeed,
                 forecast = listOf(enemy.intentAt(0), enemy.intentAt(1))
             )
     }
@@ -508,7 +511,7 @@ object CombatStateDigest {
             append(state.player.vigil).append('|').append(state.player.block).append('|').append(state.player.flasks).append('|')
             append(state.player.immutableInk.toSortedMap(compareBy { it.ordinal }).entries.joinToString(",") { "${it.key.name}:${it.value}" }).append('|')
             append(state.player.spark).append('|').append(state.enemy.vigor).append('|').append(state.enemy.block).append('|')
-            append(state.enemyDefinition.id).append('|').append(state.enemyDefinition.maxVigor).append('|')
+            append(state.runSeed).append('|').append(state.enemyDefinition.id).append('|').append(state.enemyDefinition.maxVigor).append('|')
             append(state.enemyDefinition.intentSequence.joinToString(";")).append('|').append(state.intentCursor).append('|')
             append(state.nextIntents.joinToString(";") { it.toString() }).append('|')
             append(state.wallRisesNextTurn).append('|').append(state.fogTapsRemaining).append('|').append(state.delayedIntents)
