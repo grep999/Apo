@@ -344,6 +344,68 @@ class BoardCoreTest {
         assertEquals(mapOf(2 to 2), sealed.sealTurnsRemaining)
     }
 
+    @Test fun fromRowsCreatesValidSealedColumnsWithExpiryTimers() {
+        val rows = List(7) { List<Cell?>(7) { null } }
+        val defaultSealed = BoardState.fromRows(rows, sealedColumns = setOf(1, 5))
+        assertEquals(setOf(1, 5), defaultSealed.sealedColumns)
+        assertEquals(mapOf(1 to 3, 5 to 3), defaultSealed.sealTurnsRemaining)
+
+        val customSealed = BoardState.fromRows(
+            rows,
+            sealedColumns = setOf(2, 6),
+            sealTurnsRemaining = mapOf(2 to 1, 6 to 2)
+        )
+        assertEquals(setOf(2, 6), customSealed.sealedColumns)
+        assertEquals(mapOf(2 to 1, 6 to 2), customSealed.sealTurnsRemaining)
+
+        assertFailsWith<IllegalArgumentException> {
+            BoardState.fromRows(rows, sealedColumns = setOf(2), sealTurnsRemaining = mapOf(3 to 2))
+        }
+    }
+
+    @Test fun spectrumStateRejectsPositiveRunWithoutAnchor() {
+        assertFailsWith<IllegalArgumentException> {
+            SpectrumState(run = 1, lastHue = null)
+        }
+        assertEquals(SpectrumState(), SpectrumState(run = 0, lastHue = null))
+        assertEquals(SpectrumState(run = 0, lastHue = Hue.EMBER),
+            SpectrumState(run = 0, lastHue = Hue.EMBER))
+    }
+
+    @Test fun spectrumRunAndInkPayoutSaturateAtArithmeticBoundaries() {
+        val gold = board(
+            Coord(0, 0) to Cell.hue(Hue.GOLD),
+            Coord(1, 0) to Cell.hue(Hue.GOLD)
+        )
+        val result = assertIs<TapOutcome.Accepted>(
+            engine.tap(gold, Coord(0, 0), SpectrumState(Int.MAX_VALUE, Hue.EMBER))
+        ).result
+        assertEquals(Int.MAX_VALUE, result.spectrum.run)
+        assertEquals(Hue.GOLD, result.spectrum.lastHue)
+        assertEquals(Int.MAX_VALUE, result.inkPayout)
+
+        val prism = board(
+            Coord(2, 3) to Cell.hue(Hue.EMBER),
+            Coord(3, 3) to Cell.prism(),
+            Coord(4, 3) to Cell.prism()
+        )
+        val prismResult = assertIs<TapOutcome.Accepted>(
+            engine.tap(prism, Coord(3, 3), SpectrumState(Int.MAX_VALUE, Hue.EMBER))
+        ).result
+        assertEquals(Int.MAX_VALUE, prismResult.spectrum.run)
+        assertEquals(Hue.GOLD, prismResult.spectrum.lastHue)
+        assertTrue(prismResult.inkPayout >= 0)
+    }
+
+    @Test fun replayResultCollectionIsImmutable() {
+        val b = board(Coord(0, 0) to Cell.hue(Hue.EMBER))
+        val replay = BoardReplay(engine).replay(b, listOf(BoardCommand.Tap(Coord(0, 0))))
+
+        assertFailsWith<UnsupportedOperationException> {
+            (replay as MutableList<ReplayStep>).clear()
+        }
+    }
+
     @Test fun sealExpiresAfterExactlyThreeEnemyPhases() {
         var b = BoardState.empty().sealColumn(4)
         assertTrue(4 in b.sealedColumns)

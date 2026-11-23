@@ -91,15 +91,25 @@ class BoardState(
 
     companion object {
         fun empty() = BoardState(List(49) { null }, List(7) { null })
-        fun fromRows(rows: List<List<Cell?>>, incoming: List<Cell?> = List(7) { null }, sealedColumns: Set<Int> = emptySet()): BoardState {
+        fun fromRows(
+            rows: List<List<Cell?>>,
+            incoming: List<Cell?> = List(7) { null },
+            sealedColumns: Set<Int> = emptySet(),
+            sealTurnsRemaining: Map<Int, Int> = sealedColumns.associateWith { 3 }
+        ): BoardState {
             require(rows.size == 7 && rows.all { it.size == 7 })
-            return BoardState(rows.flatten(), incoming, sealedColumns)
+            return BoardState(rows.flatten(), incoming, sealedColumns, sealTurnsRemaining = sealTurnsRemaining)
         }
     }
 }
 
 data class SpectrumState(val run: Int = 0, val lastHue: Hue? = null) {
-    init { require(run >= 0) }
+    init {
+        require(run >= 0)
+        require(run == 0 || lastHue != null) {
+            "A positive Spectrum run must have an anchor hue"
+        }
+    }
 }
 enum class PopRejection { EMPTY, STONE, NO_LEGAL_GROUP }
 sealed interface TapOutcome {
@@ -183,7 +193,10 @@ class BoardEngine {
         val containsPrism = group.any { board[it]?.kind == TileKind.PRISM }
         val runState = advance(spectrum, hue, containsPrism)
         val base = if (ash) 0 else minOf(group.size, 8) + maxOf(group.size - 8, 0) / 2
-        val payout = if (base == 0) 0 else (base * (2 + runState.run) + 1) / 2
+        val payout = if (base == 0) 0 else
+            ((base.toLong() * (2L + runState.run.toLong()) + 1L) / 2L)
+                .coerceAtMost(Int.MAX_VALUE.toLong())
+                .toInt()
         return PopResult(settled, Collections.unmodifiableList(group.toList()), hue, ash, group.size, base, payout, group.size - 1,
             cells.count { it.branded } * 2, Collections.unmodifiableList(stones.toList()), runState)
     }
@@ -228,10 +241,13 @@ class BoardEngine {
     private fun advance(s: SpectrumState, hue: Hue?, containsPrism: Boolean): SpectrumState {
         if (s.lastHue == null) return if (hue == null) s else SpectrumState(0, hue)
         val expected = wheel[(wheel.indexOf(s.lastHue) + 1) % 5]
-        if (containsPrism) return SpectrumState(s.run + 1, expected)
+        if (containsPrism) return SpectrumState(incrementRun(s.run), expected)
         if (hue == null) return s
-        return if (hue == expected) SpectrumState(s.run + 1, hue) else SpectrumState(0, hue)
+        return if (hue == expected) SpectrumState(incrementRun(s.run), hue) else SpectrumState(0, hue)
     }
+
+    private fun incrementRun(run: Int): Int =
+        if (run == Int.MAX_VALUE) Int.MAX_VALUE else run + 1
 }
 
 class DeckHueProfile(val deckSize: Int, cardCounts: Map<Hue, Int>) {
@@ -359,7 +375,7 @@ class BoardReplay(private val engine: BoardEngine = BoardEngine()) {
             }
             out += state
         }
-        return out
+        return Collections.unmodifiableList(out.toList())
     }
 }
 object BoardStateDigest {
