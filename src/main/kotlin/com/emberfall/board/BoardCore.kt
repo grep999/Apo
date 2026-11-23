@@ -145,7 +145,8 @@ class BoardEngine {
         val next = board.cells.toMutableList()
         (group + stones).forEach { next[it.index()] = null }
         val settled = gravity(board.copy(cells = next))
-        val runState = if (hue == null) spectrum else advance(spectrum, hue)
+        val containsPrism = group.any { board[it]?.kind == TileKind.PRISM }
+        val runState = advance(spectrum, hue, containsPrism)
         val base = if (ash) 0 else minOf(group.size, 8) + maxOf(group.size - 8, 0) / 2
         val payout = if (base == 0) 0 else (base * (2 + runState.run) + 1) / 2
         return PopResult(settled, group, hue, ash, group.size, base, payout, group.size - 1,
@@ -183,9 +184,17 @@ class BoardEngine {
         return WallOutcome(board.copy(cells = next, incoming = nextIncoming), 0, 0, false, false)
     }
 
-    private fun advance(s: SpectrumState, hue: Hue): SpectrumState {
-        if (s.lastHue == null) return SpectrumState(0, hue)
+    /**
+     * A popped Prism substitutes for exactly one step on the Spectrum wheel.
+     * The resolved base hue remains available for Ink attribution, while the
+     * Spectrum anchor advances to the expected wheel hue. An Ash+Prism pop
+     * still pays zero Ink but can consume that one Spectrum step.
+     */
+    private fun advance(s: SpectrumState, hue: Hue?, containsPrism: Boolean): SpectrumState {
+        if (s.lastHue == null) return if (hue == null) s else SpectrumState(0, hue)
         val expected = wheel[(wheel.indexOf(s.lastHue) + 1) % 5]
+        if (containsPrism) return SpectrumState(s.run + 1, expected)
+        if (hue == null) return s
         return if (hue == expected) SpectrumState(s.run + 1, hue) else SpectrumState(0, hue)
     }
 }

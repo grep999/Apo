@@ -99,6 +99,43 @@ class BoardCoreTest {
         assertEquals(3, b.inkPayout)
     }
 
+    @Test fun prismCountsAsExactlyOneNextSpectrumHue() {
+        val anchor = board(Coord(0,0) to Cell.hue(Hue.EMBER), Coord(1,0) to Cell.hue(Hue.EMBER))
+        val first = assertIs<TapOutcome.Accepted>(engine.tap(anchor, Coord(0,0))).result
+        assertEquals(Hue.EMBER, first.spectrum.lastHue)
+
+        // Directly tapping the Prism selects a Tide group, but the Prism
+        // substitutes for the next wheel hue (Gold) exactly once.
+        val prismGroup = board(
+            Coord(2,3) to Cell.hue(Hue.TIDE),
+            Coord(3,3) to Cell.prism(),
+            Coord(4,3) to Cell.prism()
+        )
+        val result = assertIs<TapOutcome.Accepted>(
+            engine.tap(prismGroup, Coord(3,3), first.spectrum)
+        ).result
+        assertEquals(Hue.TIDE, result.resolvedHue)
+        assertEquals(3, result.groupSize)
+        assertEquals(1, result.spectrum.run)
+        assertEquals(Hue.GOLD, result.spectrum.lastHue)
+        assertEquals(5, result.inkPayout)
+    }
+
+    @Test fun ashPrismPopAdvancesSpectrumOnceWithoutPayingInk() {
+        val ashPrismGroup = board(
+            Coord(2,3) to Cell.ash(),
+            Coord(3,3) to Cell.prism(),
+            Coord(4,3) to Cell.prism()
+        )
+        val result = assertIs<TapOutcome.Accepted>(
+            engine.tap(ashPrismGroup, Coord(3,3), SpectrumState(0, Hue.EMBER))
+        ).result
+        assertTrue(result.isAsh)
+        assertEquals(0, result.inkPayout)
+        assertEquals(1, result.spectrum.run)
+        assertEquals(Hue.GOLD, result.spectrum.lastHue)
+    }
+
     @Test fun rejectedTapIsTransactionalAndReplayDigestStable() {
         val b = board(Coord(0,0) to Cell.hue(Hue.EMBER))
         val commands = listOf(BoardCommand.Tap(Coord(0,0)))
