@@ -19,10 +19,10 @@
 | ADR-011 | Fog and glyphs | 3 Tap actions; hue/Ink concealment; glyph and selection cues preserved | RESOLVED — [ADR-011](../docs/adr/ADR-011-fog-and-glyphs.md) |
 | ADR-012 | Seal behavior | Frozen column for three complete turns; player effects, gravity and Wall insertion blocked | RESOLVED — [ADR-012](../docs/adr/ADR-012-seal-column.md) |
 | ADR-013 | Enemy Vigor and Block | 36×1.11^fightIndex; elite/boss multipliers; integer rounding and Block lifetime | RESOLVED — [ADR-013](../docs/adr/ADR-013-enemy-vigor-and-block.md) |
-| ADR-014 | Unlit starter deck | 4 Gold Strike, 4 Gold-framed Ash Ward, 2 Pop Shot, 1 Sift, 1 Ash Alchemy; Hollow Crown relic | RESOLVED — [ADR-014](../docs/adr/ADR-014-unlit-starter-deck.md) |
+| ADR-014 | Unlit starter deck | 4 Gold Strike, 4 Gold-framed Ash Ward, 2 Pop Shot, 1 Sift, 1 Hollow Crown card; separate Hollow Crown signature relic | RESOLVED — [ADR-014](../docs/adr/ADR-014-unlit-starter-deck.md) |
 | ADR-015 | Effect queue and Echo | Deterministic bounded FIFO; one top-level Echo; transactional overflow | RESOLVED — [ADR-015](../docs/adr/ADR-015-effect-queue-and-echo.md) |
 | ADR-016 | Shade inheritance | One next-run Shade after death; bounded profile; Cinders + one Remnant; no stacking | RESOLVED — [ADR-016](../docs/adr/ADR-016-shade-inheritance.md) |
-| ADR-017 | Fast true ending | Three consecutive turns with ≥1 Ash Pop, only Ash Pops, zero cards; unused Taps allowed; Unlit Covenant gate | RESOLVED — [ADR-017](../docs/adr/ADR-017-fast-true-ending.md) |
+| ADR-017 | Fast true ending | The Unlit class + Unlit Covenant; three turns with ≥1 Ash Pop, no non-Ash Pop/card/Vigil/Flask/Overflow; unused Taps allowed | RESOLVED — [ADR-017](../docs/adr/ADR-017-fast-true-ending.md) |
 | ADR-018 | Map graph | 15 rows; 14 encounters; second elite replaces normal; all paths reach boss | RESOLVED — [ADR-018](../docs/adr/ADR-018-map-graph.md) |
 | ADR-019 | iOS at 1.0 | Android first; iOS/gamepad target retained; M2 measured architecture gate | RESOLVED — [ADR-019](../docs/adr/ADR-019-ios-and-engine-path.md) |
 | ADR-020 | Google Play target SDK | API 36+ for new app/update submissions as of 2026-08-31; recheck at release | RESOLVED — [ADR-020](../docs/adr/ADR-020-google-play-target-api.md) |

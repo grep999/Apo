@@ -33,7 +33,7 @@ The old Android prototype is a source of reusable engineering patterns, not the 
 - Three acts, approximately 30-minute full run, saved after every node.
 - Android first, portrait-only; iOS/gamepad remain 1.0 targets with M2 architecture gate.
 - Premium, no ads, no energy timers, no random-reward purchases; no meta-currency in v1.
-- True ending: Unlit Covenant route; three consecutive Ash-only/no-card turns; unused Taps are allowed.
+- True ending: The Unlit class plus Unlit Covenant; three consecutive turns with ≥1 Ash Pop, no non-Ash Pop, card, Vigil spend, Flask or Overflow; unused Taps are allowed.
 - Full run is the initial mode; no short crawl in M0/M1.
 - EMBERFALL is a working title pending trademark clearance.
 

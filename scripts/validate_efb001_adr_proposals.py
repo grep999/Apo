@@ -45,11 +45,16 @@ assert not invalid, f"invalid ADR contract: {invalid}"
 fast = (adr_dir / "ADR-017-fast-true-ending.md").read_text(encoding="utf-8").lower()
 assert "three consecutive full turns" in fast
 assert "not required to spend all three ordinary taps" in fast
+assert "hero class is `the_unlit` and the unlit covenant is active" in fast
+assert "spend no vigil" in fast and "use no flask" in fast and "overflow" in fast
 assert "swap-match-3 is legacy-only" in resolution.lower()
 assert "EFB-000 independent review" in resolution
 epics = {e["id"]: e for e in wbs["epics"]}
 assert epics["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
 assert "EFB-002-BOARD-CORE" in epics
+unlit = (adr_dir / "ADR-014-unlit-starter-deck.md").read_text(encoding="utf-8").lower()
+assert "unlit_hollow_crown" in unlit and "relic_hollow_crown" in unlit
+assert "ash alchemy" not in unlit
 result = {
     "status": "PRODUCT_OWNER_RESOLVED_IMPLEMENTATION_GATED",
     "resolved_blocking_adrs": len(blocking_ids),

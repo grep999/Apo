@@ -13,13 +13,13 @@ The resolution preserves the established product direction:
 - Five playable hues, three acts, approximately 30-minute full run, Android-first portrait delivery.
 - Draw → Weave (3 base Taps) → Cast → Wall → Enemy → Cleanup.
 - Deck-driven hue spawn, Ink economy, vertical-only gravity and visible two-intent enemy telegraphing.
-- True ending requires three consecutive Ash-only/no-card turns. All three Taps need not be spent; the Unlit Covenant is the route gate, not the hero class.
+- True ending requires The Unlit class plus the Unlit Covenant, and three consecutive turns with ≥1 Ash Pop, no non-Ash Pop, no card, no Vigil spend, no Flask and no Overflow. All three Taps need not be spent.
 
 ## Governance reconciliations
 
 - The proposal's original ADR-012 recommendation to allow gravity and Wall movement through Seal was rejected. Existing engine contract and tests establish a frozen-column behavior; see ADR-012.
-- The original ADR-017 requirement to spend all three Taps per turn was rejected as stricter than the source. See ADR-017.
-- The Unlit starter deck separates its signature card (Ash Alchemy) from its signature relic (Hollow Crown); see ADR-014.
+- The original ADR-017 requirement to spend all three Taps per turn was rejected as stricter than the source. The existing class restriction and no-Vigil/no-Flask/no-Overflow checks are preserved. See ADR-017.
+- The Unlit starter deck preserves the established 12-card Gold-frame list including a Hollow Crown card, plus the separate Hollow Crown signature relic; see ADR-014.
 - Existing tested Overflow penalty of one Flask is explicitly carried forward alongside the v0.2 8-Vigil/two-row/skip-rise rule; see ADR-008.
 - The existing 35-cell opening topology is retained while replacing the legacy swap-match-3 interaction; see ADR-002.
 

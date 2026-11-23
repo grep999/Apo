@@ -17,7 +17,7 @@
 | Run | Three acts, about 30 minutes, saved after every node | Spec §§1, 7 |
 | Platform | Android first, portrait; iOS/gamepad 1.0 target, M2 architecture gate | Spec §§1, 14, 16 |
 | Monetization | Premium; no ads, energy timer or random-reward purchases; no meta-currency in v1 | Spec §§1, 7, 18 |
-| True ending | Three consecutive Ash-only/no-card turns; Unlit Covenant unlocks route | Spec §§7, 9; ADR-017 |
+| True ending | The Unlit class + Unlit Covenant; three consecutive turns with ≥1 Ash Pop, no non-Ash Pop, no card, no Vigil spend, no Flask and no Overflow; unused Taps allowed | Existing engine contract + spec §§7, 9; ADR-017 |
 | Onboarding | Fight 1 board-only; later fights progressively add Ink/cards/keywords | Spec §§13, 16 |
 | Store target | API 36+ at submission from 2026-08-31 | Official policy; ADR-020 |
 
@@ -28,9 +28,9 @@
 - Stone breaks in one snapshot batch; no recursive same-action chain.
 - Seal retains the established frozen-column contract from engine and tests.
 - Overflow retains the established one-Flask penalty alongside the explicit 8-Vigil/two-row/skip-rise behavior; it is now explicit in ADR-008.
-- The Unlit starter deck is exactly 12 cards; Ash Alchemy is the signature card, Hollow Crown the signature relic.
-- The Fast does not require all three Taps; at least one Ash Pop per qualifying turn, no non-Ash Pop and no card cast.
-- The Unlit Covenant is the route gate, not the The Unlit hero class.
+- The Unlit starter deck is exactly 12 Gold-frame cards: 4 Gold Strike, 4 Ash Ward, 2 Pop Shot, 1 Sift, 1 Hollow Crown card; the separate Hollow Crown signature relic is also equipped. Preserve both IDs/effects; naming review is queued.
+- The Fast does not require all three Taps; at least one Ash Pop per qualifying turn, no non-Ash Pop, no card, no Vigil spend, no Flask and no Overflow.
+- Both The Unlit hero class and the Unlit Covenant are required, as established in the engine and decision log.
 
 ## Explicit non-goals
 
