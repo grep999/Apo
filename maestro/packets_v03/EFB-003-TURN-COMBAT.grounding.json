@@ -64,8 +64,8 @@
     "Independent Mastery review inspects exact candidate, changed paths, tests and evidence; builder and reviewer identities differ.",
     "Repetition records expected/actual outcome, durable lessons, accepted state and next increment."
   ],
-  "next_increment": "Complete final-candidate run 45274051704 on SHA e9864637575275323aeb1104f9bd0a606c94a80a, resolve findings, obtain independent Mastery and record Repetition. Then proceed to EFB-004 card/effect engine.",
-  "current_status": "IMPLEMENTATION_CANDIDATE_PENDING_FINAL_SHA_CI_MASTERY_REPETITION",
+  "next_increment": "Obtain independent Mastery review of exact candidate e9864637575275323aeb1104f9bd0a606c94a80a, resolve findings, and record Repetition. Then proceed to EFB-004 card/effect engine.",
+  "current_status": "EXACT_SHA_CI_VERIFIED_PENDING_INDEPENDENT_MASTERY_AND_REPETITION",
   "no_implementation_authorized": false,
   "baseline_ref": "git:6b6e139890a205ead337a94226464a0b5ddd82da",
   "legacy_policy": "EXCLUDED_NO_SOURCE_OR_ASSET_REUSE",
@@ -83,7 +83,11 @@
     "final_candidate_run": {
       "sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
       "run_id": 45274051704,
-      "status": "pending"
+      "status": "PASS",
+      "checks": [
+        "pure-jvm-boundary",
+        "gradle-clean-test"
+      ]
     }
   }
 }
