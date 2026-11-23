@@ -16,7 +16,7 @@
   "checks": [
     {
       "name": "local-kotlin-source-mirror-compile",
-      "outcome": "pass",
+      "outcome": "passed",
       "required": false,
       "command": "kotlinc src/main/kotlin/com/emberfall/board/*.kt -d build/classes (local mirror of committed domain implementation)",
       "exit_code": 0,
@@ -28,7 +28,7 @@
     },
     {
       "name": "100k-seed-generation-smoke",
-      "outcome": "pass",
+      "outcome": "passed",
       "required": false,
       "command": "java -cp build/smoke.jar:build/classes SmokeKt (local mirror)",
       "exit_code": 0,
@@ -40,7 +40,7 @@
     },
     {
       "name": "100k-seed-hue-distribution",
-      "outcome": "pass",
+      "outcome": "passed",
       "required": false,
       "command": "java -cp build/stats.jar:build/classes StatsKt (local mirror)",
       "exit_code": 0,
@@ -52,7 +52,7 @@
     },
     {
       "name": "mechanics-edge-smoke",
-      "outcome": "pass",
+      "outcome": "passed",
       "required": false,
       "command": "java -cp build/acceptance-smoke.jar:build/classes AcceptanceSmokeKt (local mirror)",
       "exit_code": 0,
