@@ -1,6 +1,9 @@
 name: Emberfall Agent Dispatch
 
 on:
+  push:
+    branches: [docs/emberfall-release-governance]
+    paths: ['maestro/dispatch-requests/*.json']
   workflow_dispatch:
     inputs:
       role:
@@ -15,14 +18,14 @@ on:
       base_ref:
         description: Exact branch to work from
         required: true
-        default: handoff/emberfall-coding-agent-v1.0
+        default: docs/emberfall-release-governance
         type: string
       prompt:
         description: Complete bounded agent prompt
         required: true
         type: string
       create_pull_request:
-        description: Ask Copilot to create a PR (normally only for BUILDER)
+        description: Ask Copilot to create a PR (only for BUILDER)
         required: true
         default: false
         type: boolean
@@ -35,7 +38,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: emberfall-agent-${{ inputs.task_id }}
+  group: emberfall-agent-${{ github.event_name == 'push' && github.sha || inputs.task_id }}
   cancel-in-progress: false
 
 jobs:
@@ -43,70 +46,89 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Validate dispatch boundaries
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Load and validate task packet
+        id: packet
         env:
-          ROLE: ${{ inputs.role }}
-          TASK_ID: ${{ inputs.task_id }}
-          BASE_REF: ${{ inputs.base_ref }}
-          CREATE_PR: ${{ inputs.create_pull_request }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ROLE: ${{ inputs.role }}
+          INPUT_TASK_ID: ${{ inputs.task_id }}
+          INPUT_BASE_REF: ${{ inputs.base_ref }}
+          INPUT_PROMPT: ${{ inputs.prompt }}
+          INPUT_CREATE_PR: ${{ inputs.create_pull_request }}
+          INPUT_MODEL: ${{ inputs.model }}
         run: |
           set -euo pipefail
+          if [[ "$EVENT_NAME" == "push" ]]; then
+            mapfile -t FILES < <(git diff --name-only HEAD^ HEAD -- 'maestro/dispatch-requests/*.json')
+            [[ "${#FILES[@]}" -eq 1 ]] || { echo "Expected exactly one dispatch request in this push, got ${#FILES[@]}" >&2; exit 1; }
+            cp "${FILES[0]}" request.json
+            ROLE=$(jq -r '.role' request.json)
+            TASK_ID=$(jq -r '.task_id' request.json)
+            BASE_REF=$(jq -r '.base_ref' request.json)
+            PROMPT=$(jq -r '.prompt' request.json)
+            CREATE_PR=$(jq -r '.create_pull_request // false' request.json)
+            MODEL=$(jq -r '.model // ""' request.json)
+          else
+            ROLE="$INPUT_ROLE"; TASK_ID="$INPUT_TASK_ID"; BASE_REF="$INPUT_BASE_REF"
+            PROMPT="$INPUT_PROMPT"; CREATE_PR="$INPUT_CREATE_PR"; MODEL="$INPUT_MODEL"
+            jq -n --arg role "$ROLE" --arg task_id "$TASK_ID" --arg base_ref "$BASE_REF" --arg prompt "$PROMPT" --argjson create_pull_request "$CREATE_PR" --arg model "$MODEL"               '{role:$role,task_id:$task_id,base_ref:$base_ref,prompt:$prompt,create_pull_request:$create_pull_request,model:$model}' > request.json
+          fi
+          [[ "$ROLE" =~ ^(RESEARCHER|ARCHITECT|BUILDER|INDEPENDENT_REVIEWER)$ ]] || { echo "Invalid role" >&2; exit 1; }
           [[ "$TASK_ID" =~ ^[A-Za-z0-9._-]{3,100}$ ]] || { echo "Invalid task_id" >&2; exit 1; }
           [[ "$BASE_REF" == "handoff/emberfall-coding-agent-v1.0" || "$BASE_REF" == "docs/emberfall-release-governance" || "$BASE_REF" == feat/* ]] || { echo "Base ref is not allowlisted" >&2; exit 1; }
-          if [[ "$ROLE" != "BUILDER" && "$CREATE_PR" == "true" ]]; then
-            echo "Only BUILDER tasks may request a PR" >&2
-            exit 1
-          fi
+          [[ -n "$PROMPT" ]] || { echo "Prompt is empty" >&2; exit 1; }
+          if [[ "$ROLE" != "BUILDER" && "$CREATE_PR" == "true" ]]; then echo "Only BUILDER may request a PR" >&2; exit 1; fi
+          echo "role=$ROLE" >> "$GITHUB_OUTPUT"
+          echo "task_id=$TASK_ID" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
+          echo "create_pr=$CREATE_PR" >> "$GITHUB_OUTPUT"
+          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
 
-      - name: Start Copilot cloud-agent task
-        id: dispatch
+      - name: Dispatch Copilot cloud agent
         env:
           TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
-          ROLE: ${{ inputs.role }}
-          TASK_ID: ${{ inputs.task_id }}
-          BASE_REF: ${{ inputs.base_ref }}
+          ROLE: ${{ steps.packet.outputs.role }}
+          TASK_ID: ${{ steps.packet.outputs.task_id }}
+          BASE_REF: ${{ steps.packet.outputs.base_ref }}
+          CREATE_PR: ${{ steps.packet.outputs.create_pr }}
+          MODEL: ${{ steps.packet.outputs.model }}
           PROMPT: ${{ inputs.prompt }}
-          CREATE_PR: ${{ inputs.create_pull_request }}
-          MODEL: ${{ inputs.model }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
-          if [[ -z "$TOKEN" ]]; then
-            echo "::error::Missing COPILOT_AGENT_TOKEN secret. Add a user-to-server fine-grained PAT with repository Actions, Contents, Issues and Pull Requests read/write permissions."
-            exit 1
-          fi
-          ROLE_RULES=""
+          [[ -n "$TOKEN" ]] || { echo "::error::Add COPILOT_AGENT_TOKEN (user-to-server PAT; fine-grained repo permissions: Actions, Contents, Issues and Pull Requests read/write)."; exit 1; }
+          if [[ "$EVENT_NAME" == "push" ]]; then PROMPT=$(jq -r '.prompt' request.json); fi
           case "$ROLE" in
-            RESEARCHER) ROLE_RULES="Research only. Do not edit code. Return source-backed findings, uncertainty and recommendations." ;;
-            ARCHITECT) ROLE_RULES="Architecture only. Preserve accepted decisions. Return bounded work items and acceptance criteria. Do not implement." ;;
-            BUILDER) ROLE_RULES="Implement only the authorized task scope in an isolated branch. Run tests, report exact SHA and open a draft PR. Never merge." ;;
-            INDEPENDENT_REVIEWER) ROLE_RULES="Read-only adversarial review. Do not modify code. Inspect the exact candidate SHA, return severity-ranked findings with file/line evidence. Do not approve your own or a moving branch." ;;
-            *) echo "Unknown role" >&2; exit 1 ;;
+            RESEARCHER) RULES="Research only. Do not modify code. Return source-backed findings, uncertainty, contradictions and recommendations." ;;
+            ARCHITECT) RULES="Architecture only. Preserve accepted decisions. Return bounded work items, interfaces, risks and acceptance criteria. Do not implement." ;;
+            BUILDER) RULES="Implement only authorized scope in an isolated branch. Run tests, report exact SHA and open a draft PR. Never merge." ;;
+            INDEPENDENT_REVIEWER) RULES="Read-only adversarial review of the exact candidate SHA. Do not modify code. Return severity-ranked findings with file/line evidence. Missing evidence is not PASS." ;;
           esac
-          FULL_PROMPT="$(printf '%s\n\nTASK ID: %s\nROLE: %s\nBASE REF: %s\n\nROLE RULES: %s\n\nTASK PROMPT:\n%s'             "You are working on Emberfall. Read AGENTS.md, engineering/AGENT_ORCHESTRATION.md, the authoritative game spec, Product Owner decision baseline, accepted ADRs and the Maestro task packet before acting. Preserve all accepted decisions. Do not claim tests or actions you did not perform. If blocked, explain precisely and stop."             "$TASK_ID" "$ROLE" "$BASE_REF" "$ROLE_RULES" "$PROMPT")"
-          jq -n --arg prompt "$FULL_PROMPT" --arg base_ref "$BASE_REF" --arg model "$MODEL" --argjson create_pr "$CREATE_PR"             '{prompt:$prompt,base_ref:$base_ref,create_pull_request:$create_pr} + (if $model == "" then {} else {model:$model} end)' > request.json
-          HTTP_CODE=$(curl --silent --show-error --output response.json --write-out '%{http_code}'             -X POST             -H "Accept: application/vnd.github+json"             -H "X-GitHub-Api-Version: 2022-11-28"             -H "Authorization: Bearer $TOKEN"             https://api.github.com/agents/repos/grep999/Apo/tasks             -H "Content-Type: application/json"             --data-binary @request.json)
-          cat response.json
-          if [[ "$HTTP_CODE" -lt 200 || "$HTTP_CODE" -ge 300 ]]; then
-            echo "::error::Copilot task dispatch failed with HTTP $HTTP_CODE"
-            exit 1
-          fi
-          TASK_API_ID=$(jq -r '.id // .task_id // empty' response.json)
-          [[ -n "$TASK_API_ID" ]] || { echo "::error::API response did not include a task ID"; exit 1; }
-          echo "task_api_id=$TASK_API_ID" >> "$GITHUB_OUTPUT"
+          FULL_PROMPT="$(printf '%s\n\nMAESTRO TASK: %s\nROLE: %s\nBASE REF: %s\n\nROLE BOUNDARY: %s\n\nTASK:\n%s'             "You are working on Emberfall. Read the available AGENTS.md, engineering/AGENT_ORCHESTRATION.md, authoritative game spec, Product Owner decision baseline, accepted ADRs and task packet. Preserve accepted decisions. Never claim unrun tests or actions. Stop and report blockers instead of guessing."             "$TASK_ID" "$ROLE" "$BASE_REF" "$RULES" "$PROMPT")"
+          jq -n --arg prompt "$FULL_PROMPT" --arg base_ref "$BASE_REF" --arg model "$MODEL" --argjson create_pull_request "$CREATE_PR"             '{prompt:$prompt,base_ref:$base_ref,create_pull_request:$create_pull_request} + (if $model == "" then {} else {model:$model} end)' > copilot-request.json
+          CODE=$(curl --silent --show-error --output copilot-response.json --write-out '%{http_code}'             -X POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"             -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json"             https://api.github.com/agents/repos/grep999/Apo/tasks --data-binary @copilot-request.json)
+          cat copilot-response.json
+          if [[ "$CODE" -lt 200 || "$CODE" -ge 300 ]]; then echo "::error::Copilot task API returned HTTP $CODE"; exit 1; fi
+          ID=$(jq -r '.id // .task_id // empty' copilot-response.json)
+          [[ -n "$ID" ]] || { echo "::error::No task ID in Copilot response"; exit 1; }
           {
-            echo "## Copilot agent dispatched"
-            echo "- Maestro task: `$TASK_ID`"
-            echo "- Role: `$ROLE`"
-            echo "- Base ref: `$BASE_REF`"
-            echo "- Copilot task ID: `$TASK_API_ID`"
-            echo "- State: queued (verify using Emberfall Agent Status workflow)"
+            echo "## Agent dispatched"
+            echo "- Maestro task: $TASK_ID"
+            echo "- Role: $ROLE"
+            echo "- Base: $BASE_REF"
+            echo "- Copilot task ID: $ID"
+            echo "- Status lookup: run **Emberfall Agent Status** with this ID"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Preserve dispatch receipt
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: emberfall-agent-dispatch-${{ inputs.task_id }}
+          name: emberfall-agent-dispatch-${{ steps.packet.outputs.task_id }}
           retention-days: 30
           path: |
             request.json
-            response.json
+            copilot-request.json
+            copilot-response.json
