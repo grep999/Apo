@@ -454,3 +454,10 @@ class CombatCoreTest {
         assertTrue(result.events.none { it is CombatEvent.TapResolved })
     }
 }
+    @Test fun combatDigestBindsRunSeedForDeterministicReplayIdentity() {
+        val definition = enemy(EnemyIntent.Strike(3))
+        val first = CombatState.start(BoardState.empty(), definition, runSeed = 101L)
+        val second = CombatState.start(BoardState.empty(), definition, runSeed = 102L)
+        assertNotEquals(CombatStateDigest.sha256(first), CombatStateDigest.sha256(second))
+    }
+
