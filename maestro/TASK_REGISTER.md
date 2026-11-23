@@ -8,10 +8,10 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 | ID | Increment | Owner | Risk | Current portfolio state |
 |---|---|---|---|---|
-| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; Maestro GROUNDING active (2 READY items); Mastery not started |
-| EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; ADR validator PASS; native Maestro workflow not created |
-| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | Exact candidate CI verified; Maestro MASTERY active; review assignment PROPOSED, not assigned |
-| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet prepared; blocked on EFB-002 acceptance and Maestro dispatch readiness |
+| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; GROUNDING active; independent merged-tree review pending; license/IP provenance gap identified |
+| EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; Product Owner ADR validator PASS; no formal review submission or native Maestro workflow |
+| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | PR #14 draft; exact head 2543bee PASS on Gradle/JUnit, pure-JVM and ADR validation; Mastery active; reviewer assignment PROPOSED, not assigned |
+| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet prepared; blocked on EFB-002 Mastery/Repetition, EFB-000 review, and durable Maestro dispatch/state readiness |
 | EFB-004-CARD-EFFECTS | Typed data-driven card/effect engine | BUILDER | R1 | Not started; blocked on EFB-002/003 |
 | EFB-005-CLASSES-STARTER | Three classes and starter decks | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-004 |
 | EFB-006-ENEMIES-BOSSES | Enemies, elites, phased bosses | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-003/004 |
@@ -29,12 +29,12 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 ## Current Maestro state
 
-- EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments.
-- EFB-001: exact-head ADR validation run `45180407668` passed; no native Maestro workflow artifact exists. Review input: `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json`.
-- EFB-002 workflow: `b856a095-5d26-4aeb-8c52-82f36dcde6e6`; ACTIVE / MASTERY / revision 5; three Momentum work items complete; independent-review assignment PROPOSED, not assigned.
-- EFB-002 exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`. Review input with candidate file hashes: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
+- EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments. Merged-tree review is outstanding; pre-review identified absent LICENSE/COPYING/NOTICE files in both the handoff and legacy trees, so legacy code reuse is not cleared.
+- EFB-001: Product Owner ADR validation run `45180407668` passed; a subsequent cross-check run `45261280912` also passed on the current EFB-002 PR head. No native EFB-001 Maestro workflow or formal review submission exists. Review input: `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json`.
+- EFB-002 latest run-scoped workflow: `ea293bf8-83a8-4d49-a6fd-ac722008f0b4`; ACTIVE / MASTERY / revision 5; three Momentum items complete; independent-review assignment `4133762a-64a2-46e7-bdc1-7822e0090ad8` is PROPOSED, not assigned. This is an artifact snapshot, not durable cross-run state.
+- EFB-002 current candidate: PR #14, head `2543bee3815489d659548df5a9f8fbe1367f3c5f`; original remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` is preserved in its ancestry. Exact-head GateRunner run `45261280913`, Board Core run `45261282755`, ADR validator run `45261280912` all passed. Review input with current blob hashes and artifacts: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
 - EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
-- EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing; see `engineering/RELEASE_READINESS.md`.
+- EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing on head `2543bee...`; formatting/lint tooling is not configured and is not claimed. See `engineering/RELEASE_READINESS.md`.
 
 ## Agent orchestration MVP
 
@@ -46,9 +46,9 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 ## Workflow-control-plane actions
 
-- [ ] Complete EFB-000 Grounding/Momentum and submit a merged-tree review packet.
+- [ ] Complete EFB-000 independent merged-tree review; explicitly record the missing license/IP provenance and prohibit legacy code reuse until rights are confirmed.
 - [ ] Reconcile EFB-001 into a native Maestro task state without reopening accepted ADRs.
-- [ ] Persist and resume the same Maestro DB/workflow ID across candidate pushes.
+- [ ] Persist and resume the same Maestro DB/workflow ID across candidate pushes; current PR workflow creates a fresh database each run.
 - [ ] Configure a real independent-review adapter; PROPOSED is not ASSIGNED.
 - [ ] Require candidate file hashes, exact SHA, VERIFIED gates, distinct reviewer identity and Repetition before acceptance.
 
