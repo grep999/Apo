@@ -42,6 +42,10 @@ fun RewardsScreen(
 ) {
   val reward = run.pendingReward ?: return
   var supportToReplace by remember(run.pendingReward) { mutableStateOf<String?>(null) }
+  val otherChoicesResolved =
+    (reward.relicRewardId == null || reward.relicPicked) &&
+      (reward.supportChoices.isEmpty() || reward.supportPicked) &&
+      (reward.artifactChoices.isEmpty() || reward.artifactPicked)
   val canFinish = reward.allChoicesResolved
 
   Column(
@@ -260,7 +264,7 @@ fun RewardsScreen(
                 )
                 Spacer(Modifier.width(6.dp))
                 Text(
-                  text = if (relicResolved) {
+                  text = if (otherChoicesResolved) {
                     "Skip Card (+${GameEngine.SKIP_CARD_CINDER_BONUS} Cinders) & Map"
                   } else {
                     "Skip Card (+${GameEngine.SKIP_CARD_CINDER_BONUS} Cinders)"

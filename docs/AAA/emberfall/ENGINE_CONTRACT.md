@@ -37,3 +37,12 @@
 
 ## 4. Transactional Command Guards
 Every `GameCommand` runs through `GameEngine.validateTransition(run, command)` first; rejected commands return `accepted = false` with identical unchanged `RunState` (aside from `UseFlask` checking `ZERO_FLASKS` collapse if already 0).
+
+
+## 5. Reward Selection Integrity (P0)
+
+- A support reward must be present in the pending offer, resolve to a catalog definition, and not already be installed.
+- A support may be appended only when capacity remains and no replacement index is supplied.
+- At capacity, replacement requires an explicit index inside the current socket list.
+- Rejected support selections are transactional: neither progression nor the pending reward changes.
+- Reward completion requires every non-empty reward channel (card, relic, support, artifact) to be explicitly claimed or skipped.

@@ -272,7 +272,9 @@ object GameEngine {
           !rewardOpen -> CommandRejectionReason.WRONG_PHASE
           reward.supportPicked -> CommandRejectionReason.REWARD_ALREADY_CLAIMED
           command.supportId !in reward.supportChoices -> CommandRejectionReason.SUPPORT_UNAVAILABLE
-          run.growth.socketedSupportIds.size >= run.growth.maxSockets && command.replaceSlot !in run.growth.socketedSupportIds.indices -> CommandRejectionReason.WRONG_PHASE
+          ProgressionCatalog.supportByIdOrNull(command.supportId) == null -> CommandRejectionReason.SUPPORT_UNAVAILABLE
+          command.supportId in run.growth.socketedSupportIds -> CommandRejectionReason.SUPPORT_UNAVAILABLE
+          run.growth.socketedSupportIds.size >= run.growth.maxSockets && command.replaceSlot !in run.growth.socketedSupportIds.indices -> CommandRejectionReason.SUPPORT_UNAVAILABLE
           run.growth.socketedSupportIds.size < run.growth.maxSockets && command.replaceSlot != -1 -> CommandRejectionReason.WRONG_PHASE
           else -> null
         }

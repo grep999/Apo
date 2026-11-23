@@ -328,6 +328,42 @@ class EmberfallEngineTest {
   }
 
   @Test
+  fun `support reward rejects already socketed and unknown support without consuming the choice`() {
+    val base = GameEngine.startNewRun(HeroClass.ASHEN_MONK, "SUPPORT-REWARD-INTEGRITY")
+    val duplicateSupportRun = base.copy(
+      growth = base.growth.copy(
+        socketedSupportIds = listOf("sup_prism_forge"),
+        maxSockets = 1,
+      ),
+      pendingReward = RewardBundle(
+        cindersEarned = 0,
+        cardChoices = emptyList(),
+        supportChoices = listOf("sup_prism_forge"),
+      ),
+    )
+
+    val duplicate = GameEngine.execute(
+      duplicateSupportRun,
+      GameCommand.SocketSupport("sup_prism_forge", 0),
+    )
+    assertFalse("Already socketed support must not consume a reward choice", duplicate.accepted)
+    assertEquals(duplicateSupportRun, duplicate.run)
+
+    val unknownSupportRun = duplicateSupportRun.copy(
+      growth = duplicateSupportRun.growth.copy(socketedSupportIds = emptyList()),
+      pendingReward = duplicateSupportRun.pendingReward?.copy(
+        supportChoices = listOf("missing_support_definition"),
+      ),
+    )
+    val unknown = GameEngine.execute(
+      unknownSupportRun,
+      GameCommand.SocketSupport("missing_support_definition", -1),
+    )
+    assertFalse("Unknown support definition must not consume a reward choice", unknown.accepted)
+    assertEquals(unknownSupportRun, unknown.run)
+  }
+
+  @Test
   fun `event selection rejects unaffordable options and simulator chooses first affordable option`() {
     val base = GameEngine.startNewRun(HeroClass.QUARRY_WITCH, "EVENT-AFFORDABILITY")
     val eventRun = base.copy(

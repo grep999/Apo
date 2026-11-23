@@ -38,3 +38,12 @@
 1. **Ashen Monk & Quarry Witch Starter Cards (`P1.2`):** Exact canonical card names/damage numbers require `Design Bible v0.2`. Current 10-card Monk (`Ember/Moss` + Vigil burn) and Witch (`Tide/Violet` + Paint/Seal-cleanse) starters are tagged `[PROVISIONAL]`.
 2. **Exact Numeric Constants (`P1.10`):** Ash Ward/Gold Strike damage values, Event option tuning numbers, and Combat Board base formula (`count * 2 + groupBonus`) are tagged `[PROVISIONAL]` until upstream Design Bible import.
 3. **Room Schema (`UI-P1.9`):** `EmberfallDatabase` persists `active_run`, `shade_deck`, and `run_history` only. Per canonical no-meta-currency design, there is no separate meta-unlocks/currency table.
+
+
+## 4. P0 Reward Selection Guard Follow-up — 2026-11-23
+
+**Decision:** A support reward cannot be consumed by selecting an already socketed support or an invalid catalog ID. The command guard rejects both before mutation; a full socket set still requires an explicit valid replacement slot.
+
+**Rationale:** The progression helper already treats duplicate/unknown support IDs as no-ops. Accepting those commands at the engine boundary would nevertheless mark the reward as picked, silently discarding the choice. Validation must reject the command atomically instead.
+
+**Verification:** Regression tests cover duplicate and unknown support IDs, unchanged RunState on rejection, and the existing explicit replacement path.
