@@ -42,6 +42,14 @@ object SimulationRunner {
   const val MAX_NODES_PER_RUN = 60
   const val MAX_TURNS_PER_COMBAT = 45
 
+  /** Deterministic event policy: never select an option the player cannot currently afford. */
+  fun firstAffordableEventChoice(run: RunState): EventChoiceDef? =
+    run.activeEvent?.choices?.firstOrNull { choice ->
+      run.cinders >= choice.minCindersRequired &&
+        run.hp >= choice.minHpRequired &&
+        run.flasks >= choice.minFlasksRequired
+    }
+
   fun simulateFullRunWithOutcome(
     heroClass: HeroClass,
     seedText: String,
@@ -100,13 +108,14 @@ object SimulationRunner {
           run = resolveRewardsBot(run)
         }
         run.activeEvent != null -> {
-          val choice = run.activeEvent.choices.firstOrNull()
-          if (choice != null) {
-            run = GameEngine.chooseEventOption(run, choice.id)
-          }
-          if (run.gameOverReason == null && !run.runWon) {
-            run = GameEngine.leaveNonCombatNode(run)
-          }
+          val choice = firstAffordableEventChoice(run)
+          if (choice == null) break
+          val chosen = GameEngine.execute(run, GameCommand.ChooseEventOption(choice.id))
+          if (!chosen.accepted) break
+          run = chosen.run
+          val left = GameEngine.execute(run, GameCommand.LeaveNode)
+          if (!left.accepted) break
+          run = left.run
         }
         run.shopStock != null -> {
           val stock = run.shopStock
@@ -193,7 +202,8 @@ object SimulationRunner {
     val afterRelic = run.pendingReward
     if (afterRelic != null && afterRelic.supportChoices.isNotEmpty() && !afterRelic.supportPicked) {
       val pick = afterRelic.supportChoices.first()
-      val socketRes = GameEngine.execute(run, GameCommand.SocketSupport(pick))
+      val replaceSlot = if (run.growth.socketedSupportIds.size >= run.growth.maxSockets) 0 else -1
+      val socketRes = GameEngine.execute(run, GameCommand.SocketSupport(pick, replaceSlot))
       run = if (socketRes.accepted) socketRes.run else GameEngine.execute(run, GameCommand.SkipSupportChoice).run
     }
 
