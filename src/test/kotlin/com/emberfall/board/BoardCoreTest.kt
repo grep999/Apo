@@ -71,7 +71,7 @@ class BoardCoreTest {
             Coord(0,0) to Cell.hue(Hue.EMBER),
             Coord(0,1) to Cell.hue(Hue.GOLD),
             Coord(1,1) to Cell.hue(Hue.TIDE)
-        ).copy(sealedColumns = setOf(0), incoming = incoming)
+        ).sealColumn(0).copy(incoming = incoming)
         val nextIncoming = List(7) { Cell.hue(Hue.MOSS) }
         val rise = engine.riseWall(b, nextIncoming, 0)
 
@@ -137,7 +137,7 @@ class BoardCoreTest {
 
     @Test fun sealedColumnIsFrozenDuringGravityAndWallRise() {
         val b = board(Coord(0,0) to Cell.hue(Hue.EMBER), Coord(1,1) to Cell.hue(Hue.TIDE))
-            .copy(sealedColumns = setOf(0), incoming = List(7) { Cell.hue(Hue.MOSS) })
+            .sealColumn(0).copy(incoming = List(7) { Cell.hue(Hue.MOSS) })
         val g = engine.gravity(b)
         assertEquals(Cell.hue(Hue.EMBER), g[Coord(0,0)])
         val rise = engine.riseWall(g, List(7) { Cell.hue(Hue.GOLD) }, 2)
@@ -327,6 +327,21 @@ class BoardCoreTest {
         assertEquals(8, result.vigilDamage)
         assertEquals(0, result.flasksConsumed)
         assertEquals(incoming, result.board.incoming)
+    }
+
+    @Test fun sealedColumnsRequireMatchingExpiryTimers() {
+        assertFailsWith<IllegalArgumentException> {
+            BoardState(List(49) { null }, List(7) { null }, sealedColumns = setOf(2))
+        }
+        assertFailsWith<IllegalArgumentException> {
+            BoardState(
+                List(49) { null }, List(7) { null },
+                sealedColumns = setOf(2), sealTurnsRemaining = mapOf(3 to 2)
+            )
+        }
+        val sealed = BoardState.empty().sealColumn(2, turns = 2)
+        assertEquals(setOf(2), sealed.sealedColumns)
+        assertEquals(mapOf(2 to 2), sealed.sealTurnsRemaining)
     }
 
     @Test fun sealExpiresAfterExactlyThreeEnemyPhases() {

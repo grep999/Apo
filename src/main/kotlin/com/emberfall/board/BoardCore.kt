@@ -49,7 +49,9 @@ class BoardState(
     init {
         require(this.cells.size == 49 && this.incoming.size == 7)
         require(this.sealedColumns.all { it in 0..6 })
-        require(this.sealTurnsRemaining.keys.all { it in this.sealedColumns })
+        require(this.sealTurnsRemaining.keys == this.sealedColumns) {
+            "Every sealed column must have exactly one positive expiry timer"
+        }
         require(this.sealTurnsRemaining.values.all { it > 0 })
         require(rulesVersion.isNotBlank())
     }
