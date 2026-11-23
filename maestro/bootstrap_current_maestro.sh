@@ -30,7 +30,14 @@ pip install -e "$MAESTRO_DIR"
 pushd "$MAESTRO_DIR" >/dev/null
 python -m unittest discover -s tests -v
 python scripts/validate_contracts.py
-python -m compileall -q maestro scripts tests
+# _engine_src_0.py is a generated source-string fixture, not an importable module.
+python -m compileall -q -x '_engine_src_0\\.py
+maestro adapters
+maestro adapter-health --name echo
+popd >/dev/null
+printf '\nMaestro v0.3.0 verified at %s\n' "$ACTUAL_COMMIT"
+printf 'Use maestro/tasks_v2 and maestro/packets_v03 in this project package.\n'
+ maestro scripts tests
 maestro adapters
 maestro adapter-health --name echo
 popd >/dev/null
