@@ -108,7 +108,50 @@ class BoardCoreTest {
         assertEquals(BoardStateDigest.sha256(one.last().board, one.last().spectrum),
             BoardStateDigest.sha256(two.last().board, two.last().spectrum))
         assertEquals(b, one.last().board)
+        assertEquals(PopRejection.NO_LEGAL_GROUP, one.last().rejection)
         assertNotEquals(BoardStateDigest.sha256(b, SpectrumState()), "not-a-digest")
+    }
+
+    @Test fun replayRetainsPopAndWallResourceConsequences() {
+        val popBoard = board(Coord(0,6) to Cell.hue(Hue.EMBER), Coord(1,6) to Cell.hue(Hue.EMBER))
+        val popReplay = BoardReplay(engine).replay(popBoard, listOf(BoardCommand.Tap(Coord(0,6))))
+        assertEquals(2, popReplay.last().lastPop?.groupSize)
+        assertEquals(1, popReplay.last().lastPop?.chipDamage)
+        assertEquals(2, popReplay.last().lastPop?.inkPayout)
+
+        val incoming = List<Cell?>(7) { Cell.ash() }
+        val wallBoard = board(Coord(0,0) to Cell.hue(Hue.EMBER)).copy(incoming = incoming)
+        val wallReplay = BoardReplay(engine).replay(
+            wallBoard,
+            listOf(BoardCommand.WallRise(List(7) { Cell.hue(Hue.GOLD) }, 1))
+        )
+        assertEquals(8, wallReplay.last().lastWall?.vigilDamage)
+        assertEquals(1, wallReplay.last().lastWall?.flasksConsumed)
+        assertTrue(wallReplay.last().lastWall?.overflow == true)
+        assertEquals(incoming, wallReplay.last().board.incoming)
+    }
+
+    @Test fun replayAppliesSpectrumTurnBoundaryAndSealEnemyPhaseCountdown() {
+        val b = board(
+            Coord(0,6) to Cell.hue(Hue.EMBER), Coord(1,6) to Cell.hue(Hue.EMBER),
+            Coord(3,6) to Cell.hue(Hue.GOLD), Coord(4,6) to Cell.hue(Hue.GOLD)
+        ).sealColumn(6)
+        val history = BoardReplay(engine).replay(
+            b,
+            listOf(
+                BoardCommand.Tap(Coord(0,6)),
+                BoardCommand.Tap(Coord(3,6)),
+                BoardCommand.TurnBoundary,
+                BoardCommand.EnemyPhaseEnd,
+                BoardCommand.EnemyPhaseEnd,
+                BoardCommand.EnemyPhaseEnd
+            )
+        )
+        assertEquals(1, history[2].spectrum.run)
+        assertEquals(SpectrumState(), history[3].spectrum)
+        assertEquals(2, history[4].board.sealTurnsRemaining[6])
+        assertEquals(1, history[5].board.sealTurnsRemaining[6])
+        assertTrue(6 !in history[6].board.sealedColumns)
     }
 
     @Test fun generationIsDeterministicAndMeetsOpeningTopology() {
