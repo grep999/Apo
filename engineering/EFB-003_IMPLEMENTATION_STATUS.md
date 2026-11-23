@@ -1,7 +1,7 @@
 # EFB-003 — Turn / Combat Core
 
 **Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
-**Candidate SHA:** `7625c2186726b5570b4f8cbdf848b0b9ac73f7a3`  
+**Candidate SHA:** `9eabc4802520abe02b001665449f4e674822dbc4`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
 **Policy:** clean-room implementation; legacy prototype source/assets explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`.
@@ -11,10 +11,10 @@
 - Explicit Draw → Weave → Cast → Wall → Enemy → Cleanup lifecycle, with terminal Victory/Defeat.
 - Atomic command/reducer boundary; invalid commands return a rejection without mutating the input state.
 - Three base Taps; accepted board actions consume one Tap, rejected actions do not.
-- Reuses EFB-002 `BoardEngine` for Tap/Pop, Spectrum, Wall/Overflow, Seal countdown and board digest.
+- Reuses EFB-002 `BoardEngine` for Tap/Pop, Spectrum, Wall/Overflow, Seal countdown and board digest; the combat adapter preserves sealed incoming-row cells because the lower-level Wall API replaces the incoming row globally.
 - Player Vigil, Block, Flasks, capped per-hue Ink and Spark overflow.
 - Enemy Vigor/Block, two-intent deterministic forecast and exact forecast/resolution identity.
-- Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse intent contracts.
+- Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse intent contracts; board-targeting enemy intents respect sealed columns.
 - Card integration seam for Cast damage/Block/delay; Snatch and Curse emit explicit EFB-004 integration events rather than inventing a card model early.
 - Deterministic combat checkpoint digest including board, resources, intent sequence/cursor and status counters.
 
