@@ -58,7 +58,7 @@ report = {
     "checks": results,
 }
 (ARTIFACTS / "efb002-gate-report.json").write_text(
-    json.dumps(report, indent=2) + "\\n", encoding="utf-8"
+    json.dumps(report, indent=2) + chr(10), encoding="utf-8"
 )
 
 packet_path = ROOT / "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json"
@@ -72,7 +72,7 @@ gate_names = {item["name"] for item in results}
 packet["checks"] = [
     item for item in packet.get("checks", []) if item.get("name") not in gate_names
 ] + results
-packet_path.write_text(json.dumps(packet, indent=2) + "\\n", encoding="utf-8")
+packet_path.write_text(json.dumps(packet, indent=2) + chr(10), encoding="utf-8")
 
 print(json.dumps(report, indent=2))
 if any(item["required"] and item["outcome"] != "passed" for item in results):
