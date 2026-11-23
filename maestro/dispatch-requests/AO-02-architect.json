@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AO-02",
+  "role": "ARCHITECT",
+  "base_ref": "docs/emberfall-release-governance",
+  "create_pull_request": false,
+  "prompt": "Design the fastest safe cross-run persistence and resume path for Emberfall's existing Maestro v0.3.0 SQLite workflow. Inspect the actual Maestro source, current Emberfall workflow, and its current artifacts. Preserve existing workflow IDs, revisions, assignments, event history and exact candidate bindings. Account for SQLite WAL checkpointing and do not assume Actions cache is durable. Compare a Git-backed state branch, artifact-based checkpoint/restore, and an external database only as needed; recommend the simplest viable MVP with concrete GitHub Actions steps, idempotency keys, concurrency behavior and recovery procedure. Identify migration risks for existing EFB-000/EFB-002 workflows. Return a compact architecture report and implementation checklist. Read-only: do not modify files or create PRs. Do not reopen accepted game ADRs."
+}
