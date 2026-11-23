@@ -9,6 +9,8 @@ register = (ROOT / "engineering/OPEN_DECISIONS.md").read_text(encoding="utf-8")
 resolution = (ROOT / "engineering/EFB-001_RULES_ADR_PROPOSALS.md").read_text(encoding="utf-8")
 wbs = json.loads((ROOT / "engineering/IMPLEMENTATION_WBS.json").read_text(encoding="utf-8"))
 adr_dir = ROOT / "docs/adr"
+board_packet_path = ROOT / "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json"
+board_packet = json.loads(board_packet_path.read_text(encoding="utf-8"))
 
 blocking_ids = [f"ADR-{i:03d}" for i in range(1, 20)]
 expected = {
@@ -52,6 +54,10 @@ assert "EFB-000 independent review" in resolution
 epics = {e["id"]: e for e in wbs["epics"]}
 assert epics["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
 assert "EFB-002-BOARD-CORE" in epics
+assert board_packet["current_status"] == "BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW"
+assert board_packet["no_implementation_authorized"] is True
+assert "EFB-000-BASELINE: independent review accepted" in board_packet["dependencies"]
+assert "Do not implement or route live combat through SwapCells" in " ".join(board_packet["constraints"])
 unlit = (adr_dir / "ADR-014-unlit-starter-deck.md").read_text(encoding="utf-8").lower()
 assert "unlit_hollow_crown" in unlit and "relic_hollow_crown" in unlit
 assert "exactly 12 gold-frame cards" in unlit and "hollow crown" in unlit
