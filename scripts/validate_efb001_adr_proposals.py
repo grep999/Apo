@@ -34,8 +34,10 @@ incomplete = [
 assert not missing, f"blocking ADRs absent from proposal: {missing}"
 assert not incomplete, f"blocking ADRs lack recommendation/tests: {incomplete}"
 assert len(blocking) == 19, f"expected 19 blocking ADRs, found {len(blocking)}"
-assert "EFB-001-RULES-ADR" in [e["id"] for e in wbs["epics"]]
-assert "EFB-000-BASELINE" in [e["id"] for e in wbs["epics"]]
+epics_by_id = {e["id"]: e for e in wbs["epics"]}
+assert "EFB-001-RULES-ADR" in epics_by_id
+assert "EFB-000-BASELINE" in epics_by_id
+assert epics_by_id["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
 
 for adr in blocking:
     assert adr in proposal_sections
