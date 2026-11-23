@@ -3,6 +3,5 @@
     <!-- Persistent progression and preferences are intentionally portable. -->
     <include domain="database" path="." />
     <include domain="file" path="datastore/" />
-    <!-- Generated soundtrack files are large, reproducible, and must not migrate. -->
-    <exclude domain="file" path="emberfall_lyria_soundtrack/" />
+    <!-- Only the database and DataStore are included; generated soundtrack files stay local. -->
 </full-backup-content>
