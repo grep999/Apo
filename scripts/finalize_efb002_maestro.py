@@ -44,11 +44,15 @@ pr = event.get("pull_request", {})
 pr_number = pr.get("number", "unknown")
 base_sha = pr.get("base", {}).get("sha", "unknown")
 head_branch = os.environ.get("GITHUB_HEAD_REF", "unknown")
-parents = subprocess.run(
-    ["git", "show", "-s", "--format=%P", "HEAD"],
-    cwd=ROOT, capture_output=True, text=True, check=True
-).stdout.strip().split()
-remediation_parent = parents[1] if len(parents) > 1 else "not-a-merge-parent"
+remediation_parent = "6932b747d78f9310ecb859cc9079cb2fc28ac9bf"
+ancestor_check = subprocess.run(
+    ["git", "merge-base", "--is-ancestor", remediation_parent, "HEAD"],
+    cwd=ROOT, capture_output=True, text=True, check=False
+)
+if ancestor_check.returncode != 0:
+    raise SystemExit(
+        f"expected remediation commit {remediation_parent} is not in candidate ancestry"
+    )
 
 evidence_by_title = {
     "Research implementation context": [
