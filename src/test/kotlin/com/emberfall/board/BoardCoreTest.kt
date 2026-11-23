@@ -69,10 +69,10 @@ class BoardCoreTest {
 
     @Test fun sealedColumnIsFrozenDuringGravityAndWallRise() {
         val b = board(Coord(0,0) to Cell.hue(Hue.EMBER), Coord(1,1) to Cell.hue(Hue.TIDE))
-            .copy(sealedColumns = setOf(0))
+            .copy(sealedColumns = setOf(0), incoming = List(7) { Cell.hue(Hue.MOSS) })
         val g = engine.gravity(b)
         assertEquals(Cell.hue(Hue.EMBER), g[Coord(0,0)])
-        val rise = engine.riseWall(g, List(7) { Cell.hue(Hue.MOSS) }, 2)
+        val rise = engine.riseWall(g, List(7) { Cell.hue(Hue.GOLD) }, 2)
         assertEquals(Cell.hue(Hue.EMBER), rise.board[Coord(0,0)])
         assertEquals(Cell.hue(Hue.MOSS), rise.board[Coord(1,6)])
     }
