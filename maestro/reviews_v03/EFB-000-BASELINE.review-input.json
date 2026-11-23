@@ -57,5 +57,7 @@
     "acceptance": "No PASS if the merged tree diverges from evidence or any source/provenance claim is unsupported."
   },
   "independence_requirement": "Reviewer must be distinct from the EFB-000 builder/orchestrator and record an explicit identity.",
-  "read_only": true
+  "read_only": true,
+  "target_merged_tree_sha": "46ab2989e863f9bb165d75404e35cbeb2e2c02b5",
+  "pr_head_tree_sha": "01bfd33543581fffacb0894b9c1421f488e05b02"
 }

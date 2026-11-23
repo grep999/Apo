@@ -1,0 +1,41 @@
+{
+  "review_type": "INDEPENDENT_MASTERY_REVIEW_INPUT",
+  "project_id": "EMBERFALL",
+  "task_id": "EFB-001-RULES-ADR",
+  "pr_number": 5,
+  "target_merged_commit": "f9a41aa373d36d41a0c134c8005fb5984fecd2b3",
+  "pr_head_sha": "76d07ff80121a465371a785350f7a6a2c6c853fe",
+  "validation": {
+    "run_id": 45180407668,
+    "status": "success",
+    "artifact_id": 14821425791,
+    "artifact_name": "emberfall-efb-001-adr-resolution-validation",
+    "artifact_sha256": "432014ce56fb2ad25b07f748a48b40bb1f93100f75c6a45557cda38a673d9f3f"
+  },
+  "maestro_state": "NO_NATIVE_EFB001_MAESTRO_WORKFLOW_ARTIFACT_FOUND",
+  "github_review_submissions": 0,
+  "review_scope": [
+    "Inspect the merged EFB-001 tree and verify the Product Owner decision baseline is present.",
+    "Verify all 19 blocking rules ADRs were resolved and trace back to v0.2 specification sections.",
+    "Check each resolved ADR for contradictions with the product pillars, turn sequence, board rules, resources, enemy intent rules and run structure.",
+    "Verify accepted rules are executable and do not rely on unrecorded assumptions.",
+    "Check the The Unlit 12-card deck and separate Hollow Crown relic decisions are preserved.",
+    "Check Fast/true-ending requirements, Overflow penalty, Fog/glyph accessibility and enemy vigor/block rules are consistent.",
+    "Check open title/trademark decision remains non-blocking and is not represented as cleared.",
+    "Inspect ADR validator source and exact-head validation artifact; confirm the run checked PR head 76d07ff80121a465371a785350f7a6a2c6c853fe.",
+    "Identify any accepted decision that conflicts with the source specification or later EFB-002 implementation. Do not silently reopen settled decisions; raise a Product Owner decision only where evidence proves a real conflict."
+  ],
+  "required_output": {
+    "verdict": [
+      "PASS",
+      "REQUEST_CHANGES",
+      "BLOCKED"
+    ],
+    "findings": "ADR/file-specific findings with severity, source traceability, impact and recommended resolution.",
+    "evidence": "Merged commit, reviewed ADR paths, validation run/artifact, reviewer identity and coverage.",
+    "acceptance": "Do not PASS if a P0 rule remains ambiguous, an ADR conflicts with another accepted rule, or validation evidence is not tied to the reviewed candidate."
+  },
+  "independence_requirement": "Reviewer must be distinct from the EFB-001 Product Owner/author and record an explicit identity.",
+  "no_self_approval": true,
+  "read_only": true
+}

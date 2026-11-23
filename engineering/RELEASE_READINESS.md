@@ -61,6 +61,9 @@ Do not start EFB-003 implementation until the EFB-002 acceptance gates are compl
 
 ## 4. Hard gates before feature implementation can proceed
 
+Review dossiers are prepared under `maestro/reviews_v03/`: EFB-000 merged tree, EFB-001 resolved rules and EFB-002 exact implementation candidate. They identify the precise commits, artifacts and review scope.
+
+- [ ] Independent EFB-001 rules review using `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json` (recommended governance reconciliation; do not reopen accepted decisions without evidence).
 - [ ] Independent EFB-000 review of merged tree `5130215cb0a033345752311903de7f9c08aced4d`, including the matching E00 workflow artifact. Review must inspect source classification, legacy/v0.2 rule separation, ADR inventory, toolchain applicability and evidence provenance.
 - [ ] Independent EFB-002 Mastery review of exact candidate `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`, including changed paths, tests, exact-SHA evidence, deterministic invariants, ADR compliance and edge cases.
 - [ ] Reviewer identity must be different from the builder. A proposed assignment or unsubmitted request is not a review.

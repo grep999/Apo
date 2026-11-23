@@ -28,9 +28,10 @@ The machine-readable task seed is `maestro/EMBERFALL_TASKS_V2.json`; the epic re
 ## Current Maestro state
 
 - EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments.
-- EFB-001: exact-head ADR validation run `45180407668` passed; no native Maestro workflow artifact exists.
+- EFB-001: exact-head ADR validation run `45180407668` passed; no native Maestro workflow artifact exists. Review input: `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json`.
 - EFB-002 workflow: `b856a095-5d26-4aeb-8c52-82f36dcde6e6`; ACTIVE / MASTERY / revision 5; three Momentum work items complete; independent-review assignment PROPOSED, not assigned.
-- EFB-002 exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`.
+- EFB-002 exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`. Review input with candidate file hashes: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
+- EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
 - EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing; see `engineering/RELEASE_READINESS.md`.
 
 ## Workflow-control-plane actions
