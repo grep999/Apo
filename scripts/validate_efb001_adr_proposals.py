@@ -60,6 +60,14 @@ assert board_packet["current_status"] == "BLOCKED_PENDING_EFB000_INDEPENDENT_REV
 assert board_packet["no_implementation_authorized"] is True
 assert "EFB-000-BASELINE: independent review accepted" in board_packet["dependencies"]
 assert "Do not implement or route live combat through SwapCells" in " ".join(board_packet["constraints"])
+# Dependency evidence must resolve through accepted PR merge commits, not moving
+# branch-head SHAs embedded in this packet. This prevents stale/self-referential
+# candidate pins from authorizing work against an obsolete baseline.
+board_sources = " ".join(board_packet["sources"])
+assert "PR #4 accepted merge commit" in board_sources
+assert "PR #5 accepted merge commit" in board_sources
+for stale_sha in ("93a4b27360c043b702624d7d317e7c682a0e7031", "3a4a5ae5092f38e058dd3210a05a68f163c73c49"):
+    assert stale_sha not in board_sources + " ".join(board_packet["constraints"])
 assert content_packet["current_status"] == "WAITING_FOR_SPECIALIST_AGENT_OUTPUT"
 assert content_packet["no_content_accepted"] is True
 assert content_packet["no_implementation_authorized"] is True
