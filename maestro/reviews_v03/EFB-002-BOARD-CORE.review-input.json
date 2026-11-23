@@ -2,16 +2,16 @@
   "review_type": "INDEPENDENT_MASTERY_REVIEW_INPUT",
   "project_id": "EMBERFALL",
   "task_id": "EFB-002-BOARD-CORE",
-  "pr_number": 11,
-  "candidate_ref": "git:3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
-  "candidate_sha": "3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
+  "pr_number": 14,
+  "candidate_ref": "git:2543bee3815489d659548df5a9f8fbe1367f3c5f",
+  "candidate_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
   "base_ref": "handoff/emberfall-coding-agent-v1.0",
-  "base_sha": "1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23",
-  "workflow_id": "b856a095-5d26-4aeb-8c52-82f36dcde6e6",
+  "base_sha": "32edb053f786bdffbf20d978364cdece192bba32",
+  "workflow_id": "ea293bf8-83a8-4d49-a6fd-ac722008f0b4",
   "workflow_stage": "MASTERY",
   "workflow_status": "ACTIVE",
   "workflow_revision": 5,
-  "review_assignment_id": "5e1e4c69-a858-48cb-853d-e1a38a6b7914",
+  "review_assignment_id": "4133762a-64a2-46e7-bdc1-7822e0090ad8",
   "review_assignment_status": "PROPOSED_NOT_ASSIGNED",
   "builder_actor_recorded": "builder",
   "builder_identity_quality": "Generic role label only; model/vendor identity was not recorded. Reviewer must record explicit identity and operator-confirmed independence.",
@@ -21,32 +21,41 @@
       "name": "gradle-junit-exact-candidate",
       "status": "VERIFIED",
       "exit_code": 0,
-      "run_id": 45209604883,
-      "runner_identity": "github-actions/45209604883",
-      "ran_on_sha": "3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
-      "log_sha256": "56a36ffb013d79fec41ae2d7623bd4e90b49d159c95f5b56e8610ee99e71e3bb",
-      "duration_ms": 63329
+      "run_id": 45261280913,
+      "runner_identity": "github-actions/45261280913",
+      "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
+      "log_sha256": "ebbe3976800a97c366258c5e0c286443e7bb3e647769ae2566928f5f7a6d68f8"
     },
     {
       "name": "pure-jvm-boundary",
       "status": "VERIFIED",
       "exit_code": 0,
-      "run_id": 45209604883,
-      "runner_identity": "github-actions/45209604883",
-      "ran_on_sha": "3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
-      "log_sha256": "ce4db7edbc0b3f58a04e8a857be2076d906aea037be04da98da8f4d452d6c2c3",
-      "duration_ms": 28
+      "run_id": 45261280913,
+      "runner_identity": "github-actions/45261280913",
+      "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f",
+      "log_sha256": "ce4db7edbc0b3f58a04a8e857be2076d906aea037be04da98da8f4d452d6c2c3"
+    },
+    {
+      "name": "board-core-pr-workflow",
+      "status": "success",
+      "run_id": 45261282755,
+      "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f"
+    },
+    {
+      "name": "efb001-adr-validator",
+      "status": "success",
+      "run_id": 45261280912,
+      "ran_on_sha": "2543bee3815489d659548df5a9f8fbe1367f3c5f"
     }
   ],
   "evidence_artifact": {
-    "run_id": 45209604883,
-    "artifact_id": 14834588092,
+    "run_id": 45261280913,
+    "artifact_id": 14860906134,
     "name": "emberfall-efb-002-maestro-evidence",
-    "sha256": "bb177ce72c13fdf5d7a56aead8274511367ffd8909fe0b67b818c8550226ff83"
+    "sha256": "148d32df2af6953e4c2da1b099993241a68e8610411d571d70852e2115a3f129"
   },
   "changed_paths": [
     ".github/workflows/efb002-board-core.yml",
-    ".github/workflows/efb002-maestro-workflow.yml",
     ".gitignore",
     "README.md",
     "build.gradle.kts",
@@ -89,10 +98,11 @@
     "Known ADR-002 neutral-spawn ambiguity: no guessed initial neutral spawn probabilities; verify implementation respects the accepted constraint."
   ],
   "review_gaps_to_resolve": {
-    "static_momentum_packet": "The committed EFB-002-BOARD-CORE.momentum.json on this candidate contains stale earlier not_run claims. The authoritative exact-run packet is the artifact copy from run 45209604883 (artifact 14834588092). Treat this as a documentation freshness/process finding, not as a failed current CI check.",
-    "builder_identity": "Maestro event records generic actor 'builder'; no model/vendor identity is captured.",
-    "review_assignment": "Assignment remains PROPOSED; no independent reviewer has been confirmed.",
-    "separate_dependency": "EFB-000 merged-tree review remains a separate acceptance prerequisite."
+    "builder_identity": "Maestro event records generic actor 'builder'; model/vendor identity was not captured. Reviewer must record explicit identity and operator-confirmed independence.",
+    "review_assignment": "Assignment remains PROPOSED; no independent reviewer has been confirmed or dispatched.",
+    "separate_dependency": "EFB-000 merged-tree review remains a separate acceptance prerequisite; current pre-review found missing license/IP provenance documentation.",
+    "state_continuity": "PR workflow creates a fresh Maestro workflow/database each run; the recorded workflow ID is run-scoped and not a durable resumed workflow.",
+    "tooling": "Formatting/lint tooling is not configured in the minimal Kotlin/JVM module; exact configured checks only should be claimed."
   },
   "required_output": {
     "verdict": [
@@ -105,5 +115,22 @@
     "acceptance": "Do not return PASS if a required invariant, acceptance criterion or exact-candidate evidence is not proven."
   },
   "no_self_approval": true,
-  "read_only": true
+  "read_only": true,
+  "integration_branch": "feat/efb002-remediation-rebased",
+  "remediation_commit_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
+  "candidate_blob_sha": {
+    ".github/workflows/efb002-board-core.yml": "d595f67dc9d6710cd9a4aa574bff0abe3d1e6d59",
+    ".gitignore": "5c582ca52937d6daeb596fff580773eaea50015c",
+    "README.md": "0012f5cf5e09304de6cc57d9496366020dd62c83",
+    "build.gradle.kts": "75c59a9b287e1a68d0bc82f1f1b0fe02b938d304",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md": "f9c7ffc9d4a0b7b44e2db6b4d4f22cfb5128996e",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json": "6e7c820aac0090e391e1ddd592c7eee14c008e84",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json": "f8ab153dc8db88d6d41c00a0e04ba1310202e519",
+    "scripts/finalize_efb002_maestro.py": "2ce1ab0ef78acd780b30cde7edf38962a788753c",
+    "scripts/record_efb002_maestro_gates.py": "7e1aa41db1ef5215da1800691e1ca32b86901079",
+    "scripts/validate_efb001_adr_proposals.py": "dbf1c6a1e323321d50e01dae021072a0bb13930f",
+    "settings.gradle.kts": "bbba5a14eb21ff0cfa77b4eafe7ebcecd8b9f066",
+    "src/main/kotlin/com/emberfall/board/BoardCore.kt": "bd1d74d4d6691d3515c98f60db78cd1de1d771b8",
+    "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt": "04682586ec2d75f0d3f447b72a113e2593400587"
+  }
 }
