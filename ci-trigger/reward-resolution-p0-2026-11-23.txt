@@ -1,0 +1,2 @@
+Trigger GitHub Actions verification for the reward-resolution P0 batch.
+Source changes are committed on implementation/emberfall-latest-source.
