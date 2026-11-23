@@ -71,7 +71,7 @@ object ClassCardCatalog {
 
     init { require(cards.size == StarterCardCatalog.cards.size + 11) }
 
-    fun deck(classId: PlayerClassId): List<String> = classes.getValue(classId).starterDeck.toList()
+    fun deck(classId: PlayerClassId): List<String> = PlayerClassCatalog.classes.getValue(classId).starterDeck.toList()
 }
 
 object PlayerClassCatalog {
