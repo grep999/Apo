@@ -1,0 +1,90 @@
+{
+  "purpose": "EFB-002 Momentum delivery: deterministic pure Kotlin/JVM board-core candidate with explicit remaining acceptance gates.",
+  "candidate_ref": "pending: exact SHA injected by scripts/record_efb002_maestro_gates.py",
+  "outcome": "Implemented the deterministic pure Kotlin/JVM board-core candidate and bounded remediation. Exact-candidate Gradle/JUnit and pure-JVM boundary evidence is injected by the PR workflow at runtime. Independent Mastery review, EFB-000 merged-tree review and durable Maestro state continuity remain pending.",
+  "changed_artifacts": [
+    "src/main/kotlin/com/emberfall/board/BoardCore.kt",
+    "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt",
+    "build.gradle.kts",
+    "settings.gradle.kts",
+    ".gitignore",
+    ".github/workflows/efb002-board-core.yml",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
+    "README.md",
+    "scripts/record_efb002_maestro_gates.py",
+    "scripts/finalize_efb002_maestro.py",
+    "scripts/validate_efb001_adr_proposals.py"
+  ],
+  "checks": [
+    {
+      "name": "local-kotlin-source-mirror-compile",
+      "outcome": "passed",
+      "required": false,
+      "command": "kotlinc src/main/kotlin/com/emberfall/board/*.kt -d build/classes (local mirror of committed domain implementation)",
+      "exit_code": 0,
+      "log_hash": "9f1fa8b2189c1c43e14e34c30bba65e88be3f6a6983ef8d650d18a0f757fa6e9",
+      "evidence_class": "OBSERVED",
+      "runner_identity": "ChatGPT GPT-6 / isolated Linux container / OpenJDK 21 / Kotlin 1.9.0",
+      "ran_on_sha": null,
+      "category": "build"
+    },
+    {
+      "name": "100k-seed-generation-smoke",
+      "outcome": "passed",
+      "required": false,
+      "command": "java -cp build/smoke.jar:build/classes SmokeKt (local mirror)",
+      "exit_code": 0,
+      "log_hash": "fbce79e54aaa10c3da9df4e4663711c70e81e71f51d8fdfdf2f5bfcc3a20d74",
+      "evidence_class": "OBSERVED",
+      "runner_identity": "ChatGPT GPT-6 / isolated Linux container",
+      "ran_on_sha": null,
+      "category": "test"
+    },
+    {
+      "name": "100k-seed-hue-distribution",
+      "outcome": "passed",
+      "required": false,
+      "command": "java -cp build/stats.jar:build/classes StatsKt (local mirror)",
+      "exit_code": 0,
+      "log_hash": "41814d4586c98583e5719023f9ac7c9ee7550236ec22bf1e1ad954d338a6d823",
+      "evidence_class": "OBSERVED",
+      "runner_identity": "ChatGPT GPT-6 / isolated Linux container",
+      "ran_on_sha": null,
+      "category": "test"
+    },
+    {
+      "name": "mechanics-edge-smoke",
+      "outcome": "passed",
+      "required": false,
+      "command": "java -cp build/acceptance-smoke.jar:build/classes AcceptanceSmokeKt (local mirror)",
+      "exit_code": 0,
+      "log_hash": "3a85cf30e5f5c9ac280de52df4ec5a3fb5c7a7123e27d194e2fac3e115789bbe",
+      "evidence_class": "OBSERVED",
+      "runner_identity": "ChatGPT GPT-6 / isolated Linux container",
+      "ran_on_sha": null,
+      "category": "test"
+    },
+    {
+      "name": "gradle-junit-exact-candidate",
+      "outcome": "pending",
+      "required": true,
+      "command": "gradle --no-daemon clean test on exact PR candidate",
+      "exit_code": null,
+      "log_hash": null,
+      "evidence_class": "PLANNED",
+      "runner_identity": null,
+      "ran_on_sha": null,
+      "category": "test"
+    }
+  ],
+  "risks": [
+    "Local compile/simulation evidence was generated from a local source mirror, not an exact GitHub checkout; retain OBSERVED classification.",
+    "Exact-SHA CI evidence is generated at runtime and must be read from the matching PR workflow artifact, never from a stale committed packet.",
+    "EFB-000 merged baseline still lacks independent Mastery evidence.",
+    "ADR-002 references neutral-block rules without quantified initial spawn probabilities; no probabilities are invented and initial generation samples playable hues only.",
+    "Independent Mastery is a separate stage and must be performed by an actor different from the builder; the current Maestro assignment is proposed, not dispatched.",
+    "Maestro state continuity across PR workflow runs remains unresolved; each run currently creates a fresh workflow/database."
+  ]
+}
