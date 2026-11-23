@@ -277,7 +277,6 @@ class CardEngine(
         } else {
             next = next.copy(discardPile = next.discardPile + card)
         }
-        val initial = state
         val queue = ArrayDeque<QueuedEffect>()
         var sequence = state.nextEffectSequence
         definition.effects(card.upgraded).forEach { effect ->
@@ -305,8 +304,6 @@ class CardEngine(
         }
         next = next.copy(lastTopLevelEffects = lastEffects, lastTopLevelCardId = lastId,
             lastCardEchoed = echoed, playedThisTurn = state.playedThisTurn + 1, nextEffectSequence = sequence)
-        // A failed or over-budget action never commits payment, zones, or partial effects.
-        if (initial === next) return CardBattleResult.Rejected(CardRejection.EFFECT_FAILED)
         return CardBattleResult.Accepted(next, events)
     }
 
@@ -336,10 +333,11 @@ class CardEngine(
             }
         }
         when (val effect = item.effect) {
-            is CardEffect.Damage -> if (!combat(CombatCommand.CardDamage(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
-            is CardEffect.Block -> if (!combat(CombatCommand.CardBlock(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+            is CardEffect.Damage -> if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.CardDamage(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+            is CardEffect.Block -> if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.CardBlock(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
             is CardEffect.Pop -> {
-                val target = if (effect.largest) largestLegalPop(next.combat) else command.target
+                if (next.combat.phase == CombatPhase.VICTORY || next.combat.phase == CombatPhase.DEFEAT) return EffectResolution.Done(next, seq, echoed)
+                val target = (if (effect.largest) largestLegalPop(next.combat) else command.target)
                     ?: return EffectResolution.Failed(CardRejection.INVALID_TARGET)
                 if (!combat(CombatCommand.CardPop(target))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
             }
@@ -349,7 +347,7 @@ class CardEngine(
                 if (total > Int.MAX_VALUE) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
                 next = next.copy(bonusTapsNextTurn = total.toInt())
             }
-            is CardEffect.DelayEnemy -> if (!combat(CombatCommand.DelayNextIntent)) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+            is CardEffect.DelayEnemy -> if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.DelayNextIntent)) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
             is CardEffect.Recolor3x3 -> {
                 val center = command.target ?: return EffectResolution.Failed(CardRejection.INVALID_TARGET)
                 val cells = next.combat.board.cells.toMutableList()
