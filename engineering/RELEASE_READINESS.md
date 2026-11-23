@@ -23,10 +23,10 @@ Only the Product Owner may approve a scope change or cut. Only a distinct, indep
 
 | Increment | Evidence-backed state | What is met | What remains |
 |---|---|---|---|
-| EFB-000 — source baseline | **PARTIAL — merged; independent review and rights disposition pending** | PR #4 merged as `5130215cb0a033345752311903de7f9c08aced4d`; original E00 run 45179968109 passed on PR head and uploaded artifact 14819098938. PR #12 follow-up validator run 45265389152 passed on pinned baseline `26f0e9...` and legacy snapshot `e3610946...`, reporting no LICENSE/COPYING/NOTICE files in either tree. | Maestro workflow `9dcb920b-4da4-4e96-bd96-584db5d3c4ab` remains ACTIVE / GROUNDING / revision 1. Independent merged-tree review has not begun. Legacy code reuse/redistribution is not cleared until ownership and rights are confirmed. |
+| EFB-000 — source baseline | **PARTIAL — merged; independent review and rights disposition pending** | PR #4 merged as `5130215cb0a033345752311903de7f9c08aced4d`; original E00 run 45179968109 validated former PR head `3555ae5...` (not the merge commit) and uploaded artifact 14819098938. PR #12 follow-up validator run 45265389152 passed on pinned baseline `26f0e9...` and legacy snapshot `e3610946...`, reporting no LICENSE/COPYING/NOTICE files in either tree. | Maestro workflow `9dcb920b-4da4-4e96-bd96-584db5d3c4ab` remains ACTIVE / GROUNDING / revision 1. Independent merged-tree review has not begun. Legacy code reuse/redistribution is not cleared until ownership and rights are confirmed. |
 | EFB-001 — rules/ADR freeze | **PARTIAL — merged, validator only** | PR #5 merged as `f9a41aa373d36d41a0c134c8005fb5984fecd2b3`; Product Owner decision baseline and resolved blocking rules ADRs are present; exact-head ADR validation run 45180407668 passed | No EFB-001 Maestro workflow artifact or submitted GitHub review exists. Preserve accepted decisions; reconcile the review/evidence record without silently reopening rules. |
 | EFB-002 — board core | **PARTIAL — current candidate CI verified; Mastery pending** | PR #14 draft candidate `6b6e139890a205ead337a94226464a0b5ddd82da`; exact-head Gradle/JUnit, pure-JVM and ADR validation pass; half-Ink payout correction and independent hue-weight golden tests are included. Original remediation `6932b747...` is preserved in ancestry. | Maestro assignment remains `PROPOSED`, not assigned. Copilot dispatch failed HTTP 412 insufficient premium quota. EFB-000 review and EFB-002 Repetition remain pending. No merge/acceptance. |
-| EFB-003 — turn/combat | **BLOCKED — prepared only** | Grounding packet is prepared in this change | Do not implement until EFB-002 is accepted through Mastery and its dependency gate is clear. |
+| EFB-003 — turn/combat | **BLOCKED — prepared only** | Grounding packet is refreshed to current base and candidate references; no implementation is authorized | Do not implement until EFB-002 independent Mastery and Repetition, EFB-000 merged-tree review/rights disposition, and durable Maestro state plus real reviewer dispatch are complete. |
 | EFB-004 through EFB-016 | **NOT STARTED / dependency blocked** | WBS and task definitions exist | No implementation or acceptance evidence yet. |
 
 ### Exact EFB-002 evidence
@@ -58,7 +58,7 @@ Required control-plane fixes:
 - [ ] Require exact candidate SHA, changed-path hashes, VERIFIED GateRunner evidence and reviewer identity inequality before Mastery PASS.
 - [ ] Export the final state DB, event log, assignments, review attestation and Repetition packet as durable artifacts.
 
-Do not start EFB-003 implementation until the EFB-002 acceptance gates are complete and the Maestro workflow continuity/reviewer-dispatch path is operational.
+Do not start EFB-003 implementation until EFB-002 independent Mastery and Repetition, EFB-000 merged-tree review and rights disposition, and Maestro workflow continuity/reviewer-dispatch readiness are complete.
 
 ## 4. Hard gates before feature implementation can proceed
 
