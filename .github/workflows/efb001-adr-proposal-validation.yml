@@ -1,0 +1,45 @@
+name: Emberfall EFB-001 ADR Proposal Validation
+
+on:
+  pull_request:
+    branches: [handoff/emberfall-coding-agent-v1.0]
+    paths:
+      - engineering/EFB-001_RULES_ADR_PROPOSALS.md
+      - scripts/validate_efb001_adr_proposals.py
+      - .github/workflows/efb001-adr-proposal-validation.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-efb-001-adr-proposals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  proposal-contract:
+    name: Validate all blocking ADR proposals remain unresolved
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate EFB-001 proposal coverage and dependency
+        run: python scripts/validate_efb001_adr_proposals.py
+
+      - name: Upload proposal validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-efb-001-adr-proposal-validation
+          if-no-files-found: warn
+          path: artifacts/efb-001-adr-proposal-validation.json
