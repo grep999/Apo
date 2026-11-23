@@ -290,6 +290,70 @@ class EmberfallEngineTest {
   }
 
   @Test
+  fun `reward completion requires support and artifact resolution and support replacement is explicit`() {
+    val base = GameEngine.startNewRun(HeroClass.ASHEN_MONK, "REWARD-ALL-CHANNELS")
+    val rewardRun = base.copy(
+      growth = base.growth.copy(socketedSupportIds = listOf("sup_echo_strike"), maxSockets = 1),
+      pendingReward = RewardBundle(
+        cindersEarned = 0,
+        cardChoices = emptyList(),
+        supportChoices = listOf("sup_prism_forge"),
+        artifactChoices = listOf("art_rudraksha_mala"),
+      ),
+    )
+
+    val premature = GameEngine.execute(rewardRun, GameCommand.FinishRewards)
+    assertFalse("FinishRewards must wait for support and artifact channels", premature.accepted)
+    assertEquals(rewardRun, premature.run)
+
+    val implicitReplacement = GameEngine.execute(rewardRun, GameCommand.SocketSupport("sup_prism_forge"))
+    assertFalse("A full socket set must not silently replace its last slot", implicitReplacement.accepted)
+    assertEquals(rewardRun, implicitReplacement.run)
+
+    val invalidSlot = GameEngine.execute(rewardRun, GameCommand.SocketSupport("sup_prism_forge", 1))
+    assertFalse("Out-of-range replacement slots must be rejected", invalidSlot.accepted)
+    assertEquals(rewardRun, invalidSlot.run)
+
+    val replaced = GameEngine.execute(rewardRun, GameCommand.SocketSupport("sup_prism_forge", 0))
+    assertTrue(replaced.accepted)
+    assertEquals(listOf("sup_prism_forge"), replaced.run.growth.socketedSupportIds)
+
+    val bound = GameEngine.execute(replaced.run, GameCommand.BindArtifact("art_rudraksha_mala"))
+    assertTrue(bound.accepted)
+    assertTrue("Artifact must be owned after binding", "art_rudraksha_mala" in bound.run.growth.tantricArtifactIds)
+
+    val finished = GameEngine.execute(bound.run, GameCommand.FinishRewards)
+    assertTrue("All four reward channels are resolved; finishing must succeed", finished.accepted)
+    assertNull(finished.run.pendingReward)
+  }
+
+  @Test
+  fun `event selection rejects unaffordable options and simulator chooses first affordable option`() {
+    val base = GameEngine.startNewRun(HeroClass.QUARRY_WITCH, "EVENT-AFFORDABILITY")
+    val eventRun = base.copy(
+      cinders = 5,
+      inNonCombatNode = true,
+      activeEvent = EventState(
+        eventId = "test_affordability",
+        title = "Test Event",
+        body = "Affordability regression.",
+        choices = listOf(
+          EventChoiceDef("too_expensive", "Expensive", "Requires 10 Cinders", minCindersRequired = 10),
+          EventChoiceDef("affordable", "Affordable", "No cost"),
+        ),
+      ),
+    )
+
+    val rejected = GameEngine.execute(eventRun, GameCommand.ChooseEventOption("too_expensive"))
+    assertFalse(rejected.accepted)
+    assertEquals(eventRun, rejected.run)
+    assertEquals("affordable", SimulationRunner.firstAffordableEventChoice(eventRun)?.id)
+
+    val accepted = GameEngine.execute(eventRun, GameCommand.ChooseEventOption("affordable"))
+    assertTrue(accepted.accepted)
+    assertEquals("Affordable", accepted.run.activeEvent?.resolvedSummary?.substringBefore(" ") ?: "Affordable")
+  }
+  @Test
   fun `ADR-009 colored pip cost rejects Spark while generic pip accepts Spark and preferred Hue`() {
     val emberOnlyCard = GameCatalog.cardById("monk_ember_palm")
     val resWithOnlySpark = ResourceState(spark = 3)
