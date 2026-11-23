@@ -64,10 +64,26 @@
     "Independent Mastery review inspects exact candidate, changed paths, tests and evidence; builder and reviewer identities differ.",
     "Repetition records expected/actual outcome, durable lessons, accepted state and next increment."
   ],
-  "next_increment": "Complete exact-SHA CI on PR #15 candidate fbb8b07c134b77825cedac3f65389be13f11fd15, resolve findings, obtain independent Mastery and record Repetition. Then proceed to EFB-004 card/effect engine.",
-  "current_status": "IMPLEMENTATION_CANDIDATE_PENDING_EXACT_SHA_CI_MASTERY_REPETITION",
+  "next_increment": "Complete final-candidate run 45273418357 on SHA fbb8b07c134b77825cedac3f65389be13f11fd15, resolve findings, obtain independent Mastery and record Repetition. Then proceed to EFB-004 card/effect engine.",
+  "current_status": "IMPLEMENTATION_CANDIDATE_PENDING_FINAL_SHA_CI_MASTERY_REPETITION",
   "no_implementation_authorized": false,
   "baseline_ref": "git:6b6e139890a205ead337a94226464a0b5ddd82da",
   "legacy_policy": "EXCLUDED_NO_SOURCE_OR_ASSET_REUSE",
-  "candidate_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15"
+  "candidate_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+  "implemented_candidate": {
+    "pr": 15,
+    "branch": "feat/efb003-turn-combat-clean",
+    "base_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+    "code_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+    "prior_candidate_verified": {
+      "sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
+      "run_id": 45273205685,
+      "conclusion": "success"
+    },
+    "final_candidate_run": {
+      "sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+      "run_id": 45273418357,
+      "status": "queued"
+    }
+  }
 }
