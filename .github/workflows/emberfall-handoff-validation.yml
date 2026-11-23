@@ -1,0 +1,100 @@
+name: Emberfall Handoff and Maestro v0.3 Validation
+
+on:
+  push:
+    branches: [audit/e00-repository-source-baseline]
+    paths:
+      - engineering/**
+      - maestro/**
+      - scripts/**
+      - references/**
+      - .github/workflows/emberfall-handoff-validation.yml
+  pull_request:
+    branches: [handoff/emberfall-coding-agent-v1.0]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-handoff-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e00-baseline:
+    name: EFB-000 source inventory + Maestro v0.3 gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout complete repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch legacy prototype branch for provenance inspection
+        run: git fetch --no-tags origin +refs/heads/implementation/emberfall-latest-source:refs/remotes/origin/implementation/emberfall-latest-source
+
+      - name: Bootstrap pinned Maestro v0.3.0
+        run: bash maestro/bootstrap_current_maestro.sh
+
+      - name: Validate Emberfall spec, WBS, ADR register and prototype provenance
+        run: python scripts/validate_emberfall_handoff.py
+
+      - name: Create EFB-000 Maestro workflow and seed grounding work
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .maestro artifacts
+          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 coding-start \
+            EMBERFALL \
+            "EFB-000 repository, source inventory and build baseline" \
+            "Establish authoritative v0.2 source, classify the legacy prototype, validate toolchain and evidence, and record build applicability." \
+            --workspace . --risk R1 --actor orchestrator \
+            > .maestro/efb-000-start.json
+          WID="$(python -c 'import json; print(json.load(open(".maestro/efb-000-start.json"))["id"])')"
+          REV="$(python -c 'import json; print(json.load(open(".maestro/efb-000-start.json"))["revision"])')"
+          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 coding-seed-work "$WID" --revision "$REV" \
+            > .maestro/efb-000-seeded-work.json
+          ../maestro/.venv/bin/maestro --db .maestro/state.sqlite3 show "$WID" \
+            > .maestro/efb-000-workflow-state.json
+
+      - name: Run Maestro VERIFIED smoke gate on Apo handoff workspace
+        run: ../maestro/.venv/bin/maestro run-checks --workspace . --preset smoke > artifacts/emberfall-handoff-gate-report.json
+
+      - name: Run Maestro VERIFIED Python gate on pinned Maestro checkout
+        run: ../maestro/.venv/bin/maestro run-checks --workspace ../maestro --preset python > artifacts/maestro-v03-gate-report.json
+
+      - name: Assert GateRunner evidence is VERIFIED and passed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in [
+              Path("artifacts/emberfall-handoff-gate-report.json"),
+              Path("artifacts/maestro-v03-gate-report.json"),
+          ]:
+              rows = json.loads(path.read_text())
+              assert rows, f"empty GateRunner report: {path}"
+              for row in rows:
+                  assert row["outcome"] == "passed", (path, row)
+                  assert row["evidence_class"] == "VERIFIED", (path, row)
+                  assert row["log_hash"], (path, row)
+                  assert row["ran_on_sha"], (path, row)
+          PY
+
+      - name: Upload EFB-000 baseline and Maestro evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-efb-000-maestro-evidence
+          if-no-files-found: warn
+          path: |
+            artifacts/
+            .maestro/
