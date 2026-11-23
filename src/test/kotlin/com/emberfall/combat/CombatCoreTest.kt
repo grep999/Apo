@@ -3,7 +3,7 @@ package com.emberfall.combat
 import com.emberfall.board.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
@@ -313,3 +313,37 @@ class CombatCoreTest {
     }
 
 }
+    @Test fun combatInputsAndIntentSnapshotsAreDefensivelyCopied() {
+        val ink = mutableMapOf(Hue.EMBER to 4)
+        val player = PlayerState(ink = ink)
+        ink[Hue.EMBER] = 0
+        assertEquals(4, player.immutableInk.getValue(Hue.EMBER))
+        assertFailsWith<UnsupportedOperationException> {
+            (player.ink as MutableMap<Hue, Int>)[Hue.EMBER] = 0
+        }
+
+        val sequence = mutableListOf<EnemyIntent>(EnemyIntent.Strike(5), EnemyIntent.AshRow)
+        val definition = EnemyDefinition("immutable", 20, sequence)
+        sequence.clear()
+        assertEquals(EnemyIntent.Strike(5), definition.intentAt(0))
+
+        val targets = mutableListOf(Coord(1, 2))
+        val brand = EnemyIntent.Brand(targets)
+        targets.clear()
+        assertEquals(listOf(Coord(1, 2)), brand.targets)
+
+        val state = CombatState.start(BoardState.empty(), definition)
+        assertEquals(listOf(EnemyIntent.Strike(5), EnemyIntent.AshRow), state.nextIntents)
+        assertFailsWith<UnsupportedOperationException> {
+            (state.forecast as MutableList<EnemyIntent>).clear()
+        }
+
+        val row = MutableList<Cell?>(7) { null }
+        row[0] = Cell.ash()
+        val rows = mutableListOf<List<Cell?>>(row)
+        val command = CombatCommand.ResolveWall(rows)
+        rows.clear()
+        row[0] = Cell.hue(Hue.EMBER)
+        assertEquals(Cell.ash(), command.rows[0][0])
+    }
+
