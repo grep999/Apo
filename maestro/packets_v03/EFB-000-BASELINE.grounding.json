@@ -23,8 +23,8 @@
   "risks": [
     "R1: prototype gameplay rules materially diverge from v0.2.",
     "R1: handoff branch has no Android source/build, so Android gates are not applicable yet.",
-    "R1: OPEN_DECISIONS register contains 19 OPEN/BLOCKING rows; QA summary reports 18.",
-    "R1: legacy Gradle wrapper script/JAR are absent."
+    "R1: legacy Gradle wrapper script/JAR are absent.",
+    "R1: independent EFB-000 review remains pending on exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031."
   ],
   "acceptance": [
     "Branch inventory, source provenance and exact baseline SHAs are recorded.",
@@ -34,8 +34,8 @@
     "ADR counts and QA discrepancy are recorded.",
     "Pinned Maestro v0.3.0 bootstrap, tests and contract validator pass in GitHub Actions.",
     "GateRunner output includes VERIFIED evidence, runner identity, ran_on_sha and log hashes.",
-    "Independent reviewer examines the exact candidate SHA."
+    "Independent reviewer examines exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031 after latest E00 workflow run 45152074759."
   ],
-  "next_increment": "After EFB-000 is verified, prepare EFB-001-RULES-ADR proposals for the blocking gameplay rules; do not implement board resolution before P0 rule decisions are approved.",
+  "next_increment": "After EFB-000 independent review accepts exact candidate SHA 93a4b27360c043b702624d7d317e7c682a0e7031 and EFB-001 Product Owner ADR resolution is accepted, execute EFB-002-BOARD-CORE using maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json. Do not implement board resolution before both gates.",
   "baseline_ref": "fe94e61e3d676a57d45aec5f11022c54dbb79b95"
 }

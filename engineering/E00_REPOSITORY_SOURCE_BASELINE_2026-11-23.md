@@ -3,45 +3,47 @@
 **Project:** EMBERFALL  
 **Baseline date:** 2026-11-23  
 **Task:** EFB-000-BASELINE  
-**Status:** BUILDER COMPLETE — E00 validation passed; exact review SHA is the `baseline_sha` in the latest successful EFB-000 workflow artifact; independent review pending  
+**Status:** BUILDER COMPLETE — latest E00 validation passed; exact candidate SHA `93a4b27360c043b702624d7d317e7c682a0e7031`; independent review requested and pending  
 **Authority:** `handoff/emberfall-coding-agent-v1.0` and `references/EMBERFALL_GAME_SPEC_v0.2.txt`
 
 ## 1. Executive finding
 
-Apo contains three materially different project surfaces. They must not be conflated:
+Apo contains distinct project surfaces that must not be conflated:
 
-1. `main` is a documentation/control branch. It contains no Android application source.
-2. `handoff/emberfall-coding-agent-v1.0` is the v0.2 design and execution handoff. It contains the game specification, WBS, ADR register, asset references and Maestro bootstrap, but no buildable Android application.
-3. `implementation/emberfall-latest-source` is an existing Kotlin/Android prototype. It is a useful architecture and systems reference, but its active board loop is swap-match-3. The v0.2 specification requires connected-group Tap/Pop resolution and explicitly replaces the swap-match-3 rules.
+1. `main` is a documentation/control branch, not the game source.
+2. `handoff/emberfall-coding-agent-v1.0` is the v0.2 design and execution authority. It contains the game specification, WBS, ADR register, art references and Maestro bootstrap, but no buildable Android application.
+3. `implementation/emberfall-latest-source` is a Kotlin/Android prototype. It contains reusable engineering patterns, but its active live loop is swap-match-3. The v0.2 specification requires connected-group Tap/Pop.
+4. `design/efb-001-rules-adr-proposals` is now the Product Owner's resolved ADR candidate. It resolves all 19 blocking rules decisions, includes a gated EFB-002 packet and passes its resolution validator on SHA `3c819430f0ee960cd96b5b94b1d8c33ca2da4912`. The later content-packet-only candidate is undergoing revalidation.
 
-**Decision for this baseline:** retain the implementation branch as a legacy prototype and source of reusable architecture; do not treat it as the v0.2 implementation or merge its gameplay/balance changes into the handoff branch. No gameplay rule is silently imported from the prototype.
+**Baseline decision:** retain the Android implementation branch as a legacy prototype and source of reusable architecture. Do not treat it as the v0.2 implementation or merge its gameplay/balance changes into the handoff branch. No gameplay rule is silently imported from the prototype; any deliberately carried-forward behavior is recorded in a Product Owner ADR.
 
-## 2. Branch inventory at baseline
+## 2. Current branch inventory
 
-| Branch | Commit | Contents | Baseline interpretation |
+| Branch | Current head | Contents | Interpretation |
 |---|---|---|---|
-| `main` | `1fc6d313728f46ab9c478b643e52374ed137d65b` | Control/docs branch plus three CI workflows | Not a game source branch |
-| `handoff/emberfall-coding-agent-v1.0` | `af7ca237b85c7b8fc2ecb38ce163d46c259e1b1d` | v0.2 specification, WBS, decision register, art references, Maestro v0.3 bootstrap and EFB-000 workflow | Current design authority; no Android source |
-| `qa/five-persona-first-run-audit` | `bbeb5215dbe455e92177756661af65123a70bfa2` | Handoff snapshot plus simulated first-run audit and QA notes | Design critique evidence; not human playtest evidence |
-| `implementation/emberfall-latest-source` | `e3610946ecf4caf91f0e1d2a232af714b88e65c2` | Kotlin/Android source, engine, assets, tests and Gradle build files | Legacy prototype to inspect and selectively reuse |
-| `feat/emberfall-multi-policy-balance-lab` | `911e2272da14371c1fc271ead406c8bcaa04b145` | Legacy reward-flow/persistence and policy-matrix candidate | Draft PR #3; HOLD, do not merge |
-| `audit/e00-repository-source-baseline` | PR #4 head (exact SHA in latest E00 artifact) | EFB-000 inventory, validator, Maestro packet and workflow | Draft PR #4; builder evidence passed, review pending |
+| `main` | `6d057b6a4307917340e5dcaf84c7513d01027c64` | Control/docs branch and CI workflows | Not a game source branch |
+| `handoff/emberfall-coding-agent-v1.0` | `26f0e9afb6c175b1d2a26c55de8098ae5deab580` | v0.2 specification, WBS, open decision register, art references and Maestro bootstrap | Current design authority; no Android source |
+| `qa/five-persona-first-run-audit` | `bbeb5215dbe455e92177756661af65123a70bfa2` | Handoff snapshot and simulated first-run critique | Design critique only; not human playtest evidence |
+| `implementation/emberfall-latest-source` | `e3610946ecf4caf91f0e1d2a232af714b88e65c2` | Kotlin/Android source, engine, assets, tests and Gradle build files | Legacy prototype; inspect and selectively reuse |
+| `feat/emberfall-multi-policy-balance-lab` | `4910e855adda91b87e0b02aa07e713c65f1cdddb` | Legacy reward-flow, support guard and policy matrix candidate | Draft PR #3; HOLD, do not merge |
+| `audit/e00-repository-source-baseline` | `93a4b27360c043b702624d7d317e7c682a0e7031` | EFB-000 inventory, validator, Maestro packet and workflow | Draft PR #4; builder evidence passed, independent review pending |
+| `design/efb-001-rules-adr-proposals` | `d05e06ef5c7890026de46febb52baf454396d285` | Product Owner ADR resolutions, governance charter, content queue and EFB-002/EFB-CONTENT packets | Draft PR #5; rules resolution validated on prior exact candidate; latest packet update revalidation pending |
 
-At the original handoff baseline SHA `fe94e61e...`, the handoff branch had 30 tracked paths; it now has 31 after adding the EFB-000 workflow. It has no `app/`, `settings.gradle.kts`, root `build.gradle.kts`, Gradle wrapper or Android test source. The legacy implementation branch has 224 tracked paths and a Kotlin Android application.
+The handoff branch has no `app/`, `settings.gradle.kts`, root `build.gradle.kts`, Gradle wrapper or Android test source. Android build, lint and package gates are not applicable to that docs-only branch; they are not PASS.
 
 ## 3. Authoritative v0.2 source
 
 - `references/EMBERFALL_GAME_SPEC_v0.2.txt` is the gameplay source of truth.
-- `engineering/IMPLEMENTATION_WBS.json` is version 1.0, project `EMBERFALL`, Maestro version `0.3.0`, with 17 epics.
-- `engineering/OPEN_DECISIONS.md` is the active decision register.
-- `maestro/CORE_PACKET_TEMPLATES_V03.json`, `maestro/EMBERFALL_TASKS_V2.json` and `maestro/bootstrap_current_maestro.sh` define the project workflow integration.
-- The bootstrap script pins upstream Maestro v0.3.0 at commit `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
+- `engineering/IMPLEMENTATION_WBS.json` is version 1.0, project EMBERFALL, Maestro version 0.3.0, with 17 epics.
+- `engineering/OPEN_DECISIONS.md` on the handoff branch is the original 23-row register.
+- `maestro/CORE_PACKET_TEMPLATES_V03.json`, `maestro/EMBERFALL_TASKS_V2.json` and `maestro/bootstrap_current_maestro.sh` define workflow integration.
+- Bootstrap pins upstream Maestro v0.3.0 at `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
 
 ### Core-rule divergence
 
-The legacy implementation README and engine use a swap-based match-3 board loop (`SwapCells`, match/cascade resolution). The v0.2 specification defines a connected-group Tap/Pop loop, vertical gravity and Wall pressure, and explicitly says to replace swap-match-3 rules. The prototype's existing board, effect, deterministic simulation, save and Android architecture may be inspected for reusable patterns; its board-resolution rules are not authoritative.
+The legacy implementation README and engine use a swap-based match-3 loop (`SwapCells`, line matching and cascades). The v0.2 spec selects connected-group Tap/Pop, vertical gravity and Wall pressure, and explicitly replaces swap-match-3. Prototype board/effect architecture, deterministic simulation, save logic and Android shell may be inspected for reusable patterns; its active board-resolution rules are not authoritative.
 
-### Legacy content inventory (source inspection)
+### Legacy content inventory
 
 - 65 `CardDef` definitions.
 - 22 `RelicDef` definitions.
@@ -52,18 +54,20 @@ The legacy implementation README and engine use a swap-based match-3 board loop 
 
 These are prototype counts, not v0.2 launch-content targets.
 
-## 4. Decision-register baseline
+## 4. Decision-register reconciliation
 
-The handoff branch's `engineering/OPEN_DECISIONS.md` contains 23 ADR rows:
+The handoff branch's original `engineering/OPEN_DECISIONS.md` contains 23 ADR rows:
 
-| Status | Count |
+| Original handoff status | Count |
 |---|---:|
 | OPEN / BLOCKING | 19 |
 | RESOLVED by platform policy check | 1 |
 | OPEN (trademark/title) | 1 |
 | PROPOSED | 2 |
 
-The QA branch's first-run simulation summary reports 18 open/blocking decisions. That conflicts with the 19 OPEN / BLOCKING rows in the current handoff register. EFB-000 records the discrepancy; the register is the source to reconcile, not the older QA summary.
+The QA branch's simulated first-run summary reports 18 open/blocking decisions. This conflicts with the 19 OPEN/BLOCKING rows in the handoff register. EFB-000 records the discrepancy; the handoff register is the source to reconcile, not the older QA summary.
+
+The EFB-001 Product Owner candidate now resolves all 19 blocking rules ADRs in individual records. Its validator passed on SHA `3c819430f0ee960cd96b5b94b1d8c33ca2da4912` in run `45165670116` (see PR #5). The handoff branch remains unchanged until the PR is accepted. ADR-021 title/trademark clearance remains open and non-blocking.
 
 The five-persona report is a simulated review. It is not evidence from five human players and must not be cited as human usability validation.
 
@@ -72,42 +76,37 @@ The five-persona report is a simulated review. It is not evidence from five huma
 ### Handoff branch
 
 - No Android application module or Gradle build files exist.
-- Android build, lint, Robolectric and emulator gates are **NOT APPLICABLE** to this branch at this stage; they are not PASS.
-- The correct immediate gate is specification/WBS/ADR/Maestro artifact validation.
+- Android build, lint, Robolectric and emulator gates are NOT APPLICABLE to this branch at this stage; they are not PASS.
+- The correct gate is specification/WBS/ADR/Maestro artifact validation.
 
 ### Legacy implementation branch
 
 - Kotlin Android/Jetpack Compose application with a pure-JVM engine package.
-- Gradle version catalog and `gradle/wrapper/gradle-wrapper.properties` exist.
-- Root `gradlew` and `gradle/wrapper/gradle-wrapper.jar` are absent.
-- The local execution environment lacked Gradle, Android SDK and ADB.
-- GitHub Actions workaround provisions JDK 21, Android SDK 36.1 and Gradle 9.3.1 directly, avoiding the missing wrapper binary.
-- The first full CI compile completed and 91 unit/Robolectric tests executed: 90 passed and one legacy inline-victory fixture failed because it expected advancement while the new four-channel reward contract still had unresolved support/artifact choices. Lint and packaging were not reached in that run.
-- A matched-seed policy matrix was started against the legacy prototype. Its results, when available, are diagnostic for that prototype only and must not be used to tune the v0.2 game.
+- Gradle version catalog and wrapper properties exist; root `gradlew` and `gradle-wrapper.jar` are absent.
+- GitHub Actions provisions JDK 21, Android SDK 36.1 and Gradle 9.3.1 directly.
+- Earlier CI had one stale Robolectric reward-navigation expectation; it was corrected to require support/artifact resolution before next-room navigation.
+- On candidate `4910e855adda91b87e0b02aa07e713c65f1cdddb`, the JVM/Room/audio/Robolectric test step has passed. Debug/release lint is still running; APK/AAB packaging has not yet been reached. Do not claim a complete Android verification until the run concludes.
+- The legacy matched-seed matrix previously passed 900 campaigns (20 seeds × 3 classes × 15 policy cells), 900 wins and 0 incomplete. It is diagnostic only; every policy saturated progression and the Deck Curator policy matched Balanced.
 
-## 6. Existing legacy CI work — explicitly out of v0.2 scope
+## 6. Legacy prototype CI — explicitly out of v0.2 scope
 
-The investigation added Android and balance-matrix workflows to validate the legacy implementation branch. They are operational workarounds for that branch's missing wrapper/SDK environment; they do not establish that the docs-only handoff branch is buildable.
-
-Draft PR #3 is retained as a diagnostic record and has been commented **HOLD — do not merge** pending source reconciliation. No merge or release has been performed.
+Draft PR #3 is retained as a diagnostic record and remains **HOLD — do not merge**. Its branch still drives live combat and bot simulation through SwapCells. The current Android verification rerun is a legacy code-quality check, not v0.2 gameplay verification. No XP thresholds, Cinders values or production balance numbers are changed from the matrix.
 
 ## 7. Reusable prototype architecture candidates
 
-Subject to code-level review and v0.2 contracts, the following are candidates for reuse rather than automatic imports:
-
+Subject to code-level review and v0.2 contracts:
 - Pure-JVM deterministic domain engine and seeded simulation harness.
 - Data-driven card/effect definitions and explicit effect queue.
 - Enemy intent and boss state modeling.
 - Run-state snapshots, Room persistence and migration tests.
-- Android Compose client shell, asset loading and audio adapter boundaries.
+- Android Compose shell, asset loading and audio adapter boundaries.
 - Existing test organization and GitHub-hosted Android toolchain workaround.
 
-The following are not reusable without replacement or explicit ADR approval:
-
+Not reusable without replacement or explicit ADR:
 - Swap-match-3 board resolution and cascade rules.
-- Reward/economy balance values from the legacy prototype.
+- Legacy reward/economy balance values.
 - Legacy content counts and class starter pools.
-- Existing simulation bot policy as evidence of v0.2 balance.
+- Existing simulation bots as evidence of v0.2 balance.
 
 ## 8. EFB-000 acceptance checklist
 
@@ -117,55 +116,35 @@ The following are not reusable without replacement or explicit ADR approval:
 | Branch/source inventory recorded | COMPLETE | Section 2 |
 | Prototype identified and classified | COMPLETE | Section 3 |
 | Legacy/v0.2 rules divergence recorded | COMPLETE | Section 3 |
-| ADR register counted and discrepancy logged | COMPLETE | Section 4 |
+| ADR register counted and QA discrepancy logged | COMPLETE | Section 4 |
 | Toolchain/build applicability recorded | COMPLETE | Section 5 |
-| Upstream Maestro v0.3 pinned | COMPLETE | `bootstrap_current_maestro.sh` pin |
-| Maestro bootstrap, contracts and GateRunner checks pass in CI | COMPLETE | Run `45150676282`; pinned Maestro tests 19/19, contracts 3/3, GateRunner smoke VERIFIED on candidate SHA |
-| Independent reviewer verifies exact candidate SHA | PENDING | Must be a different reviewer from builder; candidate `3159b6231eb806fabe10c61a4aa1500a0f91f40d` |
-| EFB-000 marked complete in Maestro state | PENDING | Maestro artifact state is ACTIVE / GROUNDING, revision 1; do not complete before independent review |
+| Upstream Maestro v0.3 pinned | COMPLETE | Bootstrap pin |
+| Maestro bootstrap, contracts and GateRunner checks pass in CI | COMPLETE | Run `45152074759`, exact candidate SHA `93a4b27360c043b702624d7d317e7c682a0e7031` |
+| Independent reviewer verifies exact candidate SHA | PENDING | @copilot review requested; response pending |
+| EFB-000 marked complete in Maestro state | PENDING | Maestro artifact remains ACTIVE / GROUNDING; do not complete before independent review |
 
-## 9. Next increment
+## 9. EFB-000 GitHub Actions evidence
 
-After the E00 validation workflow passes, proceed to **EFB-001-RULES-ADR**. Draft the blocking rule decisions as explicit ADR proposals with examples and testable acceptance criteria. Do not implement EFB-002 board behavior until the P0 rule contract is approved.
-
-No game code or gameplay rules are changed by this baseline report.
-
-
-## 10. Validation workflow placement
-
-The EFB-000 workflow is present on the default branch, the handoff base branch and this audit candidate so GitHub can evaluate push and pull-request events. It validates the docs-led handoff and pinned Maestro runtime; it deliberately does not invoke Android Gradle tasks while the handoff branch has no Android source.
-
-
-## 10. EFB-000 GitHub Actions evidence
-
-Workflow run: `45151394670`  
-Candidate SHA: `b214efe1c23d360d53dad9f526c65198d36699a3`  
-Artifact digest: `sha256:b5bea033a5e4338ca8d920ed034493ceb53a3a84e1cebc9e55c0af2a9c0b599e`
+**Workflow run:** `45152074759`  
+**Candidate SHA:** `93a4b27360c043b702624d7d317e7c682a0e7031`  
+**Artifact:** `emberfall-efb-000-maestro-evidence`  
+**Artifact SHA-256:** `3d415477ca3d9e13c540fecdc3456f89bb349142d31a1a10d42954a58b655049`
 
 - Pinned upstream Maestro v0.3.0 bootstrap completed at `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
-- Maestro unit tests: **19 passed**.
-- Maestro contract validation: **3/3 passed**.
+- Maestro unit tests: 19 passed.
+- Maestro contract validation: 3/3 passed.
 - Adapter inventory and echo adapter health check completed.
-- Apo handoff GateRunner smoke check: **passed**, `evidence_class=VERIFIED`, runner identity `gate-runner@runnervm0hi8g`, `ran_on_sha=b214efe1c23d360d53dad9f526c65198d36699a3`, log hash `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
-- Source inventory validator: **passed** — 17 WBS epics, 17 Maestro tasks, 23 ADR rows, 19 OPEN/BLOCKING.
-- Android build gate: `NOT_APPLICABLE_NO_ANDROID_SOURCE`; this is explicitly not a build pass.
-- Maestro state artifact: workflow `d209223b-14d0-4137-8be0-4a5214e407aa`, ACTIVE / GROUNDING, revision 1. The state is intentionally not advanced to completion pending independent review.
+- Apo handoff GateRunner smoke check: VERIFIED; runner identity `gate-runner@runnervm0hi8g`; `ran_on_sha=93a4b27360c043b702624d7d317e7c682a0e7031`.
+- Source inventory validator: 17 WBS epics, 17 Maestro tasks, 23 ADR rows, 19 OPEN/BLOCKING.
+- Android build gate: `NOT_APPLICABLE_NO_ANDROID_SOURCE`; explicitly not a build pass.
+- Maestro state artifact: workflow `d209223b-14d0-4137-8be0-4a5214e407aa`, ACTIVE / GROUNDING, revision 1. It is intentionally not advanced to completion pending independent review.
 
-## 11. Legacy prototype matrix — diagnostic only
+## 10. EFB-001 and EFB-002 sequencing
 
-The legacy-only matrix workflow run `45147504116` completed **900 campaigns** (20 seeds × 3 classes × 15 route/combat cells): **900 wins, 0 incomplete**. This is bot simulation of the old swap-match-3 prototype, not human playtesting and not evidence for v0.2.
+The Product Owner has resolved the 19 blocking rules decisions in PR #5. The exact validated ADR candidate SHA is `3c819430f0ee960cd96b5b94b1d8c33ca2da4912`; a later content-specialist packet addition is being revalidated. EFB-002 board-core packet is prepared but marked `BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW`. It explicitly forbids live SwapCells and authorizes no implementation until EFB-000 is accepted.
 
-| Route policy | Campaigns | Wins | Incomplete | Avg level | Avg Cinders | Avg deck |
-|---|---:|---:|---:|---:|---:|---:|
-| Balanced | 180 | 180 | 0 | 13.14 | 1,592.96 | 18.43 |
-| Survival | 180 | 180 | 0 | 13.14 | 1,594.52 | 18.43 |
-| Elite hunter | 180 | 180 | 0 | 13.67 | 1,751.18 | 18.09 |
-| Treasure seeker | 180 | 180 | 0 | 13.18 | 1,596.57 | 18.44 |
-| Deck curator | 180 | 180 | 0 | 13.14 | 1,592.96 | 18.43 |
+After EFB-000 independent review and PR #5 acceptance, begin EFB-002 group-pop board core. Do not implement card breadth or content scale before the deterministic board vertical slice passes.
 
-Every route/combat cell averaged all 12 passives, all 3 support sockets and all 8 artifacts. `DECK_CURATOR` produced exactly the same aggregate metrics as `BALANCED` in this sample, so it did not demonstrate a distinct policy outcome. The legacy prototype is progression-saturated under these bot policies. No balance values were changed from this evidence.
+## 11. Current EFB-000 disposition
 
-## 12. Current EFB-000 disposition
-
-Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The exact candidate SHA for review is the `baseline_sha` in the latest successful E00 workflow artifact attached to PR #4. Any subsequent candidate commit must rerun the E00 workflow before review. The reviewer must verify the source classification, the v0.2/legacy rule divergence, the ADR-count discrepancy, and the GitHub Actions evidence. Only after that review should the Maestro workflow advance from GROUNDING.
-
+Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The exact candidate SHA is `93a4b27360c043b702624d7d317e7c682a0e7031`. Any subsequent candidate commit must rerun the E00 workflow before review. The reviewer must verify source classification, v0.2/legacy rule divergence, ADR-count discrepancy, workflow/validator correctness and exact evidence. Only after approval should Maestro advance from GROUNDING.
