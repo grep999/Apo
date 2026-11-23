@@ -23,17 +23,21 @@
     "Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse.",
     "Wall/Overflow and Seal durations delegated to EFB-002 BoardEngine.",
     "Cast integration seams for card damage, Block and intent delay; Snatch/Curse emit explicit EFB-004 integration events.",
-    "Stable replay digest binds board, player/enemy resources, complete intent sequence/cursor, forecast and status counters."
+    "Stable replay digest binds board, player/enemy resources, complete intent sequence/cursor, forecast and status counters.",
+    "Defensively immutable combat snapshots, player Ink, intent sequences, Brand targets and wall-row commands.",
+    "Sealed-column incoming rows remain frozen through Wall insertion and enemy Ash Row/Stain effects, honoring ADR-012 at the combat integration boundary."
   ],
   "checks": [
     {
-      "name": "Gradle clean test",
-      "status": "NOT_YET_VERIFIED",
+      "name": "Pure JVM / Android boundary",
+      "status": "RUN_STEP_PASSED_ON_EARLIER_CANDIDATE",
+      "run_id": 45272406052,
       "required": true
     },
     {
-      "name": "Pure JVM / Android boundary",
-      "status": "NOT_YET_VERIFIED",
+      "name": "Gradle clean test",
+      "status": "IN_PROGRESS_ON_EARLIER_CANDIDATE; MUST RE-RUN FINAL SHA",
+      "run_id": 45272406052,
       "required": true
     },
     {
@@ -58,7 +62,7 @@
     "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
     "No Android/device evidence is claimed for this pure JVM increment."
   ],
-  "next_action": "Obtain an exact-head Gradle/JUnit and pure-JVM CI result for this candidate SHA, then independent Mastery review and Repetition. Do not mark acceptance until those are complete.",
-  "candidate_sha": "a75debceaea583ee5dfe6d7509149cf01030ebc1",
-  "candidate_ref": "git:a75debceaea583ee5dfe6d7509149cf01030ebc1"
+  "next_action": "Wait for exact-SHA test run on final code SHA 9eabc4802520abe02b001665449f4e674822dbc4; if the workflow was triggered only on an earlier PR head, re-run against this SHA. Then independent Mastery and Repetition.",
+  "candidate_sha": "9eabc4802520abe02b001665449f4e674822dbc4",
+  "candidate_ref": "git:9eabc4802520abe02b001665449f4e674822dbc4"
 }
