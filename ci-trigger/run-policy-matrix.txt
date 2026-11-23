@@ -1,1 +1,3 @@
 Run the 5x3 matched-seed balance matrix for the current Emberfall implementation candidate. Default: 100 matched seeds per class and policy cell.
+
+Re-trigger after adding the workflow definition to the candidate branch.
