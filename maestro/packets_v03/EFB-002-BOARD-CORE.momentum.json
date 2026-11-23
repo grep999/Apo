@@ -10,7 +10,10 @@
     ".gitignore",
     "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json",
     "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
-    "README.md"
+    "README.md",
+    ".github/workflows/efb002-maestro-workflow.yml",
+    "scripts/record_efb002_maestro_gates.py",
+    "scripts/validate_efb001_adr_proposals.py"
   ],
   "checks": [
     {
