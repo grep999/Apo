@@ -22,7 +22,7 @@ class BoardCoreTest {
         assertEquals(2, result.groupSize)
         assertEquals(1, result.chipDamage)
         assertEquals(2, result.inkPayout)
-        assertTrue(result.board[Coord(2,1)] != null)
+        assertEquals(Cell.hue(Hue.EMBER), result.board[Coord(2,6)])
     }
 
     @Test fun ashPaysNoInkAndDealsNMinusOneChip() {
@@ -39,7 +39,7 @@ class BoardCoreTest {
         val result = assertIs<TapOutcome.Accepted>(engine.tap(b, Coord(1,0))).result
         assertEquals(Hue.EMBER, result.resolvedHue)
         assertEquals(3, result.groupSize)
-        assertTrue(result.board[Coord(2,0)] != null)
+        assertEquals(Cell.hue(Hue.TIDE), result.board[Coord(2,6)])
     }
 
     @Test fun stoneBreakUsesOnePreRemovalSnapshot() {
