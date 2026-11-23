@@ -164,12 +164,12 @@ class BoardCoreTest {
     }
 
     @Test fun spectrumOutOfOrderPopResetsAndBecomesNewAnchor() {
-        val b = board(Coord(0,0) to Cell.hue(Hue.MOSS), Coord(1,0) to Cell.hue(Hue.MOSS))
+        val b = board(Coord(0,0) to Cell.hue(Hue.EMBER), Coord(1,0) to Cell.hue(Hue.EMBER))
         val result = assertIs<TapOutcome.Accepted>(
             engine.tap(b, Coord(0,0), SpectrumState(2, Hue.GOLD))
         ).result
         assertEquals(0, result.spectrum.run)
-        assertEquals(Hue.MOSS, result.spectrum.lastHue)
+        assertEquals(Hue.EMBER, result.spectrum.lastHue)
     }
 
     @Test fun overflowWithoutFlaskStillDealsEightAndPreservesPreview() {
