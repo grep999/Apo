@@ -46,6 +46,10 @@ for adr_id in blocking_ids:
         invalid.append(f"{adr_id}: register does not mark resolved")
 assert not missing, f"missing ADR files: {missing}"
 assert not invalid, f"invalid ADR contract: {invalid}"
+spectrum = (adr_dir / "ADR-005-spectrum-run.md").read_text(encoding="utf-8").lower()
+assert "round-half-up" in spectrum and "ties go to the higher integer" in spectrum
+assert "(baseink * (2 + run) + 1) / 2" in spectrum
+assert any("round-half-up exactly once at final payout" in item for item in board_packet["acceptance"])
 fast = (adr_dir / "ADR-017-fast-true-ending.md").read_text(encoding="utf-8").lower()
 assert "three consecutive full turns" in fast
 assert "not required to spend all three ordinary taps" in fast
