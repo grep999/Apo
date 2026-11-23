@@ -10,9 +10,13 @@ class ClassCatalogTest {
         assertEquals(3, PlayerClassCatalog.classes.size)
         PlayerClassCatalog.classes.values.forEach { definition ->
             assertEquals(12, definition.starterDeck.size)
-            assertEquals(4, definition.starterDeck.count { ClassCardCatalog.cards.getValue(it).frameHue == definition.firstHue })
-            assertEquals(4, definition.starterDeck.count { ClassCardCatalog.cards.getValue(it).frameHue == definition.secondHue })
-            assertEquals(2, definition.starterDeck.count { it == "pop_shot" })
+            if (definition.id == PlayerClassId.THE_UNLIT) {
+                assertTrue(definition.starterDeck.all { ClassCardCatalog.cards.getValue(it).frameHue == Hue.GOLD })
+            } else {
+                assertEquals(4, definition.starterDeck.count { ClassCardCatalog.cards.getValue(it).frameHue == definition.firstHue })
+                assertEquals(4, definition.starterDeck.count { ClassCardCatalog.cards.getValue(it).frameHue == definition.secondHue })
+            }
+            assertEquals(2, definition.starterDeck.count { it.endsWith("pop_shot") })
             assertTrue(definition.starterDeck.all { it in ClassCardCatalog.cards })
             val battle = CardBattleState.start(
                 CombatState.start(BoardState.empty(), EnemyDefinition("test", 50, listOf(EnemyIntent.Strike(1)))),
