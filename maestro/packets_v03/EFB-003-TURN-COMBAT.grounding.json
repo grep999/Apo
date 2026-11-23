@@ -1,0 +1,67 @@
+{
+  "purpose": "Prepare the deterministic turn/combat state machine increment for Emberfall v0.2. This is a Grounding packet only; implementation is not authorized until EFB-002 has passed independent Mastery, EFB-000 merged-tree review is accepted, and EFB-002 Repetition is recorded.",
+  "sources": [
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#2",
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#5",
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#6",
+    "engineering/PRODUCT_OWNER_DECISION_BASELINE.md",
+    "engineering/PRODUCT_OWNER_GOVERNANCE.md",
+    "engineering/IMPLEMENTATION_WBS.json",
+    "engineering/CODING_AGENT_ROADMAP.md#6.5",
+    "engineering/CODING_AGENT_ROADMAP.md#6.6",
+    "engineering/CODING_AGENT_ROADMAP.md#16",
+    "engineering/CODING_AGENT_ROADMAP.md#17",
+    "docs/adr/ADR-001-turn-phases.md",
+    "EFB-002 candidate: git:3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
+    "EFB-002 exact-candidate CI: GitHub Actions runs 45209604945 and 45209604883"
+  ],
+  "constraints": [
+    "No implementation until EFB-002 independent Mastery PASS/accepted disposition, EFB-000 merged-tree review and EFB-002 Repetition are complete.",
+    "Preserve all accepted v0.2 rules and Product Owner decisions. Do not re-litigate closed ADRs.",
+    "Pure Kotlin/JVM simulation remains independent of Android APIs; no Android UI in this increment.",
+    "Use a deterministic command/reducer architecture. UI preview must be pure and must not consume RNG or mutate state.",
+    "The phase order is Draw -> Weave -> Cast -> Wall -> Enemy -> Cleanup.",
+    "Starting player resources and turn rules come from v0.2 spec: 70 Vigil, 2 Flasks (max 5, heal 30), 3 base Taps, Block absorbs damage and resets each turn, 5-card draw.",
+    "Enemies show two upcoming intents with numeric effects/targets; resolved intent must equal the forecasted intent.",
+    "Board action results are consumed from EFB-002. Do not duplicate or fork board mechanics.",
+    "No card definitions/effect DSL beyond the combat integration boundary; those belong to EFB-004.",
+    "No class-specific content, run progression, Android UI, art, audio or backend in EFB-003.",
+    "Invalid actions are transactional: no partial state, resource or RNG mutation.",
+    "Every transition emits deterministic events; event ordering is explicit and replayable.",
+    "No unapproved merge, publish, store submission or deploy; no secrets in commits or logs."
+  ],
+  "dependencies": [
+    "EFB-002-BOARD-CORE: candidate 3fcb5f2c0ba3ae68690f64342e686f06b8f76061 has exact CI PASS but is not accepted; independent Mastery remains pending.",
+    "EFB-000-BASELINE: merged tree 5130215cb0a033345752311903de7f9c08aced4d; independent review remains pending."
+  ],
+  "risks": [
+    "R1: incorrect phase order can create double Wall rises, missed intents or unintended card/board timing.",
+    "R1: intent preview and resolution can diverge if RNG or state mutation occurs during preview.",
+    "R1: Block reset timing, damage ordering, Delay and status durations can create hidden or exploitable outcomes.",
+    "R1: enemy board attacks may target sealed, missing or invalid cells unless target legality is explicit.",
+    "R1: lethal damage, Flask use and end-turn cleanup can leave partially committed states without atomic transitions.",
+    "R1: premature card integration will entangle EFB-003 and EFB-004; define interfaces only."
+  ],
+  "acceptance": [
+    "Explicit state machine covers Draw, Weave, Cast, Wall, Enemy and Cleanup with legal transitions and phase-specific commands.",
+    "Player state models Vigil, Block, Flask count/cap and death; resource bounds are enforced.",
+    "Block absorbs damage and resets at the specified turn boundary; exact damage order has golden tests.",
+    "Weave enforces the available Tap count and consumes a Tap only on a successful legal board action; rejected actions do not mutate state.",
+    "Enemy intent model exposes the next two intents, including numeric effect and target.",
+    "The intent shown to the player is exactly the intent resolved; preview is pure and deterministic.",
+    "Implement spec-defined intents: Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse, within EFB-003 scope and without card-specific effects.",
+    "Delay/status duration and target resolution are deterministic and have explicit ordering.",
+    "Wall phase uses the EFB-002 board API and preserves its accepted Overflow/Seal contracts.",
+    "Death, Flask healing, max-Flask handling and cleanup edge cases are covered.",
+    "All invalid commands reject atomically and leave state/RNG unchanged.",
+    "Command replay with seed + rules version + action log yields identical checkpoint hashes.",
+    "Golden tests cover every phase transition and every enemy intent; property/fuzz tests cover legal command sequences across many seeds.",
+    "Pure-JVM Gradle/JUnit, formatting/lint, deterministic replay and Maestro GateRunner checks pass on the exact candidate SHA.",
+    "Independent Mastery review inspects exact candidate, changed paths, tests and evidence; builder and reviewer identities differ.",
+    "Repetition records expected/actual outcome, durable lessons, accepted state and next increment."
+  ],
+  "next_increment": "After EFB-002 acceptance and Repetition, start the EFB-003 Maestro workflow, ground the exact turn/combat interfaces, then implement one bounded player-vs-first-enemy vertical combat slice before broadening enemy content.",
+  "current_status": "PREPARED_BLOCKED_PENDING_EFB002_ACCEPTANCE",
+  "no_implementation_authorized": true,
+  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23"
+}
