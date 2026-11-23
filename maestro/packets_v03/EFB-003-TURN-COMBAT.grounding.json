@@ -1,0 +1,70 @@
+{
+  "purpose": "Implement the deterministic EFB-003 turn/combat state machine directly on the accepted EFB-002 pure Kotlin/JVM board core. Product Owner decision PRODUCT_OWNER_DECISION_CLEAN_CORE.md explicitly excludes all legacy prototype code/assets and authorizes clean-room implementation from exact EFB-002 SHA 6b6e139890a205ead337a94226464a0b5ddd82da.",
+  "sources": [
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#2",
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#5",
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt#6",
+    "engineering/PRODUCT_OWNER_DECISION_BASELINE.md",
+    "engineering/PRODUCT_OWNER_GOVERNANCE.md",
+    "engineering/IMPLEMENTATION_WBS.json",
+    "engineering/CODING_AGENT_ROADMAP.md#6.5",
+    "engineering/CODING_AGENT_ROADMAP.md#6.6",
+    "engineering/CODING_AGENT_ROADMAP.md#16",
+    "engineering/CODING_AGENT_ROADMAP.md#17",
+    "docs/adr/ADR-001-turn-phases.md",
+    "EFB-002 exact-head CI: Board Core run 45265105730; Maestro GateRunner run 45265105467; ADR validator run 45265105426",
+    "EFB-002 Product Owner acceptance: PR #14 comment https://github.com/grep999/Apo/pull/14#issuecomment-7114277343; exact candidate 6b6e139890a205ead337a94226464a0b5ddd82da; additional independent Mastery round waived; Repetition recorded in maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json",
+    "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md: legacy prototype and all associated source/assets are excluded; no reuse rights clearance required for excluded material."
+  ],
+  "constraints": [
+    "Implementation is authorized on an isolated branch from exact EFB-002 accepted SHA 6b6e139890a205ead337a94226464a0b5ddd82da. Do not import or depend on legacy prototype source/assets. Exact-SHA tests, independent EFB-003 Mastery and Repetition remain required before acceptance/merge.",
+    "Preserve all accepted v0.2 rules and Product Owner decisions. Do not re-litigate closed ADRs.",
+    "Pure Kotlin/JVM simulation remains independent of Android APIs; no Android UI in this increment.",
+    "Use a deterministic command/reducer architecture. UI preview must be pure and must not consume RNG or mutate state.",
+    "The phase order is Draw -> Weave -> Cast -> Wall -> Enemy -> Cleanup.",
+    "Starting player resources and turn rules come from v0.2 spec: 70 Vigil, 2 Flasks (max 5, heal 30), 3 base Taps, Block absorbs damage and resets each turn, 5-card draw.",
+    "Enemies show two upcoming intents with numeric effects/targets; resolved intent must equal the forecasted intent.",
+    "Board action results are consumed from EFB-002. Do not duplicate or fork board mechanics.",
+    "No card definitions/effect DSL beyond the combat integration boundary; those belong to EFB-004.",
+    "No class-specific content, run progression, Android UI, art, audio or backend in EFB-003.",
+    "Invalid actions are transactional: no partial state, resource or RNG mutation.",
+    "Every transition emits deterministic events; event ordering is explicit and replayable.",
+    "No unapproved merge, publish, store submission or deploy; no secrets in commits or logs."
+  ],
+  "dependencies": [
+    "EFB-002-BOARD-CORE: ACCEPTED by Product Owner at exact candidate 6b6e139890a205ead337a94226464a0b5ddd82da; exact-head Board Core, GateRunner and ADR validation passed; additional independent Mastery round waived; Repetition recorded.",
+    "EFB-000 historical baseline: retained for audit only. Product Owner explicitly excludes legacy prototype code/assets from the clean product baseline; its ownership/reuse-rights review is not a dependency of new clean-room implementation.",
+    "Maestro: native cross-run workflow continuity is a governance improvement and is not a source-code implementation blocker. EFB-003 must still bind tests/review to exact candidate SHA and complete independent Mastery plus Repetition."
+  ],
+  "risks": [
+    "R1: incorrect phase order can create double Wall rises, missed intents or unintended card/board timing.",
+    "R1: intent preview and resolution can diverge if RNG or state mutation occurs during preview.",
+    "R1: Block reset timing, damage ordering, Delay and status durations can create hidden or exploitable outcomes.",
+    "R1: enemy board attacks may target sealed, missing or invalid cells unless target legality is explicit.",
+    "R1: lethal damage, Flask use and end-turn cleanup can leave partially committed states without atomic transitions.",
+    "R1: premature card integration will entangle EFB-003 and EFB-004; define interfaces only."
+  ],
+  "acceptance": [
+    "Explicit state machine covers Draw, Weave, Cast, Wall, Enemy and Cleanup with legal transitions and phase-specific commands.",
+    "Player state models Vigil, Block, Flask count/cap and death; resource bounds are enforced.",
+    "Block absorbs damage and resets at the specified turn boundary; exact damage order has golden tests.",
+    "Weave enforces the available Tap count and consumes a Tap only on a successful legal board action; rejected actions do not mutate state.",
+    "Enemy intent model exposes the next two intents, including numeric effect and target.",
+    "The intent shown to the player is exactly the intent resolved; preview is pure and deterministic.",
+    "Implement spec-defined intents: Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse, within EFB-003 scope and without card-specific effects.",
+    "Delay/status duration and target resolution are deterministic and have explicit ordering.",
+    "Wall phase uses the EFB-002 board API and preserves its accepted Overflow/Seal contracts.",
+    "Death, Flask healing, max-Flask handling and cleanup edge cases are covered.",
+    "All invalid commands reject atomically and leave state/RNG unchanged.",
+    "Command replay with seed + rules version + action log yields identical checkpoint hashes.",
+    "Golden tests cover every phase transition and every enemy intent; property/fuzz tests cover legal command sequences across many seeds.",
+    "Pure-JVM Gradle/JUnit, formatting/lint, deterministic replay and Maestro GateRunner checks pass on the exact candidate SHA.",
+    "Independent Mastery review inspects exact candidate, changed paths, tests and evidence; builder and reviewer identities differ.",
+    "Repetition records expected/actual outcome, durable lessons, accepted state and next increment."
+  ],
+  "next_increment": "Implement the first coherent player-vs-enemy combat loop on the accepted BoardEngine API: explicit phases, atomic commands, deterministic two-intent forecast/resolution, player resources, enemy health/Block, Wall/Overflow integration, event log and replay digest. Keep card definitions and Android presentation out of scope.",
+  "current_status": "MOMENTUM_AUTHORIZED_CLEAN_CORE",
+  "no_implementation_authorized": false,
+  "baseline_ref": "git:6b6e139890a205ead337a94226464a0b5ddd82da",
+  "legacy_policy": "EXCLUDED_NO_SOURCE_OR_ASSET_REUSE"
+}
