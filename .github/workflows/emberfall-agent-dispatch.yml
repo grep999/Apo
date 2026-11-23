@@ -90,7 +90,7 @@ jobs:
 
       - name: Dispatch Copilot cloud agent
         env:
-          TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
+          TOKEN: ${{ secrets.EmberfallAgentDispatch }}
           ROLE: ${{ steps.packet.outputs.role }}
           TASK_ID: ${{ steps.packet.outputs.task_id }}
           BASE_REF: ${{ steps.packet.outputs.base_ref }}
@@ -100,7 +100,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
-          [[ -n "$TOKEN" ]] || { echo "::error::Add COPILOT_AGENT_TOKEN (user-to-server PAT; fine-grained repo permissions: Actions, Contents, Issues and Pull Requests read/write)."; exit 1; }
+          [[ -n "$TOKEN" ]] || { echo "::error::Add EmberfallAgentDispatch (user-to-server PAT; fine-grained repo permissions: Actions, Contents, Issues and Pull Requests read/write)."; exit 1; }
           if [[ "$EVENT_NAME" == "push" ]]; then PROMPT=$(jq -r '.prompt' request.json); fi
           case "$ROLE" in
             RESEARCHER) RULES="Research only. Do not modify code. Return source-backed findings, uncertainty, contradictions and recommendations." ;;
