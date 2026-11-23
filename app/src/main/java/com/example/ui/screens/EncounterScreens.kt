@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.engine.GameCatalog
 import com.example.engine.GameEngine
+import com.example.engine.ProgressionCatalog
 import com.example.engine.RunState
 import com.example.ui.components.CardPillView
 import com.example.ui.components.EmberfallTopBar
@@ -34,11 +35,14 @@ fun RewardsScreen(
   onClaimRelic: () -> Unit,
   onSkipRelic: () -> Unit,
   onFinishRewards: () -> Unit,
+  onSocketSupport: (String, Int) -> Unit = { _, _ -> },
+  onSkipSupport: () -> Unit = {},
+  onBindArtifact: (String) -> Unit = {},
+  onSkipArtifact: () -> Unit = {},
 ) {
   val reward = run.pendingReward ?: return
-  val cardsResolved = reward.cardChoices.isEmpty() || reward.cardPicked
-  val relicResolved = reward.relicRewardId == null || reward.relicPicked
-  val canFinish = cardsResolved && relicResolved
+  var supportToReplace by remember(run.pendingReward) { mutableStateOf<String?>(null) }
+  val canFinish = reward.allChoicesResolved
 
   Column(
     modifier = Modifier
@@ -120,6 +124,61 @@ fun RewardsScreen(
         }
       }
 
+      if (!reward.supportPicked && reward.supportChoices.isNotEmpty()) {
+        item { Text("Dhāraṇā Support Engraving", style = MaterialTheme.typography.titleLarge, color = GildedBrass) }
+        items(reward.supportChoices, key = { it }) { supportId ->
+          val support = ProgressionCatalog.supportByIdOrNull(supportId)
+          if (support != null) {
+            Surface(
+              onClick = {
+                if (run.growth.socketedSupportIds.size >= run.growth.maxSockets) supportToReplace = supportId
+                else onSocketSupport(supportId, -1)
+              },
+              color = SlateStone,
+              shape = RoundedCornerShape(12.dp),
+              border = BorderStroke(1.dp, MoltenEmber.copy(alpha = 0.8f)),
+              modifier = Modifier.fillMaxWidth().testTag("reward_support_$supportId"),
+            ) {
+              Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(support.name, style = MaterialTheme.typography.titleMedium, color = GildedBrass)
+                Text(support.traditionNote, style = MaterialTheme.typography.labelSmall, color = MutedAsh)
+                Text(support.summary, style = MaterialTheme.typography.bodyMedium, color = WarmParchment)
+              }
+            }
+          }
+        }
+        item {
+          OutlinedButton(onClick = onSkipSupport, modifier = Modifier.fillMaxWidth().height(48.dp).testTag("skip_support_button")) {
+            Text("Skip Support (+8 Cinders)", color = MutedAsh)
+          }
+        }
+      }
+
+      if (!reward.artifactPicked && reward.artifactChoices.isNotEmpty()) {
+        item { Text("Tantric Artifact", style = MaterialTheme.typography.titleLarge, color = HueViolet) }
+        items(reward.artifactChoices, key = { it }) { artifactId ->
+          val artifact = ProgressionCatalog.artifactByIdOrNull(artifactId)
+          if (artifact != null) {
+            Surface(
+              onClick = { onBindArtifact(artifactId) },
+              color = CharredBasalt,
+              shape = RoundedCornerShape(12.dp),
+              border = BorderStroke(1.dp, HueViolet.copy(alpha = 0.8f)),
+              modifier = Modifier.fillMaxWidth().testTag("reward_artifact_$artifactId"),
+            ) {
+              Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(artifact.name, style = MaterialTheme.typography.titleMedium, color = HueViolet)
+                Text(artifact.summary, style = MaterialTheme.typography.bodyMedium, color = WarmParchment)
+              }
+            }
+          }
+        }
+        item {
+          OutlinedButton(onClick = onSkipArtifact, modifier = Modifier.fillMaxWidth().height(48.dp).testTag("skip_artifact_button")) {
+            Text("Skip Artifact (+8 Cinders)", color = MutedAsh)
+          }
+        }
+      }
       if (reward.cardChoices.isNotEmpty()) {
         item {
           Row(
@@ -241,6 +300,18 @@ fun RewardsScreen(
         Text("Return to Spire Map", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
       }
     }
+  }
+
+  supportToReplace?.let { supportId ->
+    com.example.ui.components.SupportReplacementDialog(
+      supportId = supportId,
+      growth = run.growth,
+      onChooseSlot = { slot ->
+        onSocketSupport(supportId, slot)
+        supportToReplace = null
+      },
+      onDismiss = { supportToReplace = null },
+    )
   }
 }
 
