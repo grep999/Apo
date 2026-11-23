@@ -1,7 +1,7 @@
 # EFB-003 — Turn / Combat Core
 
 **Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
-**Candidate SHA:** `48c5a38cbb42568d64b1655ae5f667854e55786d`  
+**Candidate SHA:** `8dd0a03ceae047a72d783eeee81df037952ac18c`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
 **Policy:** clean-room implementation; legacy prototype source/assets explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`.
@@ -24,7 +24,7 @@ Card definitions/effect DSL, deck/draw/discard implementation, class-specific co
 
 ## Verification
 
-The new exact-SHA workflow runs the full Gradle/JUnit suite and rejects Android/Compose imports in the pure domain source. An earlier exact-SHA run compiled production and test Kotlin, passed the pure-JVM boundary, and found one stale Seal/Stain incoming-row assertion (58 tests, 1 failure). That assertion and the sealed incoming-row integration were corrected. Final candidate run 45273033526 is pending; no PASS is claimed. The exact candidate SHA is recorded above. Device/UI testing is not applicable to this headless increment.
+The new exact-SHA workflow runs the full Gradle/JUnit suite and rejects Android/Compose imports in the pure domain source. An earlier exact-SHA run compiled production and test Kotlin, passed the pure-JVM boundary, and found one stale Seal/Stain incoming-row assertion (58 tests, 1 failure). That assertion and the sealed incoming-row integration were corrected. Earlier candidate runs exposed and fixed two issues: one stale Seal/Stain assertion and one misplaced test-class closing brace. Final candidate run 45273205685 is pending; no PASS is claimed. The exact candidate SHA is recorded above. Device/UI testing is not applicable to this headless increment.
 
 ## Remaining review
 
