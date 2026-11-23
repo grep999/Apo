@@ -187,6 +187,20 @@ Research prompts request independent evidence and alternatives, not implementati
 
 This is the first control-plane engineering priority because the observed push workflow creates a new Maestro workflow/database instead of resuming the same increment.
 
+### Verified defects in the current EFB-002 workflow
+
+Inspection of `.github/workflows/efb002-maestro-workflow.yml` and `scripts/finalize_efb002_maestro.py` on `feat/efb-002-board-core-exactsha` confirms:
+
+- The workflow runs on every matching push and also supports `workflow_dispatch`.
+- It creates a fresh `.maestro/state.sqlite3` in the runner workspace and immediately calls `coding-start`; it does not download or restore a prior Maestro state checkpoint.
+- The workflow therefore creates a new workflow ID instead of resuming the EFB-002 lifecycle.
+- `concurrency.cancel-in-progress: true` can terminate a state-mutating run while it is working. State mutation must be serialized without cancelling an in-flight checkpoint writer.
+- The script calls Maestro `assign` and records the resulting reviewer assignment as `PROPOSED`. It writes `artifacts/efb002-review-dispatch.json`, but no provider adapter consumes that packet and no agent session is launched.
+- The workflow declares only `contents: read`; it has no explicit issue/PR write permissions or configured Copilot/third-party dispatch credential.
+- The evidence artifact is uploaded, but no explicit `retention-days` is declared. Its effective retention therefore depends on repository settings and must be verified.
+
+These findings explain why the current workflow proves a one-run Maestro lifecycle and exact-SHA checks, but not durable multi-run continuity or actual reviewer dispatch. They are the first repair targets; do not patch them by merely hard-coding a workflow ID or changing the concurrency flag.
+
 Required behavior:
 
 1. Create the Maestro workflow once per increment/cycle from the actual Git base SHA.
