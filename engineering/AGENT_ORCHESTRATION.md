@@ -263,6 +263,19 @@ For each increment:
 
 For current Emberfall state, this means the orchestration work first repairs continuity and real reviewer dispatch, then completes EFB-000/EFB-002 review and Repetition. **EFB-003 remains blocked.** Do not use parallel agents as an excuse to bypass that dependency.
 
+## 12A. Fast GitHub dispatch MVP assembled
+
+A first usable dispatch path is now present in this branch:
+
+- `.github/workflows/emberfall-agent-dispatch.yml`: accepts a validated JSON task packet on pushes to `maestro/dispatch-requests/*.json`, or a manual dispatch when available; calls GitHub's Copilot cloud-agent task API; uploads a 30-day dispatch receipt.
+- `.github/workflows/emberfall-agent-status.yml`: accepts a task ID and retrieves its current state from the same API.
+- `maestro/dispatch-requests/`: contains three initial AO packets for repository/workflow research, Maestro persistence architecture, and a read-only workflow security review.
+- `maestro/dispatch-requests/README.md`: quick-start and secret requirements.
+
+**One required repository setup action:** add `COPILOT_AGENT_TOKEN` as an Actions secret. It must be a user-to-server fine-grained PAT with repository Actions, Contents, Issues and Pull Requests read/write permissions. The Copilot agent-task API rejects server-to-server GitHub App installation tokens. Copilot cloud agent must also be enabled for the repository/account.
+
+The packets were committed separately after the dispatch workflow so each JSON push can trigger a separate run. This is an MVP: check the Actions runs and uploaded receipts before claiming any agent started. A task request commit alone is not evidence of successful dispatch. Cross-run Maestro SQLite persistence remains AO-02 and is not solved by the dispatch receipts.
+
 ## 13. Initial implementation sequence
 
 - **AO-01 — Workflow inventory:** inspect every existing `.github/workflows/*`, current triggers, secrets, permissions, concurrency, artifact retention and pinned Actions.
