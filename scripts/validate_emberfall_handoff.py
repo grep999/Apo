@@ -47,7 +47,6 @@ def main() -> None:
         "engineering/OPEN_DECISIONS.md",
         "maestro/EMBERFALL_TASKS_V2.json",
         "maestro/CORE_PACKET_TEMPLATES_V03.json",
-        "maestro/WORKFLOW_SCHEMA_V03.json",
         "maestro/bootstrap_current_maestro.sh",
     ]
     hashes = {
@@ -58,7 +57,6 @@ def main() -> None:
     wbs = json.loads(read("engineering/IMPLEMENTATION_WBS.json"))
     tasks = json.loads(read("maestro/EMBERFALL_TASKS_V2.json"))
     templates = json.loads(read("maestro/CORE_PACKET_TEMPLATES_V03.json"))
-    workflow_schema = json.loads(read("maestro/WORKFLOW_SCHEMA_V03.json"))
     spec = read("references/EMBERFALL_GAME_SPEC_v0.2.txt")
     decisions = read("engineering/OPEN_DECISIONS.md")
     bootstrap = read("maestro/bootstrap_current_maestro.sh")
