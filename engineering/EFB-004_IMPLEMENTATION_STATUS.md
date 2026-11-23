@@ -20,7 +20,7 @@
 
 ## Tests
 
-Nineteen focused JUnit tests cover catalog shape, deterministic draw, colored/generic payment, Spark rules, unaffordable atomicity, damage, largest-group Pop, Echo/exhaust, Echo rollback, queue and depth limits, sealed recolor, shatter/gravity, next-turn Tap bonus and Retain cleanup.
+Twenty-one focused JUnit tests cover catalog shape, deterministic draw, colored/generic payment, Spark rules, unaffordable atomicity, damage, largest-group Pop, Echo/exhaust, Echo rollback, queue and depth limits, sealed recolor, shatter/gravity, next-turn Tap bonus and Retain cleanup.
 
 ## Known scope limits
 
