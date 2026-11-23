@@ -256,4 +256,60 @@ class CombatCoreTest {
         assertEquals(CombatStateDigest.sha256(run()), CombatStateDigest.sha256(run()))
         assertNotEquals(CombatStateDigest.sha256(initial), CombatStateDigest.sha256(run()))
     }
+    @Test fun inkOverflowConvertsToSparkAtPerHueCap() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(1, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 6) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(player = state.player.copy(ink = state.player.immutableInk + (Hue.EMBER to 7)))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(8, state.player.immutableInk.getValue(Hue.EMBER))
+        assertEquals(2, state.player.spark)
+    }
+
+    @Test fun enemyBlockExpiresAtStartOfEnemyPhase() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(1)))
+        state = state.copy(enemy = EnemyState(40, 9))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(0, state.enemy.block)
+    }
+
+    @Test fun fogExpiresAfterThreeSuccessfulTapsNotRejectedAttempts() {
+        val board = boardWith(
+            Coord(0, 5) to Cell.hue(Hue.EMBER), Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 5) to Cell.hue(Hue.GOLD), Coord(2, 6) to Cell.hue(Hue.GOLD),
+            Coord(4, 5) to Cell.hue(Hue.MOSS), Coord(4, 6) to Cell.hue(Hue.MOSS)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Fog))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        assertEquals(CombatRejection.ILLEGAL_BOARD_TAP,
+            assertIs<CombatResult.Rejected>(engine.transition(state, CombatCommand.Tap(Coord(6, 6)))).reason)
+        assertEquals(3, state.fogTapsRemaining)
+        listOf(Coord(0, 5), Coord(2, 5), Coord(4, 5)).forEach { target ->
+            state = accepted(engine.transition(state, CombatCommand.Tap(target))).state
+        }
+        assertEquals(0, state.fogTapsRemaining)
+    }
+
+    @Test fun lethalPopAndLethalStrikeEnterTerminalStates() {
+        val board = boardWith(Coord(0, 6) to Cell.hue(Hue.EMBER), Coord(1, 6) to Cell.hue(Hue.EMBER))
+        var victory = CombatState.start(board, EnemyDefinition("one-hit", 1, listOf(EnemyIntent.Strike(1))))
+        victory = accepted(engine.transition(victory, CombatCommand.CompleteDraw)).state
+        victory = accepted(engine.transition(victory, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(CombatPhase.VICTORY, victory.phase)
+
+        var defeat = CombatState.start(BoardState.empty(), EnemyDefinition("heavy-striker", 10, listOf(EnemyIntent.Strike(80))))
+        defeat = beginEnemy(defeat)
+        defeat = accepted(engine.transition(defeat, CombatCommand.ResolveEnemy)).state
+        assertEquals(CombatPhase.DEFEAT, defeat.phase)
+        assertEquals(0, defeat.player.vigil)
+    }
+
 }
