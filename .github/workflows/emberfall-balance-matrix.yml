@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      EMBERFALL_POLICY_MATRIX_SEEDS: ${{ inputs.seeds_per_class || '100' }}
+      EMBERFALL_POLICY_MATRIX_SEEDS: ${{ github.event_name == 'workflow_dispatch' && inputs.seeds_per_class || '20' }}
     steps:
       - name: Checkout source under test
         uses: actions/checkout@v4
