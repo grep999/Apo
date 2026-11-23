@@ -278,8 +278,16 @@ data class DeterministicStreams(val board: DeterministicRng, val enemy: Determin
 sealed interface BoardCommand {
     data class Tap(val coord: Coord) : BoardCommand
     data class WallRise(val nextIncoming: List<Cell?>, val flasks: Int) : BoardCommand
+    data object TurnBoundary : BoardCommand
+    data object EnemyPhaseEnd : BoardCommand
 }
-data class ReplayStep(val board: BoardState, val spectrum: SpectrumState)
+data class ReplayStep(
+    val board: BoardState,
+    val spectrum: SpectrumState,
+    val lastPop: PopResult? = null,
+    val lastWall: WallOutcome? = null,
+    val rejection: PopRejection? = null
+)
 class BoardReplay(private val engine: BoardEngine = BoardEngine()) {
     fun replay(initial: BoardState, commands: List<BoardCommand>): List<ReplayStep> {
         var state = ReplayStep(initial, SpectrumState())
@@ -287,10 +295,13 @@ class BoardReplay(private val engine: BoardEngine = BoardEngine()) {
         for (command in commands) {
             state = when (command) {
                 is BoardCommand.Tap -> when (val r = engine.tap(state.board, command.coord, state.spectrum)) {
-                    is TapOutcome.Accepted -> ReplayStep(r.result.board, r.result.spectrum)
-                    is TapOutcome.Rejected -> state
+                    is TapOutcome.Accepted -> ReplayStep(r.result.board, r.result.spectrum, lastPop = r.result)
+                    is TapOutcome.Rejected -> ReplayStep(state.board, state.spectrum, rejection = r.reason)
                 }
-                is BoardCommand.WallRise -> engine.riseWall(state.board, command.nextIncoming, command.flasks).let { ReplayStep(it.board, state.spectrum) }
+                is BoardCommand.WallRise -> engine.riseWall(state.board, command.nextIncoming, command.flasks)
+                    .let { ReplayStep(it.board, state.spectrum, lastWall = it) }
+                BoardCommand.TurnBoundary -> ReplayStep(state.board, engine.resetSpectrumAtTurnBoundary())
+                BoardCommand.EnemyPhaseEnd -> ReplayStep(state.board.advanceSealDurations(), state.spectrum)
             }
             out += state
         }
