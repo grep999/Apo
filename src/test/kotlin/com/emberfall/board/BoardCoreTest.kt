@@ -337,6 +337,8 @@ class BoardCoreTest {
         val control = DeterministicStreams.fromSeed(991L)
         repeat(1_000) { interleaved.board.nextLong() }
         repeat(257) { interleaved.cards.nextLong() }
+        repeat(1_000) { control.board.nextLong() }
+        repeat(257) { control.cards.nextLong() }
         assertEquals(List(32) { control.enemy.nextLong() }, List(32) { interleaved.enemy.nextLong() })
         assertEquals(List(32) { control.board.nextLong() }, List(32) { interleaved.board.nextLong() })
         assertEquals(List(32) { control.cards.nextLong() }, List(32) { interleaved.cards.nextLong() })
