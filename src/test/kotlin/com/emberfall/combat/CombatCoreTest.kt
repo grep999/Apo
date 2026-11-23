@@ -437,3 +437,21 @@ class CombatCoreTest {
         assertEquals(COMBAT_RULES_VERSION, "emberfall-v0.2-combat-1")
     }
 
+    @Test fun cardPopResolvesDuringCastWithoutSpendingTapOrFogDuration() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(1, 6) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(fogTapsRemaining = 3)
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        val result = accepted(engine.transition(state, CombatCommand.CardPop(Coord(0, 6))))
+        assertEquals(3, result.state.tapsRemaining)
+        assertEquals(3, result.state.fogTapsRemaining)
+        assertEquals(2, result.state.player.immutableInk.getValue(Hue.EMBER))
+        assertEquals(39, result.state.enemy.vigor)
+        assertTrue(result.events.any { it is CombatEvent.GroupPopped })
+        assertFalse(result.events.any { it is CombatEvent.TapResolved })
+    }
+
