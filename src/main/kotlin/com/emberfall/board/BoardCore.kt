@@ -58,9 +58,9 @@ data class BoardState(
     fun withCell(c: Coord, value: Cell?) = copy(cells = cells.toMutableList().also { it[c.index()] = value })
     companion object {
         fun empty() = BoardState(List(49) { null }, List(7) { null })
-        fun fromRows(rows: List<List<Cell?>>, incoming: List<Cell?> = List(7) { null }, sealed: Set<Int> = emptySet()): BoardState {
+        fun fromRows(rows: List<List<Cell?>>, incoming: List<Cell?> = List(7) { null }, sealedColumns: Set<Int> = emptySet()): BoardState {
             require(rows.size == 7 && rows.all { it.size == 7 })
-            return BoardState(rows.flatten(), incoming, sealed)
+            return BoardState(rows.flatten(), incoming, sealedColumns)
         }
     }
 }
