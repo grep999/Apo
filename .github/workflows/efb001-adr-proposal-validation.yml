@@ -1,10 +1,14 @@
-name: Emberfall EFB-001 ADR Proposal Validation
+name: Emberfall EFB-001 ADR Resolution Validation
 
 on:
   pull_request:
     branches: [handoff/emberfall-coding-agent-v1.0]
     paths:
+      - engineering/OPEN_DECISIONS.md
       - engineering/EFB-001_RULES_ADR_PROPOSALS.md
+      - engineering/PRODUCT_OWNER_GOVERNANCE.md
+      - engineering/PRODUCT_OWNER_DECISION_BASELINE.md
+      - docs/adr/**
       - scripts/validate_efb001_adr_proposals.py
       - .github/workflows/efb001-adr-proposal-validation.yml
   workflow_dispatch:
@@ -13,12 +17,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: emberfall-efb-001-adr-proposals-${{ github.ref }}
+  group: emberfall-efb-001-adr-resolution-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  proposal-contract:
-    name: Validate all blocking ADR proposals remain unresolved
+  resolution-contract:
+    name: Validate Product Owner ADR resolutions
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -33,13 +37,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate EFB-001 proposal coverage and dependency
+      - name: Validate resolved ADRs, traceability and implementation dependency
         run: python scripts/validate_efb001_adr_proposals.py
 
-      - name: Upload proposal validation report
+      - name: Upload resolution validation report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: emberfall-efb-001-adr-proposal-validation
+          name: emberfall-efb-001-adr-resolution-validation
           if-no-files-found: warn
-          path: artifacts/efb-001-adr-proposal-validation.json
+          path: artifacts/efb-001-adr-resolution-validation.json
