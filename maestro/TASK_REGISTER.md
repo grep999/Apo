@@ -11,7 +11,7 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 | EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Historical baseline retained for audit. Product Owner explicitly excluded legacy prototype and associated source/assets from clean product baseline; no rights clearance is sought for excluded material. Not an EFB-003 dependency |
 | EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; Product Owner ADR validator PASS; no formal review submission or native Maestro workflow |
 | EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | **Accepted by Product Owner** at exact head 6b6e139; one review round completed, further independent Mastery waived by owner; exact CI PASS; Repetition recorded. PR #14 remains draft; no additional EFB-002 review is required absent new evidence |
-| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | **IN PROGRESS — PR #15** clean-room candidate `fbb8b07c`; based on accepted EFB-002 SHA `6b6e139`. Exact-head CI, independent Mastery and Repetition pending. Legacy prototype excluded |
+| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | **IN PROGRESS — PR #15** clean-room candidate `fbb8b07c`; based on accepted EFB-002 SHA `6b6e139`. Prior candidate `8dd0a03c` passed full Gradle/JUnit and pure-JVM run `45273205685`; final candidate run `45273418357` queued. Independent Mastery and Repetition pending. Legacy prototype excluded |
 | EFB-004-CARD-EFFECTS | Typed data-driven card/effect engine | BUILDER | R1 | Not started; blocked on EFB-002/003 |
 | EFB-005-CLASSES-STARTER | Three classes and starter decks | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-004 |
 | EFB-006-ENEMIES-BOSSES | Enemies, elites, phased bosses | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-003/004 |
@@ -39,8 +39,8 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 ## EFB-003 clean-core candidate
 
 - PR #15: `https://github.com/grep999/Apo/pull/15`, branch `feat/efb003-turn-combat-clean`, accepted EFB-002 base `6b6e139890a205ead337a94226464a0b5ddd82da`.
-- Candidate code SHA: `fbb8b07c134b77825cedac3f65389be13f11fd15`. It adds the deterministic turn/combat reducer, player resources, two-intent preview, ten intent contracts, Wall/Seal integration, Card Pop seam, immutable snapshots and versioned replay.
-- Earlier CI failures were found and corrected: one stale Seal/Stain incoming-row assertion and a misplaced test-class brace. Final-candidate CI is pending; no PASS is claimed.
+- Candidate code SHA: `fbb8b07c134b77825cedac3f65389be13f11fd15`. It adds the deterministic turn/combat reducer, player resources, two-intent preview, ten intent contracts, Wall/Seal integration, Card Pop seam, immutable snapshots, versioned replay and run-seed binding.
+- Earlier CI failures were found and corrected: one stale Seal/Stain incoming-row assertion and a misplaced test-class brace. Prior candidate `8dd0a03c` passed run `45273205685`; final-candidate run `45273418357` is queued; no final-candidate PASS is claimed.
 - Independent Mastery and Repetition remain required before acceptance/merge.
 - Legacy prototype and assets are explicitly excluded; no legacy code/assets are imported.
 
