@@ -1,9 +1,9 @@
 # EFB-002 Board Core — Implementation Status
 
 **Status:** IMPLEMENTATION CANDIDATE — NOT ACCEPTED  
-**Base:** `21143925687ab7a28519196b7225e98acb1433ab` (current handoff branch)  
-**Branch:** `feat/efb-002-board-core-reconciled`  
-**PR:** #10 (draft)
+**Base:** `1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23` (current handoff branch)  
+**Branch:** `feat/efb-002-board-core-exactsha`  
+**PR:** #11 (draft)
 
 ## Delivered
 
