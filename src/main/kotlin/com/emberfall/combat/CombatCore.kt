@@ -337,7 +337,8 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                         val x = index % BOARD_WIDTH
                         if (x !in board.sealedColumns && cell?.kind == TileKind.HUE && cell.hue == intent.hue) Cell.ash(cell.branded) else cell
                     }
-                    board = board.copy(cells = cells)
+                    val incoming = board.incoming.map { cell -> if (cell?.kind == TileKind.HUE && cell.hue == intent.hue) Cell.ash(cell.branded) else cell }
+                    board = board.copy(cells = cells, incoming = incoming)
                     events += CombatEvent.BoardChanged("Stain")
                 }
                 EnemyIntent.Fog -> {
@@ -345,8 +346,8 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                     events += CombatEvent.FogApplied
                 }
                 is EnemyIntent.Seal -> {
-                    if (intent.column !in board.sealedColumns) board = board.sealColumn(intent.column, 3)
-                    else board = board.copy(sealTurnsRemaining = board.sealTurnsRemaining + (intent.column to 3))
+                    if (intent.column !in board.sealedColumns) board = board.sealColumn(intent.column, 4)
+                    else board = board.copy(sealTurnsRemaining = board.sealTurnsRemaining + (intent.column to 4))
                     events += CombatEvent.BoardChanged("Seal")
                 }
                 is EnemyIntent.Brand -> {
@@ -411,7 +412,7 @@ object CombatStateDigest {
             append(state.player.vigil).append('|').append(state.player.block).append('|').append(state.player.flasks).append('|')
             append(state.player.immutableInk.toSortedMap(compareBy { it.ordinal }).entries.joinToString(",") { "${it.key.name}:${it.value}" }).append('|')
             append(state.player.spark).append('|').append(state.enemy.vigor).append('|').append(state.enemy.block).append('|')
-            append(state.enemyDefinition.id).append('|').append(state.intentCursor).append('|')
+            append(state.enemyDefinition.id).append('|').append(state.enemyDefinition.intentSequence.joinToString(";")).append('|').append(state.intentCursor).append('|')
             append(state.nextIntents.joinToString(";") { it.toString() }).append('|')
             append(state.wallRisesNextTurn).append('|').append(state.fogTapsRemaining).append('|').append(state.delayedIntents)
         }
