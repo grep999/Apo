@@ -1,0 +1,61 @@
+{
+  "review_type": "INDEPENDENT_MASTERY_REVIEW_INPUT",
+  "project_id": "EMBERFALL",
+  "task_id": "EFB-000-BASELINE",
+  "target_merged_commit": "5130215cb0a033345752311903de7f9c08aced4d",
+  "pr_number": 4,
+  "pr_head_sha": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+  "merge_parents": [
+    "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
+    "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce"
+  ],
+  "e00_validation_run": {
+    "run_id": 45179968109,
+    "status": "success",
+    "artifact_id": 14819098938,
+    "artifact_name": "emberfall-efb-000-maestro-evidence",
+    "artifact_sha256": "2d2e94cd381f82177252772170df55b5ea30810febff501858784282bec2c5dc",
+    "validated_pr_head": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+    "gate_runner_check": {
+      "name": "compileall",
+      "status": "VERIFIED",
+      "exit_code": 0,
+      "runner_identity": "gate-runner@runnervm0hi8g",
+      "ran_on_sha": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "maestro_workflow": {
+    "workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
+    "stage": "GROUNDING",
+    "status": "ACTIVE",
+    "revision": 1,
+    "ready_grounding_items": 2,
+    "assignments": 0,
+    "mastery_started": false
+  },
+  "review_scope": [
+    "Inspect the merged tree at target_merged_commit, not merely the former PR head.",
+    "Verify authoritative v0.2 spec, WBS, ADR and source hierarchy.",
+    "Verify legacy prototype branch provenance and explicit separation of swap-match-3 rules from v0.2 connected-group Tap/Pop.",
+    "Verify branch inventory, source/license/IP risk records and build applicability.",
+    "Verify the handoff baseline has no Android app and that Android build gates are correctly NOT_APPLICABLE rather than PASS.",
+    "Verify the discrepancy between 19 blocking ADRs and the simulated QA report's 18 is recorded accurately.",
+    "Verify pinned Maestro v0.3.0, bootstrap, contract tests and GateRunner evidence.",
+    "Verify E00 artifact's baseline_sha, runner identity, ran_on_sha and log hash; reconcile that the artifact checks PR head 3555... while the reviewed target is merge commit 513... with that PR head as second parent.",
+    "Verify no simulated persona review is represented as human playtest evidence.",
+    "Identify missing or stale source references, WBS/task mismatches and any unsupported claims."
+  ],
+  "required_output": {
+    "verdict": [
+      "PASS",
+      "REQUEST_CHANGES",
+      "BLOCKED"
+    ],
+    "findings": "File/line-specific findings and severity.",
+    "evidence": "Exact merged SHA, E00 artifact/run, reviewer identity and coverage.",
+    "acceptance": "No PASS if the merged tree diverges from evidence or any source/provenance claim is unsupported."
+  },
+  "independence_requirement": "Reviewer must be distinct from the EFB-000 builder/orchestrator and record an explicit identity.",
+  "read_only": true
+}
