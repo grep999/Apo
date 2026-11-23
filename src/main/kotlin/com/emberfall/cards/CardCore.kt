@@ -385,7 +385,7 @@ class CardEngine(
                 val second = command.secondTarget ?: return EffectResolution.Failed(CardRejection.INVALID_TARGET)
                 val a = hueComponent(next.combat.board, first) ?: return EffectResolution.Failed(CardRejection.INVALID_TARGET)
                 val b = hueComponent(next.combat.board, second) ?: return EffectResolution.Failed(CardRejection.INVALID_TARGET)
-                if (a.toSet() == b.toSet() || a.any { p -> p.neighbors().any { it in b } }) return EffectResolution.Failed(CardRejection.INVALID_TARGET)
+                if (a.toSet() == b.toSet() || !a.any { p -> p.neighbors().any { it in b } }) return EffectResolution.Failed(CardRejection.INVALID_TARGET)
                 val cells = next.combat.board.cells.toMutableList()
                 (a + b).forEach { p -> cells[p.index()] = Cell.hue(effect.hue, cells[p.index()]?.branded == true) }
                 next = next.copy(combat = next.combat.copy(board = next.combat.board.copy(cells = cells)))
