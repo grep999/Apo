@@ -207,7 +207,7 @@ These prompts are starting templates, not blanket permissions. The dispatch enve
 
 ## 10. Durable state, retries and recovery
 
-This is the first control-plane engineering priority because the observed push workflow creates a new Maestro workflow/database instead of resuming the same increment.
+This is a control-plane reliability priority because the observed push workflow creates a new Maestro workflow/database instead of resuming the same increment. It must be repaired before scaling multi-agent orchestration, but it does not block bounded clean-room source implementation from the accepted EFB-002 core.
 
 ### Verified defects in the current EFB-002 workflow
 
@@ -261,7 +261,7 @@ For each increment:
 5. **Reconciliation:** resolve findings, rerun affected gates, record the final disposition and complete Repetition.
 6. **Portfolio update:** update task register and release checklist from verified state; prepare the next increment only after dependency gates pass.
 
-For current Emberfall state, this means the orchestration work first repairs continuity and real reviewer dispatch, then completes EFB-000/EFB-002 review and Repetition. **EFB-003 remains blocked.** Do not use parallel agents as an excuse to bypass that dependency.
+For current Emberfall state, EFB-002 is accepted by Product Owner disposition and its further Mastery round is waived. The Product Owner has explicitly excluded the legacy prototype and associated assets; EFB-000 provenance is retained for audit only. EFB-003 clean-room implementation is underway on PR #15 from exact EFB-002 SHA `6b6e139890a205ead337a94226464a0b5ddd82da`. Exact-SHA tests, independent EFB-003 Mastery and Repetition remain mandatory before acceptance/merge. Maestro continuity and reviewer dispatch remain parallel governance improvements, not source implementation blockers.
 
 ## 12A. Fast GitHub dispatch MVP assembled
 
