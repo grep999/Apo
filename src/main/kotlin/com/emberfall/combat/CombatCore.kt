@@ -22,18 +22,21 @@ sealed interface EnemyIntent {
     data class Stain(val hue: Hue) : EnemyIntent
     data object Fog : EnemyIntent
     data class Seal(val column: Int) : EnemyIntent { init { require(column in 0..6) } }
-    data class Brand(val cells: List<Coord>) : EnemyIntent {
+    class Brand(cells: List<Coord>) : EnemyIntent {
         val targets: List<Coord> = Collections.unmodifiableList(cells.distinct().sortedBy { it.index() })
+        override fun equals(other: Any?): Boolean = other is Brand && targets == other.targets
+        override fun hashCode(): Int = targets.hashCode()
+        override fun toString(): String = "Brand(targets=$targets)"
     }
     data object Surge : EnemyIntent
     data object Snatch : EnemyIntent
     data object Curse : EnemyIntent
 }
 
-data class EnemyDefinition(
+class EnemyDefinition(
     val id: String,
     val maxVigor: Int,
-    val intents: List<EnemyIntent>
+    intents: List<EnemyIntent>
 ) {
     val intentSequence: List<EnemyIntent> = Collections.unmodifiableList(intents.toList())
     init {
@@ -44,14 +47,15 @@ data class EnemyDefinition(
     fun intentAt(cursor: Long): EnemyIntent = intentSequence[(cursor % intentSequence.size).toInt()]
 }
 
-data class PlayerState(
+class PlayerState(
     val vigil: Int = STARTING_VIGIL,
     val block: Int = 0,
     val flasks: Int = STARTING_FLASKS,
-    val ink: Map<Hue, Int> = Hue.entries.associateWith { 0 },
+    ink: Map<Hue, Int> = Hue.entries.associateWith { 0 },
     val spark: Int = 0
 ) {
     val immutableInk: Map<Hue, Int> = Collections.unmodifiableMap(Hue.entries.associateWith { ink[it] ?: 0 })
+    val ink: Map<Hue, Int> get() = immutableInk
     init {
         require(vigil in 0..MAX_VIGIL)
         require(block >= 0)
@@ -59,13 +63,20 @@ data class PlayerState(
         require(immutableInk.values.all { it in 0..INK_CAP_PER_HUE })
         require(spark >= 0)
     }
+    fun copy(
+        vigil: Int = this.vigil,
+        block: Int = this.block,
+        flasks: Int = this.flasks,
+        ink: Map<Hue, Int> = this.immutableInk,
+        spark: Int = this.spark
+    ) = PlayerState(vigil, block, flasks, ink, spark)
 }
 
 data class EnemyState(val vigor: Int, val block: Int = 0) {
     init { require(vigor >= 0 && block >= 0) }
 }
 
-data class CombatState(
+class CombatState(
     val board: BoardState,
     val spectrum: SpectrumState,
     val phase: CombatPhase,
@@ -75,12 +86,13 @@ data class CombatState(
     val turn: Int,
     val tapsRemaining: Int,
     val intentCursor: Long,
-    val forecast: List<EnemyIntent>,
+    forecast: List<EnemyIntent>,
     val wallRisesNextTurn: Int = 1,
     val fogTapsRemaining: Int = 0,
     val delayedIntents: Int = 0
 ) {
-    val nextIntents: List<EnemyIntent> = Collections.unmodifiableList(forecast.toList())
+    val forecast: List<EnemyIntent> = Collections.unmodifiableList(forecast.toList())
+    val nextIntents: List<EnemyIntent> get() = this.forecast
     init {
         require(turn >= 0 && tapsRemaining >= 0 && intentCursor >= 0)
         require(wallRisesNextTurn in 1..2)
@@ -88,6 +100,23 @@ data class CombatState(
         require(enemy.vigor <= enemyDefinition.maxVigor)
         require(nextIntents.size == 2)
     }
+
+    fun copy(
+        board: BoardState = this.board,
+        spectrum: SpectrumState = this.spectrum,
+        phase: CombatPhase = this.phase,
+        player: PlayerState = this.player,
+        enemy: EnemyState = this.enemy,
+        enemyDefinition: EnemyDefinition = this.enemyDefinition,
+        turn: Int = this.turn,
+        tapsRemaining: Int = this.tapsRemaining,
+        intentCursor: Long = this.intentCursor,
+        forecast: List<EnemyIntent> = this.forecast,
+        wallRisesNextTurn: Int = this.wallRisesNextTurn,
+        fogTapsRemaining: Int = this.fogTapsRemaining,
+        delayedIntents: Int = this.delayedIntents
+    ) = CombatState(board, spectrum, phase, player, enemy, enemyDefinition, turn, tapsRemaining,
+        intentCursor, forecast, wallRisesNextTurn, fogTapsRemaining, delayedIntents)
 
     companion object {
         fun start(board: BoardState, enemy: EnemyDefinition, spectrum: SpectrumState = SpectrumState()): CombatState =
@@ -118,7 +147,7 @@ sealed interface CombatCommand {
     data object DelayNextIntent : CombatCommand
     data object EndCast : CombatCommand
     /** Each entry is the new hidden incoming row after the corresponding rise. */
-    data class ResolveWall(val replacementRows: List<List<Cell?>>) : CombatCommand {
+    class ResolveWall(replacementRows: List<List<Cell?>>) : CombatCommand {
         val rows: List<List<Cell?>> = Collections.unmodifiableList(replacementRows.map { Collections.unmodifiableList(it.toList()) })
         init { require(rows.all { it.size == BOARD_WIDTH }) }
     }
@@ -336,7 +365,9 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                         val x = index % BOARD_WIDTH
                         if (x !in board.sealedColumns && cell?.kind == TileKind.HUE && cell.hue == intent.hue) Cell.ash(cell.branded) else cell
                     }
-                    val incoming = board.incoming.map { cell -> if (cell?.kind == TileKind.HUE && cell.hue == intent.hue) Cell.ash(cell.branded) else cell }
+                    val incoming = board.incoming.mapIndexed { column, cell ->
+                        if (column !in board.sealedColumns && cell?.kind == TileKind.HUE && cell.hue == intent.hue) Cell.ash(cell.branded) else cell
+                    }
                     board = board.copy(cells = cells, incoming = incoming)
                     events += CombatEvent.BoardChanged("Stain")
                 }
