@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "task_id": "AO-01",
+  "task_id": "AO-01-R1",
   "role": "RESEARCHER",
   "base_ref": "docs/emberfall-release-governance",
   "create_pull_request": false,
-  "prompt": "Inspect the current Emberfall repository and the linked Maestro repository at its pinned v0.3.0 implementation. Inventory the existing .github/workflows files, triggers, concurrency, permissions, secrets assumptions, artifact retention, and all Maestro lifecycle calls. Identify which workflows create new workflows versus resume existing state. Inspect Maestro SQLite/WAL behavior and its adapter protocol. Return a concise evidence-backed report with exact paths/line ranges, verified facts vs assumptions, the smallest viable fixes, and a prioritized AO-01/AO-02 implementation recommendation. Do not edit files, create branches, open PRs, or change any accepted game decisions. Do not claim any command or test was run unless it actually was."
+  "prompt": "Inspect the current Emberfall repository and the linked Maestro repository at its pinned v0.3.0 implementation. Inventory the existing .github/workflows files, triggers, concurrency, permissions, secrets assumptions, artifact retention, and all Maestro lifecycle calls. Identify which workflows create new workflows versus resume existing state. Inspect Maestro SQLite/WAL behavior and its adapter protocol. Return a concise evidence-backed report with exact paths/line ranges, verified facts vs assumptions, the smallest viable fixes, and a prioritized AO-01/AO-02 implementation recommendation. Do not edit files, create branches, open PRs, or change any accepted game decisions. Do not claim any command or test was run unless it actually was.\n\nDispatch retry R1: this is a fresh attempt after the repository secret name was aligned. Execute the original bounded assignment; do not duplicate prior work if an equivalent result already exists."
 }
