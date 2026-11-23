@@ -617,7 +617,14 @@ data class RewardBundle(
   val supportPicked: Boolean = false,
   val artifactChoices: List<String> = emptyList(),
   val artifactPicked: Boolean = false,
-)
+) {
+  /** True only when every optional reward channel has been explicitly claimed or skipped. */
+  val allChoicesResolved: Boolean
+    get() = (cardChoices.isEmpty() || cardPicked) &&
+      (relicRewardId == null || relicPicked) &&
+      (supportChoices.isEmpty() || supportPicked) &&
+      (artifactChoices.isEmpty() || artifactPicked)
+}
 
 data class ShopStock(
   val cardIds: List<String>,
