@@ -34,7 +34,7 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 - EFB-002 latest run-scoped workflow: `ea293bf8-83a8-4d49-a6fd-ac722008f0b4`; ACTIVE / MASTERY / revision 5; three Momentum items complete; independent-review assignment `4133762a-64a2-46e7-bdc1-7822e0090ad8` is PROPOSED, not assigned. This is an artifact snapshot, not durable cross-run state.
 - EFB-002 current candidate: PR #14, head `6b6e139890a205ead337a94226464a0b5ddd82da`; original remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` is preserved in its ancestry. Exact-head GateRunner run `45265105467`, Board Core run `45265105730`, ADR validator run `45265105426` all passed. The half-Ink truncation defect was corrected and golden hue-weight tests strengthened. Review input with current blob hashes and artifacts: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
 - EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
-- EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing on head `2543bee...`; formatting/lint tooling is not configured and is not claimed. See `engineering/RELEASE_READINESS.md`.
+- EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing on head `6b6e139...`; half-Ink payout correction is included. Formatting/lint tooling is not configured and is not claimed. See `engineering/RELEASE_READINESS.md`.
 
 ## Agent orchestration MVP
 
