@@ -894,7 +894,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     }
     val result = GameEngine.execute(current, GameCommand.OpenRewards)
     if (result.accepted) {
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
       _destination.value = AppDestination.Rewards
     }
   }
@@ -922,7 +922,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.RerollRewardCards)
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.PRISM, volume = 0.84f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     } else {
       audioEngine.playSfx(MinimalSfx.REJECT, volume = 0.65f)
     }
@@ -971,7 +971,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.UnlockPassiveNode(nodeId))
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.PRISM, volume = 0.88f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     } else {
       audioEngine.playSfx(MinimalSfx.REJECT, volume = 0.65f)
       _boardFeedback.value = result.rejectionReason?.message
@@ -1046,7 +1046,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
       _selectedGroup.value = null
       _selectedSwapCoord.value = null
       _boardFeedback.value = null
-      commitRunUpdate(entered.run)
+      commitRunUpdate(entered.run, flushAfterWrite = true)
       _destination.value = resolveDestinationForRun(entered.run)
     } else {
       commitRunUpdate(state)
