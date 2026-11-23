@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AO-03",
+  "role": "INDEPENDENT_REVIEWER",
+  "base_ref": "docs/emberfall-release-governance",
+  "create_pull_request": false,
+  "prompt": "Perform a read-only security and correctness review of the new Emberfall GitHub agent-dispatch MVP at exact repository HEAD 56ab2ab366199bd7a99a36b1dd36a6ea69278afe. Inspect .github/workflows/emberfall-agent-dispatch.yml, .github/workflows/emberfall-agent-status.yml, and maestro/dispatch-requests/AO-01-researcher.json plus AO-02-architect.json. Check YAML validity, GitHub Actions trigger behavior on this non-default handoff branch, shell injection, JSON validation, task ID handling, API request/response assumptions, PAT permissions, secret exposure, artifact retention, duplicate dispatch/idempotency, and whether the status workflow can retrieve task state. Return PASS/CONDITIONAL/FAIL with severity-ranked findings and exact file/line evidence. Do not edit files, open PRs or claim a real agent session started. Explicitly note if the COPILOT_AGENT_TOKEN secret is absent or cannot be inspected."
+}
