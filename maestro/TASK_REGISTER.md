@@ -2,6 +2,8 @@
 
 The machine-readable task seed is `maestro/EMBERFALL_TASKS_V2.json`; the epic register is `engineering/IMPLEMENTATION_WBS.json`. Detailed sequencing and release acceptance criteria are in `engineering/CODING_AGENT_ROADMAP.md` and `engineering/RELEASE_READINESS.md`.
 
+Agent dispatch, role boundaries, prompt/return contracts, state continuity, security and recovery are governed by [`engineering/AGENT_ORCHESTRATION.md`](../engineering/AGENT_ORCHESTRATION.md). This is a proposed process contract; do not mark dispatch operational until the AO-01–AO-07 validation gates pass.
+
 ## Task catalogue
 
 | ID | Increment | Owner | Risk | Current portfolio state |
