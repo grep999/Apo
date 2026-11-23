@@ -15,7 +15,7 @@ enum class CardRarity { BASIC, COMMON, UNCOMMON, RARE, CURSE }
 class CardCost(colored: Map<Hue, Int> = emptyMap(), val generic: Int = 0) {
     val colored: Map<Hue, Int> = Collections.unmodifiableMap(Hue.entries.associateWith { colored[it] ?: 0 }.filterValues { it > 0 })
     init {
-        require(generic >= 0 && this.colored.values.all { it > 0 })
+        require(generic >= 0 && colored.values.all { it > 0 })
     }
     fun copy(colored: Map<Hue, Int> = this.colored, generic: Int = this.generic) = CardCost(colored, generic)
     override fun equals(other: Any?) = other is CardCost && colored == other.colored && generic == other.generic
@@ -77,7 +77,7 @@ data class PaymentPlan(
     init {
         require(coloredInk.values.all { it >= 0 } && genericInk.values.all { it >= 0 } && sparkForGeneric >= 0)
     }
-    val genericPaid: Int get() = genericInk.values.sum() + sparkForGeneric
+    val genericPaid: Long get() = genericInk.values.sumOf { it.toLong() } + sparkForGeneric.toLong()
 }
 
 object CardPayment {
@@ -106,11 +106,11 @@ object CardPayment {
 
     fun validate(cost: CardCost, player: PlayerState, plan: PaymentPlan): Boolean {
         if (Hue.entries.any { (plan.coloredInk[it] ?: 0) != (cost.colored[it] ?: 0) }) return false
-        if (plan.genericPaid != cost.generic) return false
+        if (plan.genericPaid != cost.generic.toLong()) return false
         if (plan.sparkForGeneric > player.spark) return false
         return Hue.entries.all { h ->
-            val spend = (plan.coloredInk[h] ?: 0) + (plan.genericInk[h] ?: 0)
-            spend >= 0 && spend <= player.immutableInk.getValue(h)
+            val spend = (plan.coloredInk[h] ?: 0).toLong() + (plan.genericInk[h] ?: 0).toLong()
+            spend >= 0L && spend <= player.immutableInk.getValue(h).toLong()
         } && plan.genericInk.keys.all { it in Hue.entries }
     }
 
@@ -334,7 +334,11 @@ class CardEngine(
         }
         when (val effect = item.effect) {
             is CardEffect.Damage -> if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.CardDamage(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
-            is CardEffect.Block -> if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.CardBlock(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+            is CardEffect.Block -> {
+                val totalBlock = next.combat.player.block.toLong() + effect.amount.toLong()
+                if (totalBlock > Int.MAX_VALUE) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+                if (next.combat.phase !in setOf(CombatPhase.VICTORY, CombatPhase.DEFEAT) && !combat(CombatCommand.CardBlock(effect.amount))) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+            }
             is CardEffect.Pop -> {
                 if (next.combat.phase == CombatPhase.VICTORY || next.combat.phase == CombatPhase.DEFEAT) return EffectResolution.Done(next, seq, echoed)
                 val target = (if (effect.largest) largestLegalPop(next.combat) else command.target)
