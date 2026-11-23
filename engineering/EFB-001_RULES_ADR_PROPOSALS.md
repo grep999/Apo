@@ -215,11 +215,59 @@ Ship the full ~30-minute run as the primary mode. Do not add a short crawl to M0
 
 ADR-020 remains resolved by the existing platform-policy check and must be re-verified at store submission.
 
-## 5. Required product-owner sign-off
+## 5. Supplemental mobile UX and platform contract
 
-The 19 blocking decisions remain OPEN / BLOCKING until the product owner explicitly approves or edits this package. Approval should authorize writing the individual `docs/adr/ADR-NNN-*.md` records and adding golden/property tests. It does **not** authorize implementation of the board engine until the individual ADRs are committed and the EFB-000 baseline has passed independent review.
+The five-persona first-run report is explicitly a desk-based simulation (evidence class INFERRED / ASSUMED), not human research or observed gameplay. Its cross-persona risks should nevertheless become measurable product gates before external beta. These are not added to the 19 gameplay ADR count; they are supplemental acceptance requirements.
 
-## 6. M0 implementation boundary after approval
+### Input and recovery
+
+- Keep drag-to-target, but add tap-card → tap-target as an equivalent path. Every legal target must be visibly indicated.
+- One Undo per turn may reverse the most recent Tap only, and only before any card is cast. It restores the exact pre-Tap board, Ink, Run and Tap count; it does not rewind RNG, enemy actions or prior committed turns.
+- Separate card long-press/read from board hold-to-preview. Provide an explicit accessible “card details” action so the same gesture is not the only way to discover rules.
+
+**Acceptance:** first-use control-discovery tests, misdrop/cancel tests, TalkBack/focus tests, and deterministic undo/replay tests.
+
+### Persistence and offline behavior
+
+- Save atomically after every committed player action and phase transition, not only at node boundaries. Resume the exact mid-combat state after backgrounding, process death or device restart.
+- Core gameplay, local run saves and seeded runs work fully offline. Daily seeds, leaderboards and replay upload are online features; failures queue for retry and never block a run or destroy local progress.
+- An interrupted in-flight action must resolve as either fully committed or fully rolled back—never half-applied.
+
+**Acceptance:** process-kill/resume matrix at tutorial, mid-Tap, card targeting, enemy phase, reward and map; airplane-mode full run; interrupted network sync; save corruption and migration tests.
+
+### Accessibility and input acceptance
+
+- Every hue has a distinct glyph that remains identifiable at actual board-cell size and under Fog. Color is never the only information channel.
+- Preserve scalable text, reduced motion, reduced flashing, haptics off, remappable layout, one-handed reach and screen-reader labels/focus order.
+- Keep 44 dp as the minimum interactive cell target; use larger targets where the board layout permits. Provide a non-drag card-targeting path.
+- Fog may desaturate/hide tint and text labels, but it must not remove the glyph or focus/selection cues needed to act.
+
+**Acceptance:** grayscale and color-vision simulation, enlarged text, reduced motion, one-handed reach, TalkBack, high-contrast and Fog tests on physical devices. Accessibility claims remain unverified until tested with participants who use these features.
+
+### Performance, compatibility and store transparency
+
+- Resolve the documented target-SDK discrepancy before release: product text says target API 35 while the decision register requires API 36+. Recommendation: target the current Play-required API at release (36+ for this baseline) and retain the declared minimum API only after a device/support review.
+- Treat 60 fps on a four-year-old mid-range Android device as a measured target, not a source-code claim. Add a lower-end supported device to the matrix and record frame pacing, memory, thermal behavior, battery, startup and crash-free sessions.
+- Before store submission, publish the one-time premium price, package size, minimum Android version/device requirements, offline behavior and purchase boundary. No ads, energy timer, random-reward purchase or pay-to-win layer is introduced.
+
+**Acceptance:** physical-device performance report, package-size report, offline verification and store metadata review. SDK target is checked against the current Play policy at submission time.
+
+### First-run reveal and pacing
+
+- Fight 1 remains a deliberately simple board-only lesson, but it must be framed as learning the board—not as the whole game.
+- Fight 2 must visibly demonstrate the causal loop: deck composition changes hue distribution → a pop generates Ink → Ink casts a card → the card changes the board or next decision.
+- Teach one new keyword at a time. Avoid a full rules dump. Keep map/reward/shop transitions shorter than the combat decisions they support.
+- The first-run success criterion is comprehension: a new player can explain why a chosen pop is useful, predict its Ink/Run result, and describe one way the deck changes the board.
+
+**Acceptance:** moderated first-run sessions record time to first legal pop, time to first card cast, prediction accuracy, illegal taps, target errors, menu time vs combat time, and unprompted explanation of the deck-to-board loop. The simulated persona report is not a substitute for these human sessions.
+
+Source: `qa/FIVE_PERSONA_FIRST_RUN_SIMULATION.md` on `qa/five-persona-first-run-audit` (source commit `bbeb5215dbe455e92177756661af65123a70bfa2`), explicitly classified as inferred/assumed.
+
+## 6. Required product-owner sign-off
+
+The 19 blocking decisions remain OPEN / BLOCKING until the product owner explicitly approves or edits this package. The supplemental mobile UX/platform requirements also require product acceptance before external beta. Approval should authorize writing the individual `docs/adr/ADR-NNN-*.md` records and adding golden/property tests. It does **not** authorize implementation of the board engine until the individual ADRs are committed and the EFB-000 baseline has passed independent review.
+
+## 7. M0 implementation boundary after approval
 
 Once EFB-000 is independently accepted and the P0 ADRs are signed:
 
