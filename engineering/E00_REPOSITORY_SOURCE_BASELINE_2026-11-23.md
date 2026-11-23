@@ -13,7 +13,7 @@ Apo contains distinct project surfaces that must not be conflated:
 1. `main` is a documentation/control branch, not the game source.
 2. `handoff/emberfall-coding-agent-v1.0` is the v0.2 design and execution authority. It contains the game specification, WBS, ADR register, art references and Maestro bootstrap, but no buildable Android application.
 3. `implementation/emberfall-latest-source` is a Kotlin/Android prototype. It contains reusable engineering patterns, but its active live loop is swap-match-3. The v0.2 specification requires connected-group Tap/Pop.
-4. `design/efb-001-rules-adr-proposals` is now the Product Owner's resolved ADR candidate. It resolves all 19 blocking rules decisions, includes a gated EFB-002 packet and passes its resolution validator on SHA `3c819430f0ee960cd96b5b94b1d8c33ca2da4912`. The later content-packet-only candidate is undergoing revalidation.
+4. `design/efb-001-rules-adr-proposals` is now the Product Owner's resolved ADR candidate. It resolves all 19 blocking rules decisions, includes a gated EFB-002 packet and passes its resolution validator on SHA `3c819430f0ee960cd96b5b94b1d8c33ca2da4912`. The latest content-packet candidate also passed validation on SHA `d05e06ef5c7890026de46febb52baf454396d285` in run `45165892523`; artifact SHA-256 `cac7b3e7ab3afa91244d9e00311a77e6970ecdaba35f129fa38d42d94fbcd85d`.
 
 **Baseline decision:** retain the Android implementation branch as a legacy prototype and source of reusable architecture. Do not treat it as the v0.2 implementation or merge its gameplay/balance changes into the handoff branch. No gameplay rule is silently imported from the prototype; any deliberately carried-forward behavior is recorded in a Product Owner ADR.
 
@@ -141,7 +141,7 @@ Not reusable without replacement or explicit ADR:
 
 ## 10. EFB-001 and EFB-002 sequencing
 
-The Product Owner has resolved the 19 blocking rules decisions in PR #5. The exact validated ADR candidate SHA is `3c819430f0ee960cd96b5b94b1d8c33ca2da4912`; a later content-specialist packet addition is being revalidated. EFB-002 board-core packet is prepared but marked `BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW`. It explicitly forbids live SwapCells and authorizes no implementation until EFB-000 is accepted.
+The Product Owner has resolved the 19 blocking rules decisions in PR #5. The current EFB-001 candidate SHA is `d05e06ef5c7890026de46febb52baf454396d285`; run `45165892523` passed the ADR and specialist-packet validator. Specialist output remains pending; no content is accepted. EFB-002 board-core packet is prepared but marked `BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW`. It explicitly forbids live SwapCells and authorizes no implementation until EFB-000 is accepted.
 
 After EFB-000 independent review and PR #5 acceptance, begin EFB-002 group-pop board core. Do not implement card breadth or content scale before the deterministic board vertical slice passes.
 
