@@ -5,6 +5,12 @@ on:
     branches: [feat/emberfall-multi-policy-balance-lab]
     paths:
       - ci-trigger/run-policy-matrix.txt
+  pull_request:
+    branches: [implementation/emberfall-latest-source]
+    paths:
+      - app/src/main/java/com/example/engine/SimulationRunner.kt
+      - app/src/test/java/com/example/engine/EmberfallEngineTest.kt
+      - ci-trigger/run-policy-matrix.txt
   workflow_dispatch:
     inputs:
       seeds_per_class:
