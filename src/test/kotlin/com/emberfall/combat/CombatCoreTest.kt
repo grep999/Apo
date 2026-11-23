@@ -181,7 +181,7 @@ class CombatCoreTest {
         state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
         assertTrue((0..6).any { y -> state.board[Coord(0, y)]?.kind == TileKind.ASH })
         assertEquals(Hue.TIDE, state.board[Coord(1, 6)]?.hue)
-        assertEquals(TileKind.ASH, state.board.incoming[0]?.kind)
+        assertEquals(null, state.board.incoming[0])
         assertEquals(Hue.TIDE, state.board.incoming[1]?.hue)
         assertEquals(2, state.board.sealTurnsRemaining[1])
         state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
@@ -368,5 +368,17 @@ class CombatCoreTest {
         val aligned = second.copy(enemy = EnemyState(40))
         assertEquals(first.enemy.vigor, aligned.enemy.vigor)
         assertNotEquals(CombatStateDigest.sha256(first), CombatStateDigest.sha256(aligned))
+    }
+
+    @Test fun ashRowDoesNotOverwriteSealedIncomingColumn() {
+        val board = BoardState.empty().sealColumn(3, 3).copy(
+            incoming = listOf(null, null, null, Cell.hue(Hue.VIOLET), null, null, null)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.AshRow))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(Hue.VIOLET, state.board.incoming[3]?.hue)
+        assertEquals(TileKind.ASH, state.board.incoming[0]?.kind)
+        assertEquals(TileKind.ASH, state.board.incoming[6]?.kind)
     }
 
