@@ -954,9 +954,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
       return
     }
     val reward = updated.pendingReward
-    val allResolved = reward != null &&
-      (reward.cardChoices.isEmpty() || reward.cardPicked) &&
-      (reward.relicRewardId == null || reward.relicPicked)
+    val allResolved = reward?.allChoicesResolved == true
     if (allResolved) {
       val finished = GameEngine.execute(updated, GameCommand.FinishRewards)
       if (finished.accepted) {
@@ -980,9 +978,9 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     }
   }
 
-  fun socketSupport(supportId: String) {
+  fun socketSupport(supportId: String, replaceSlot: Int = -1) {
     val current = _runState.value ?: return
-    val result = GameEngine.execute(current, GameCommand.SocketSupport(supportId))
+    val result = GameEngine.execute(current, GameCommand.SocketSupport(supportId, replaceSlot))
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.PRISM, volume = 0.90f)
       commitRunUpdate(result.run)
