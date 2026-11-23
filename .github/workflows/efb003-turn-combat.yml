@@ -1,8 +1,11 @@
 name: Emberfall EFB-003 Turn Combat
 
 on:
+  push:
+    branches: [feat/efb003-turn-combat-clean]
+    paths: ['src/**', 'build.gradle.kts', 'settings.gradle.kts', '.github/workflows/efb003-turn-combat.yml']
   pull_request:
-    branches: [handoff/emberfall-coding-agent-v1.0]
+    branches: [feat/efb002-remediation-rebased]
     paths:
       - 'src/**'
       - 'build.gradle.kts'
@@ -36,7 +39,7 @@ jobs:
           gradle-version: '8.10.2'
       - name: Verify pure JVM boundary
         run: |
-          if grep -R -nE 'android\\.|androidx\\.|compose\\.' src/main/kotlin; then
+          if grep -R -nE 'android\.|androidx\.|compose\.' src/main/kotlin; then
             echo 'Android/Compose dependency found in domain core' >&2
             exit 1
           fi
