@@ -74,17 +74,17 @@ class CombatCoreTest {
 
     @Test fun fourthTapIsRejectedAndDoesNotChangeState() {
         val board = boardWith(
-            Coord(0, 6) to Cell.hue(Hue.EMBER), Coord(1, 6) to Cell.hue(Hue.EMBER),
-            Coord(3, 6) to Cell.hue(Hue.GOLD), Coord(4, 6) to Cell.hue(Hue.GOLD),
-            Coord(0, 4) to Cell.hue(Hue.MOSS), Coord(1, 4) to Cell.hue(Hue.MOSS),
-            Coord(3, 4) to Cell.hue(Hue.TIDE), Coord(4, 4) to Cell.hue(Hue.TIDE)
+            Coord(0, 5) to Cell.hue(Hue.EMBER), Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 5) to Cell.hue(Hue.GOLD), Coord(2, 6) to Cell.hue(Hue.GOLD),
+            Coord(4, 5) to Cell.hue(Hue.MOSS), Coord(4, 6) to Cell.hue(Hue.MOSS),
+            Coord(6, 5) to Cell.hue(Hue.TIDE), Coord(6, 6) to Cell.hue(Hue.TIDE)
         )
         var state = accepted(engine.transition(CombatState.start(board, enemy(EnemyIntent.Strike(1))), CombatCommand.CompleteDraw)).state
-        listOf(Coord(0, 6), Coord(3, 6), Coord(0, 4)).forEach { target ->
+        listOf(Coord(0, 5), Coord(2, 5), Coord(4, 5)).forEach { target ->
             state = accepted(engine.transition(state, CombatCommand.Tap(target))).state
         }
         val before = CombatStateDigest.sha256(state)
-        val rejected = engine.transition(state, CombatCommand.Tap(Coord(3, 4)))
+        val rejected = engine.transition(state, CombatCommand.Tap(Coord(6, 5)))
         assertEquals(CombatRejection.NO_TAPS, assertIs<CombatResult.Rejected>(rejected).reason)
         assertEquals(before, CombatStateDigest.sha256(state))
     }
