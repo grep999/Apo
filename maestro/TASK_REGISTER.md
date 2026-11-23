@@ -8,9 +8,9 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 | ID | Increment | Owner | Risk | Current portfolio state |
 |---|---|---|---|---|
-| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; GROUNDING active; independent merged-tree review pending; license/IP provenance gap identified |
+| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; independent merged-tree review pending; governance follow-up revalidation PASS; license/IP rights still unconfirmed |
 | EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; Product Owner ADR validator PASS; no formal review submission or native Maestro workflow |
-| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | PR #14 draft; exact head 2543bee PASS on Gradle/JUnit, pure-JVM and ADR validation; Mastery active; reviewer assignment PROPOSED, not assigned |
+| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | PR #14 draft; exact head 6b6e139 PASS on Gradle/JUnit, pure-JVM and ADR validation; half-Ink payout correction included; Mastery active; reviewer assignment PROPOSED, not assigned |
 | EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet prepared; blocked on EFB-002 Mastery/Repetition, EFB-000 review, and durable Maestro dispatch/state readiness |
 | EFB-004-CARD-EFFECTS | Typed data-driven card/effect engine | BUILDER | R1 | Not started; blocked on EFB-002/003 |
 | EFB-005-CLASSES-STARTER | Three classes and starter decks | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-004 |
@@ -32,7 +32,7 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 - EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments. Merged-tree review is outstanding; pre-review identified absent LICENSE/COPYING/NOTICE files in both the handoff and legacy trees, so legacy code reuse is not cleared.
 - EFB-001: Product Owner ADR validation run `45180407668` passed; a subsequent cross-check run `45261280912` also passed on the current EFB-002 PR head. No native EFB-001 Maestro workflow or formal review submission exists. Review input: `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json`.
 - EFB-002 latest run-scoped workflow: `ea293bf8-83a8-4d49-a6fd-ac722008f0b4`; ACTIVE / MASTERY / revision 5; three Momentum items complete; independent-review assignment `4133762a-64a2-46e7-bdc1-7822e0090ad8` is PROPOSED, not assigned. This is an artifact snapshot, not durable cross-run state.
-- EFB-002 current candidate: PR #14, head `2543bee3815489d659548df5a9f8fbe1367f3c5f`; original remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` is preserved in its ancestry. Exact-head GateRunner run `45261280913`, Board Core run `45261282755`, ADR validator run `45261280912` all passed. Review input with current blob hashes and artifacts: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
+- EFB-002 current candidate: PR #14, head `6b6e139890a205ead337a94226464a0b5ddd82da`; original remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` is preserved in its ancestry. Exact-head GateRunner run `45265105467`, Board Core run `45265105730`, ADR validator run `45265105426` all passed. The half-Ink truncation defect was corrected and golden hue-weight tests strengthened. Review input with current blob hashes and artifacts: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
 - EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
 - EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing on head `2543bee...`; formatting/lint tooling is not configured and is not claimed. See `engineering/RELEASE_READINESS.md`.
 
@@ -46,10 +46,10 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 ## Workflow-control-plane actions
 
-- [ ] Complete EFB-000 independent merged-tree review; explicitly record the missing license/IP provenance and prohibit legacy code reuse until rights are confirmed.
+- [ ] Complete EFB-000 independent merged-tree review; explicitly record the missing license/IP provenance and prohibit legacy code reuse until rights are confirmed. Copilot cloud reviewer dispatch is blocked by HTTP 412 insufficient premium quota.
 - [ ] Reconcile EFB-001 into a native Maestro task state without reopening accepted ADRs.
 - [ ] Persist and resume the same Maestro DB/workflow ID across candidate pushes; current PR workflow creates a fresh database each run.
-- [ ] Configure a real independent-review adapter; PROPOSED is not ASSIGNED.
+- [ ] Configure a real independent-review adapter; PROPOSED is not ASSIGNED. Both current EFB-000/EFB-002 Copilot dispatch attempts returned HTTP 412; no reviewer session was created.
 - [ ] Require candidate file hashes, exact SHA, VERIFIED gates, distinct reviewer identity and Repetition before acceptance.
 
 ## Graphics task baseline
