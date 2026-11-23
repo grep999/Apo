@@ -7,7 +7,7 @@
 
 ## Decision
 
-The Fast is available only in Act 3 against the Hearthkeeper when **both** conditions hold: the hero class is `THE_UNLIT` and the Unlit Covenant is active. Each of three consecutive full turns must contain at least one Ash Pop and no non-Ash Pops. The player must cast zero cards, spend no Vigil, use no Flask and trigger no Wall Overflow during each qualifying turn. The player is **not** required to spend all three ordinary Taps; unused Taps are allowed.
+The Fast is available only in Act 3 against the Hearthkeeper when **both** conditions hold: the hero class is `THE_UNLIT` and the Unlit Covenant is active. Each of three consecutive full turns must contain at least one Ash Pop and no non-Ash Pops. The player must cast zero cards, spend no Vigil, use no Flask and trigger no Wall Overflow during each qualifying turn. The player is not required to spend all three ordinary Taps; unused Taps are allowed.
 
 On a qualifying turn, non-Defend enemy intents pass through empty air; Defend intents still resolve. The Wall's normal rise still occurs before the Enemy phase. Any failed qualification resets the streak to zero. After the third qualifying Enemy phase, the true-ending victory resolves before the next boss attack.
 
