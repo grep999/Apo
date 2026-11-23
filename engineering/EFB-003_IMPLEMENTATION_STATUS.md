@@ -1,6 +1,7 @@
 # EFB-003 — Turn / Combat Core
 
 **Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
+**Candidate SHA:** `7625c2186726b5570b4f8cbdf848b0b9ac73f7a3`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
 **Policy:** clean-room implementation; legacy prototype source/assets explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`.
@@ -23,7 +24,7 @@ Card definitions/effect DSL, deck/draw/discard implementation, class-specific co
 
 ## Verification
 
-The new exact-SHA workflow runs the full Gradle/JUnit suite and rejects Android/Compose imports in the pure domain source. No PASS is claimed until the workflow completes against the final candidate SHA. Device/UI testing is not applicable to this headless increment.
+The new exact-SHA workflow runs the full Gradle/JUnit suite and rejects Android/Compose imports in the pure domain source. No PASS is claimed: the available GitHub status interface has not returned an Actions run or check result for this candidate SHA. The exact candidate SHA is recorded above. Device/UI testing is not applicable to this headless increment.
 
 ## Remaining review
 
