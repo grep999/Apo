@@ -80,7 +80,9 @@ class CombatCoreTest {
             Coord(3, 4) to Cell.hue(Hue.TIDE), Coord(4, 4) to Cell.hue(Hue.TIDE)
         )
         var state = accepted(engine.transition(CombatState.start(board, enemy(EnemyIntent.Strike(1))), CombatCommand.CompleteDraw)).state
-        repeat(3) { state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6)) .let { if (it == null) error("unreachable") else CombatCommand.Tap(Coord(0, 6)) })).state }
+        listOf(Coord(0, 6), Coord(3, 6), Coord(0, 4)).forEach { target ->
+            state = accepted(engine.transition(state, CombatCommand.Tap(target))).state
+        }
         val before = CombatStateDigest.sha256(state)
         val rejected = engine.transition(state, CombatCommand.Tap(Coord(3, 4)))
         assertEquals(CombatRejection.NO_TAPS, assertIs<CombatResult.Rejected>(rejected).reason)
