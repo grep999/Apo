@@ -316,7 +316,6 @@ class CombatCoreTest {
         assertEquals(0, defeat.player.vigil)
     }
 
-}
     @Test fun combatInputsAndIntentSnapshotsAreDefensivelyCopied() {
         val ink = mutableMapOf(Hue.EMBER to 4)
         val player = PlayerState(ink = ink)
@@ -454,4 +453,4 @@ class CombatCoreTest {
         assertTrue(result.events.any { it is CombatEvent.GroupPopped })
         assertTrue(result.events.none { it is CombatEvent.TapResolved })
     }
-
+}
