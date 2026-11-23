@@ -1,9 +1,10 @@
 # EFB-002 Board Core — Implementation Status
 
 **Status:** IMPLEMENTATION CANDIDATE — NOT ACCEPTED  
-**Base:** `1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23` (current handoff branch)  
-**Branch:** `feat/efb-002-board-core-exactsha`  
-**PR:** #11 (draft)
+**Base:** `handoff/emberfall-coding-agent-v1.0` (current base SHA is recorded in PR #14 metadata)  
+**Branch:** `feat/efb002-remediation-rebased`  
+**PR:** #14 (draft)  
+**Original remediation commit:** `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` (preserved as the second parent of the integration candidate)
 
 ## Delivered
 
@@ -11,41 +12,44 @@
 - Immutable 7×7 state, separate incoming row and sealed-column mask.
 - Deterministic SplitMix64 RNG and seed-derived independent board/enemy/card streams.
 - Deck-frame hue weighting, 35-cell opening topology, 32 full-board retries and explicit fallback telemetry.
-- Orthogonal Tap/Pop; Prism direct selection tie-break; no cross-hue bridging.
+- Orthogonal Tap/Pop; deterministic direct-Prism selection; no cross-hue bridging.
 - Ash zero-Ink pop, n−1 chip output, Brand per-cell cost.
-- Stone snapshot break, vertical-only gravity, frozen Seal columns.
-- Spectrum Run payout using integer round-half-up.
+- Stone snapshot break, vertical-only gravity, frozen Seal columns and three-enemy-phase expiry.
+- Spectrum Run payout using integer round-half-up arithmetic.
 - Wall rise and Overflow transitions.
 - Command replay and canonical SHA-256 board checkpoint digest.
-- Unit/golden tests and a 100,000-seed statistical gate.
+- Unit, regression, randomized-property and 100,000-seed distribution/fallback tests.
 
-## Local verification performed
+## Remediation record
 
-Environment: OpenJDK 21.0.12.1, Kotlin compiler 1.9.0. These local checks ran against a local source mirror of the committed implementation, not a checkout of the exact GitHub candidate; they are recorded as OBSERVED, not VERIFIED.
+The original rejected candidate was `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`. The bounded remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` fixes:
 
-1. Main Kotlin sources compiled with `kotlinc`: PASS.
-2. Deterministic generation smoke over seeds 0–99,999: PASS.
-3. Sampled cells: 4,200,000 (35 visible + 7 incoming per seed).
-4. Legal opening group: present in all 100,000 generated boards.
-5. Generation fallback: 0 / 100,000 (0.000%).
-6. Observed versus target hue shares:
-   - Ember: 33.8278% vs 33.8600%
-   - Gold: 7.6562% vs 7.6749%
-   - Moss: 22.5829% vs 22.5733%
-   - Tide: 28.2521% vs 28.2166%
-   - Violet: 7.6810% vs 7.6752%
+1. `BoardState.fromRows` now accepts explicit Seal expiry timers and supplies the three-turn default.
+2. `SpectrumState` rejects positive runs without an anchor hue.
+3. Spectrum run progression and Ink payout arithmetic avoid Int overflow.
+4. `BoardReplay.replay` returns an unmodifiable result collection.
 
-The local smoke and statistical harnesses were run directly with the Kotlin compiler/runtime. Log hashes are recorded in `maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json`. They are not represented as Gradle/JUnit CI evidence.
+The integration candidate preserves that exact remediation commit in its ancestry and retains the newer base-side Maestro workflow so PR-triggered checks execute.
+
+## Verification evidence
+
+- Project-owner local report on remediation SHA `6932b747...`: 37 tests, `gradle check`, and diff checks passed. Local evidence remains owner-reported.
+- Prior Copilot CLI re-review: ACCEPT on remediation SHA `6932b747...`, as reported by the project owner.
+- GitHub Actions on integration SHA `f3fb7c6a3ced364af63c58f8461092fc3ff8cc54`:
+  - Board-core Gradle/JUnit and pure-JVM boundary: PASS, run [45260239285](https://github.com/grep999/Apo/actions/runs/45260239285).
+  - Maestro GateRunner exact-SHA checks: PASS, run [45260239280](https://github.com/grep999/Apo/actions/runs/45260239280).
+  - Gate report bound both required checks to `f3fb7c6a3ced364af63c58f8461092fc3ff8cc54`, with exit code 0, runner identity and log hashes.
+- A subsequent documentation/evidence-script correction changes the PR head; the latest PR head must receive its own fresh exact-SHA checks before acceptance.
 
 ## Known gaps before acceptance
 
-1. Gradle/JUnit workflow must pass on the exact PR candidate.
-2. Independent Mastery review must inspect the exact candidate and test artifacts.
-3. The EFB-000 merged baseline still needs the independent review evidence called out by the handoff governance.
-4. ADR-002 mentions neutral-block rules but the accepted ADR does not quantify initial neutral spawn probabilities. This implementation does not invent probabilities; initial random generation samples playable hues only. A quantified neutral generation rule needs an accepted ADR before implementation.
-5. Direct-Prism tie-break, Prism+Ash, mixed sealed-column Wall rise, no-Flask Overflow, replay digest golden vectors and extreme Ink groups need additional golden/property coverage.
-6. The game does not yet have EFB-003 combat, EFB-004 card effects, Android UI, saves, content, audio or release validation.
+1. Fresh exact-SHA GitHub checks must pass on the latest PR #14 head.
+2. Independent Mastery review must inspect the latest exact candidate, code, tests, workflow and artifacts. The current Maestro assignment is only `PROPOSED`; no reviewer has been assigned or dispatched.
+3. EFB-000 merged-tree independent review remains a separate prerequisite.
+4. ADR-002 does not quantify neutral initial spawn probabilities. The implementation does not invent probabilities; initial random generation samples playable hues only. A quantified neutral-generation rule requires an accepted ADR before implementation.
+5. Maestro state continuity across workflow runs is not yet solved; the current Actions workflow creates a new workflow/database for each run. Its artifact is evidence for that run, not proof of durable cross-run workflow resumption.
+6. The project is not yet a playable game. EFB-003 combat, EFB-004 card effects, Android UI, saves, production content, audio, balance and release validation remain future work.
 
 ## Acceptance position
 
-This branch is a concrete EFB-002 start, not a complete EFB-002 milestone and not a playable game release. Do not merge until the exact candidate passes all gates and independent review.
+EFB-002 is an implemented pure-JVM board-core candidate, not a complete game milestone and not a playable release. Keep PR #14 in draft. Do not merge until the latest exact-SHA CI, independent Mastery review, EFB-000 merged-tree review and required Maestro governance gates are satisfied.
