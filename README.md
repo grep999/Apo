@@ -44,8 +44,9 @@ This repository is private. Every human or service agent that needs to collabora
 Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. The selected base image is the canonical visual design authority, copied byte-for-byte and hash-locked in graphics v0.4. Preserve source/artist/license metadata for every production asset. Final app integration and device verification are still required.
 
 
-## EFB-002 implementation candidate
+## Current implementation baseline
 
-The isolated branch `feat/efb-002-board-core-victory` now contains the first pure Kotlin/JVM board-core implementation candidate. It is deliberately separate from the legacy Android SwapCells prototype. See `src/main/kotlin/com/emberfall/board/BoardCore.kt`, `src/test/kotlin/com/emberfall/board/BoardCoreTest.kt`, and `.github/workflows/efb002-board-core.yml`.
-
-This is an implementation increment, not a release or EFB-002 acceptance. Exact-candidate CI, full 100,000-seed distribution/fallback report, independent Mastery, and Product Owner acceptance remain required. The EFB-000 independent review condition remains an acceptance gate; it does not prevent isolated EFB-002 implementation from starting under the refreshed packet.
+- **EFB-002 board core:** Product Owner accepted at exact SHA `6b6e139890a205ead337a94226464a0b5ddd82da`; the single requested feedback round is complete and further EFB-002 review was waived by the owner. Exact-head Board Core, Maestro GateRunner and ADR validation passed.
+- **EFB-003 turn/combat:** clean-room implementation candidate is in `feat/efb003-turn-combat-clean`. It builds directly on `src/main/kotlin/com/emberfall/board/BoardCore.kt` and is tracked in PR #15.
+- **Legacy exclusion:** the old prototype and its assets are explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`. They are not build inputs, product source, design authority or permitted dependencies.
+- The new exact-SHA EFB-003 workflow runs the full Kotlin/JVM test suite and checks the Android-independent domain boundary. No release or merge approval is implied.
