@@ -239,8 +239,9 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                     events += CombatEvent.EnemyDamaged(chipToVigor, enemyVigor)
                 }
                 val brandCost = pop.brandVigilCost
-                val vigil = maxOf(0, state.player.vigil - brandCost)
-                if (brandCost > 0) events += CombatEvent.VigilLost(brandCost, "Brand")
+                val actualBrandLoss = minOf(state.player.vigil, brandCost)
+                val vigil = state.player.vigil - actualBrandLoss
+                if (actualBrandLoss > 0) events += CombatEvent.VigilLost(actualBrandLoss, "Brand")
                 events += CombatEvent.TapResolved(coord, pop.groupSize, pop.resolvedHue, pop.chipDamage)
                 val defeated = enemyVigor == 0
                 val playerDefeated = vigil == 0
@@ -310,6 +311,10 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                 overflow = true
                 vigil = maxOf(0, vigil - result.vigilDamage)
                 events += CombatEvent.VigilLost(result.vigilDamage, "Wall overflow")
+                if (vigil == 0) {
+                    rises++
+                    break
+                }
             }
             rises++
         }
