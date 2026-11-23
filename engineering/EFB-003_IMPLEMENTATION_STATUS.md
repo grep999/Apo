@@ -1,7 +1,7 @@
 # EFB-003 — Turn / Combat Core
 
 **Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
-**Candidate SHA:** `fbb8b07c134b77825cedac3f65389be13f11fd15`  
+**Candidate SHA:** `e9864637575275323aeb1104f9bd0a606c94a80a`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
 **Policy:** clean-room implementation; legacy prototype source/assets explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`.
