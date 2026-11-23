@@ -62,3 +62,21 @@ Use 100 seeds/class for initial calibration. Increase to 1,000 matched seeds/cla
 - A policy cell with incomplete runs must not be counted as wins or losses.
 - The event simulator now chooses only affordable options and checks command acceptance before leaving an event.
 - Full Android build, Robolectric UI, lint and package verification are delegated to the GitHub Actions workflow.
+
+
+## First matrix result review — 20 matched seeds per class/cell
+
+The successful matrix workflow artifact for candidate `911e2272da14371c1fc271ead406c8bcaa04b145` contains 45 class/cell rows (15 policy cells × 3 classes), each with 20 runs: **900 simulated campaigns total**.
+
+Observed in the artifact:
+- All 900 runs completed and won; every row reports 20 wins and 0 incomplete runs.
+- Every row averages 12/12 passives, 3/3 support sockets and 8/8 artifacts.
+- Average level ranges from 12.95 to 13.85; average deck size is approximately 18.05–18.75.
+- The Deck Curator rows are numerically identical to Balanced rows for all three combat policies and all three classes.
+
+Interpretation:
+- This is a successful **matrix smoke/coverage result**, not evidence of player balance or fun.
+- The 100% win rate is far above the specification's 15–30% Ascension-0 target, but the current bots are simple deterministic heuristics and the sample is only 20 seeds per class/cell. Do not nerf production values from this result.
+- Full progression saturation across every policy confirms the current policy matrix still does not stress reward scarcity. It does not establish that human runs receive every reward.
+- Deck Curator is not empirically differentiated in this sample. Add route-node counts, merchant visits, reward offer/pick/skip counts and chosen card IDs before treating it as an independent policy.
+- Next balance gate: increase to at least 1,000 matched seeds per class/cell, instrument policy actions and defeat causes, and add stronger/lookahead combat policies. Keep production tuning blocked until the data shows a stable signal.

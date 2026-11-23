@@ -1497,8 +1497,42 @@ class ExampleRobolectricTest {
     }
     composeTestRule.waitForIdle()
     composeTestRule.onNodeWithTag("inline_spoils_overlay").assertIsDisplayed()
+    composeTestRule.onNodeWithTag("inline_socket_support_sup_prism_forge").performScrollTo().assertIsDisplayed()
+    composeTestRule.onNodeWithTag("inline_bind_artifact_art_nada_damaru").performScrollTo().assertIsDisplayed()
+    composeTestRule.onAllNodesWithTag("inline_next_node_$nextNodeId").assertCountEquals(0)
+
+    // The next-room action must remain unavailable until every reward channel is resolved.
+    val resolvedRun = wonRun.copy(
+      pendingReward = requireNotNull(wonRun.pendingReward).copy(
+        supportPicked = true,
+        artifactPicked = true,
+      ),
+    )
+    composeTestRule.activityRule.scenario.onActivity { activity ->
+      activity.setContent {
+        EmberfallTheme {
+          CombatArenaScreen(
+            run = resolvedRun,
+            selectedGroup = null,
+            boardFeedback = null,
+            settings = PlayerSettings(fastAnimations = true),
+            onTapBoardCell = { _, _ -> },
+            onConfirmSelectedGroup = {},
+            onUseChiselWand = { _, _, _ -> },
+            onProceedToCast = {},
+            onPlayCard = { _, _ -> },
+            onUseFlask = {},
+            onEndTurn = {},
+            onProceedVictory = {},
+            onProceedDefeat = {},
+            onAdvanceInlineToNode = { advancedNodeId = it },
+          )
+        }
+      }
+    }
+    composeTestRule.waitForIdle()
     composeTestRule.onNodeWithTag("inline_next_node_$nextNodeId").assertIsDisplayed().performClick()
-    assertEquals("Single-tap next-room chip must invoke onAdvanceInlineToNode", nextNodeId, advancedNodeId)
+    assertEquals("Single-tap next-room chip must invoke onAdvanceInlineToNode after rewards resolve", nextNodeId, advancedNodeId)
   }
 
   @Test
