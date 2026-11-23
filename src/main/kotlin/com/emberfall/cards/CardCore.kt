@@ -33,6 +33,8 @@ sealed interface CardEffect {
     data class ShatterColumn(val column: Int) : CardEffect { init { require(column in 0..6) } }
     data class FuseGroups(val hue: Hue) : CardEffect
     data class GainSpark(val amount: Int) : CardEffect { init { require(amount > 0) } }
+    data class LoseVigil(val amount: Int) : CardEffect { init { require(amount > 0) } }
+    data object Sift : CardEffect
     data object Echo : CardEffect
     data object Exhaust : CardEffect
     data class Nested(val effects: List<CardEffect>) : CardEffect
@@ -396,6 +398,28 @@ class CardEngine(
                 val spark = next.combat.player.spark.toLong() + effect.amount
                 if (spark > Int.MAX_VALUE) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
                 next = next.copy(combat = next.combat.copy(player = next.combat.player.copy(spark = spark.toInt())))
+            }
+            is CardEffect.LoseVigil -> {
+                if (next.combat.player.vigil <= effect.amount) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
+                next = next.copy(combat = next.combat.copy(player = next.combat.player.copy(vigil = next.combat.player.vigil - effect.amount)))
+            }
+            CardEffect.Sift -> {
+                val board = next.combat.board
+                val slots = (board.cells.indices.map { it to false } + (0..6).map { (49 + it) to true })
+                    .filter { (slot, _) -> (if (slot < 49) slot % 7 else slot - 49) !in board.sealedColumns }
+                val values = slots.map { (slot, incoming) -> if (incoming) board.incoming[slot - 49] else board.cells[slot] }.toMutableList()
+                val rng = DeterministicRng(next.runSeed xor (next.combat.turn.toLong() shl 32) xor command.instanceId)
+                for (i in values.lastIndex downTo 1) {
+                    val j = rng.nextInt(i + 1)
+                    val tmp = values[i]; values[i] = values[j]; values[j] = tmp
+                }
+                val cells = board.cells.toMutableList()
+                val incoming = board.incoming.toMutableList()
+                slots.forEachIndexed { index, (slot, isIncoming) ->
+                    if (isIncoming) incoming[slot - 49] = values[index] else cells[slot] = values[index]
+                }
+                next = next.copy(combat = next.combat.copy(board = board.copy(cells = cells, incoming = incoming)))
+                next = draw(next, 1, events)
             }
             CardEffect.Echo -> {
                 if (lastEffects == null || lastId == null || echoed || item.echoed) return EffectResolution.Failed(CardRejection.EFFECT_FAILED)
