@@ -1,0 +1,112 @@
+name: Emberfall Agent Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      role:
+        description: Agent role
+        required: true
+        type: choice
+        options: [RESEARCHER, ARCHITECT, BUILDER, INDEPENDENT_REVIEWER]
+      task_id:
+        description: Maestro task/work-item ID
+        required: true
+        type: string
+      base_ref:
+        description: Exact branch to work from
+        required: true
+        default: handoff/emberfall-coding-agent-v1.0
+        type: string
+      prompt:
+        description: Complete bounded agent prompt
+        required: true
+        type: string
+      create_pull_request:
+        description: Ask Copilot to create a PR (normally only for BUILDER)
+        required: true
+        default: false
+        type: boolean
+      model:
+        description: Optional Copilot model ID (blank = automatic)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-agent-${{ inputs.task_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate dispatch boundaries
+        env:
+          ROLE: ${{ inputs.role }}
+          TASK_ID: ${{ inputs.task_id }}
+          BASE_REF: ${{ inputs.base_ref }}
+          CREATE_PR: ${{ inputs.create_pull_request }}
+        run: |
+          set -euo pipefail
+          [[ "$TASK_ID" =~ ^[A-Za-z0-9._-]{3,100}$ ]] || { echo "Invalid task_id" >&2; exit 1; }
+          [[ "$BASE_REF" == "handoff/emberfall-coding-agent-v1.0" || "$BASE_REF" == "docs/emberfall-release-governance" || "$BASE_REF" == feat/* ]] || { echo "Base ref is not allowlisted" >&2; exit 1; }
+          if [[ "$ROLE" != "BUILDER" && "$CREATE_PR" == "true" ]]; then
+            echo "Only BUILDER tasks may request a PR" >&2
+            exit 1
+          fi
+
+      - name: Start Copilot cloud-agent task
+        id: dispatch
+        env:
+          TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
+          ROLE: ${{ inputs.role }}
+          TASK_ID: ${{ inputs.task_id }}
+          BASE_REF: ${{ inputs.base_ref }}
+          PROMPT: ${{ inputs.prompt }}
+          CREATE_PR: ${{ inputs.create_pull_request }}
+          MODEL: ${{ inputs.model }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$TOKEN" ]]; then
+            echo "::error::Missing COPILOT_AGENT_TOKEN secret. Add a user-to-server fine-grained PAT with repository Actions, Contents, Issues and Pull Requests read/write permissions."
+            exit 1
+          fi
+          ROLE_RULES=""
+          case "$ROLE" in
+            RESEARCHER) ROLE_RULES="Research only. Do not edit code. Return source-backed findings, uncertainty and recommendations." ;;
+            ARCHITECT) ROLE_RULES="Architecture only. Preserve accepted decisions. Return bounded work items and acceptance criteria. Do not implement." ;;
+            BUILDER) ROLE_RULES="Implement only the authorized task scope in an isolated branch. Run tests, report exact SHA and open a draft PR. Never merge." ;;
+            INDEPENDENT_REVIEWER) ROLE_RULES="Read-only adversarial review. Do not modify code. Inspect the exact candidate SHA, return severity-ranked findings with file/line evidence. Do not approve your own or a moving branch." ;;
+            *) echo "Unknown role" >&2; exit 1 ;;
+          esac
+          FULL_PROMPT="$(printf '%s\n\nTASK ID: %s\nROLE: %s\nBASE REF: %s\n\nROLE RULES: %s\n\nTASK PROMPT:\n%s'             "You are working on Emberfall. Read AGENTS.md, engineering/AGENT_ORCHESTRATION.md, the authoritative game spec, Product Owner decision baseline, accepted ADRs and the Maestro task packet before acting. Preserve all accepted decisions. Do not claim tests or actions you did not perform. If blocked, explain precisely and stop."             "$TASK_ID" "$ROLE" "$BASE_REF" "$ROLE_RULES" "$PROMPT")"
+          jq -n --arg prompt "$FULL_PROMPT" --arg base_ref "$BASE_REF" --arg model "$MODEL" --argjson create_pr "$CREATE_PR"             '{prompt:$prompt,base_ref:$base_ref,create_pull_request:$create_pr} + (if $model == "" then {} else {model:$model} end)' > request.json
+          HTTP_CODE=$(curl --silent --show-error --output response.json --write-out '%{http_code}'             -X POST             -H "Accept: application/vnd.github+json"             -H "X-GitHub-Api-Version: 2022-11-28"             -H "Authorization: Bearer $TOKEN"             https://api.github.com/agents/repos/grep999/Apo/tasks             -H "Content-Type: application/json"             --data-binary @request.json)
+          cat response.json
+          if [[ "$HTTP_CODE" -lt 200 || "$HTTP_CODE" -ge 300 ]]; then
+            echo "::error::Copilot task dispatch failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+          TASK_API_ID=$(jq -r '.id // .task_id // empty' response.json)
+          [[ -n "$TASK_API_ID" ]] || { echo "::error::API response did not include a task ID"; exit 1; }
+          echo "task_api_id=$TASK_API_ID" >> "$GITHUB_OUTPUT"
+          {
+            echo "## Copilot agent dispatched"
+            echo "- Maestro task: `$TASK_ID`"
+            echo "- Role: `$ROLE`"
+            echo "- Base ref: `$BASE_REF`"
+            echo "- Copilot task ID: `$TASK_API_ID`"
+            echo "- State: queued (verify using Emberfall Agent Status workflow)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve dispatch receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-agent-dispatch-${{ inputs.task_id }}
+          retention-days: 30
+          path: |
+            request.json
+            response.json
