@@ -34,6 +34,20 @@ class EmberfallEngineTest {
   }
 
   @Test
+  fun `balance laboratory exposes all fifteen matched-seed route and combat policy cells`() {
+    val matrix = SimulationRunner.runPolicyMatrix(seedsPerClass = 1, dreadLevel = 0)
+    assertEquals(5 * 3, matrix.cells.size)
+    assertEquals(1, matrix.seedsPerClass)
+    assertEquals(0, matrix.dreadLevel)
+    assertEquals(15, matrix.cells.map { it.routeRewardPolicy to it.combatPolicy }.distinct().size)
+    matrix.cells.forEach { cell ->
+      assertEquals(3, cell.report.runsAttempted)
+      assertEquals(cell.report.runsAttempted, cell.report.runsCompleted + cell.report.incompleteRuns)
+      assertEquals(HeroClass.entries.toSet(), cell.progressionByClass.keys)
+      assertTrue(cell.progressionByClass.values.all { it.avgLevel >= 1.0 })
+    }
+  }
+  @Test
   fun `canonical classes hues signature relics and Unlit 12-card Gold starter match baseline`() {
     assertEquals(listOf(Hue.EMBER, Hue.GOLD, Hue.MOSS, Hue.TIDE, Hue.VIOLET), Hue.WHEEL_ORDER)
 
