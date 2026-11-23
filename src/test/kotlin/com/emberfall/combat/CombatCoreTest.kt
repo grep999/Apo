@@ -452,6 +452,6 @@ class CombatCoreTest {
         assertEquals(2, result.state.player.immutableInk.getValue(Hue.EMBER))
         assertEquals(39, result.state.enemy.vigor)
         assertTrue(result.events.any { it is CombatEvent.GroupPopped })
-        assertFalse(result.events.any { it is CombatEvent.TapResolved })
+        assertTrue(result.events.none { it is CombatEvent.TapResolved })
     }
 
