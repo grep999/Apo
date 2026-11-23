@@ -855,7 +855,7 @@ fun UpayaCircuitDialog(
 fun InlineSpoilsAndGrowthOverlay(
   run: RunState,
   onUnlockPassive: (String) -> Unit,
-  onSocketSupport: (String) -> Unit,
+  onSocketSupport: (String, Int) -> Unit,
   onSkipSupport: () -> Unit,
   onBindArtifact: (String) -> Unit,
   onSkipArtifact: () -> Unit,
@@ -870,9 +870,8 @@ fun InlineSpoilsAndGrowthOverlay(
 ) {
   val reward = run.pendingReward ?: return
   val growth = run.growth
-  val cardsResolved = reward.cardChoices.isEmpty() || reward.cardPicked
-  val relicResolved = reward.relicRewardId == null || reward.relicPicked
-  val readyToAdvance = cardsResolved && relicResolved
+  val readyToAdvance = reward.allChoicesResolved
+  var supportToReplace by remember(run.pendingReward) { mutableStateOf<String?>(null) }
 
   // Preview next reachable nodes from current node (for 1-tap descent right out of victory!)
   val currentNode = remember(run.actMap, run.currentNodeId) {
@@ -1053,7 +1052,10 @@ fun InlineSpoilsAndGrowthOverlay(
                 reward.supportChoices.forEach { supId ->
                   val sup = ProgressionCatalog.supportByIdOrNull(supId) ?: return@forEach
                   Surface(
-                    onClick = { onSocketSupport(sup.id) },
+                    onClick = {
+                      if (growth.socketedSupportIds.size >= growth.maxSockets) supportToReplace = sup.id
+                      else onSocketSupport(sup.id, -1)
+                    },
                     color = SlateStone,
                     shape = SkillCardShape,
                     border = BorderStroke(1.dp, MoltenEmber.copy(alpha = 0.8f)),
@@ -1310,6 +1312,18 @@ fun InlineSpoilsAndGrowthOverlay(
       }
     }
   }
+  supportToReplace?.let { supportId ->
+    SupportReplacementDialog(
+      supportId = supportId,
+      growth = growth,
+      onChooseSlot = { slot ->
+        onSocketSupport(supportId, slot)
+        supportToReplace = null
+      },
+      onDismiss = { supportToReplace = null },
+    )
+  }
+
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1952,3 +1966,38 @@ fun CombatSystemPillRibbon(
 }
 
 
+
+
+@Composable
+fun SupportReplacementDialog(
+  supportId: String,
+  growth: CharacterGrowthState,
+  onChooseSlot: (Int) -> Unit,
+  onDismiss: () -> Unit,
+) {
+  val incoming = ProgressionCatalog.supportByIdOrNull(supportId) ?: return
+  AlertDialog(
+    onDismissRequest = onDismiss,
+    containerColor = CharredBasalt,
+    titleContentColor = GildedBrass,
+    textContentColor = WarmParchment,
+    title = { Text("Replace a Dhāraṇā Support?") },
+    text = {
+      Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text("All ${growth.maxSockets} sockets are occupied. Choose exactly which engraving to replace with ${incoming.name}.")
+        growth.socketedSupportIds.forEachIndexed { index, currentId ->
+          val current = ProgressionCatalog.supportByIdOrNull(currentId)
+          TextButton(
+            onClick = { onChooseSlot(index) },
+            modifier = Modifier.fillMaxWidth().testTag("replace_support_slot_$index"),
+          ) {
+            Text("Socket ${index + 1}: ${current?.name ?: currentId}", color = WarmParchment)
+          }
+        }
+      }
+    },
+    confirmButton = {
+      TextButton(onClick = onDismiss) { Text("Keep Current Sockets", color = MutedAsh) }
+    },
+  )
+}
