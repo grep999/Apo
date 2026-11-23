@@ -242,4 +242,23 @@ class CardCoreTest {
         assertEquals(1, state.hand.size)
     }
 
+    @Test fun negativeColoredCostIsRejectedAtDefinitionBoundary() {
+        assertFailsWith<IllegalArgumentException> {
+            CardCost(mapOf(Hue.EMBER to -1))
+        }
+    }
+
+    @Test fun blockOverflowRejectsCardTransactionWithoutWrapping() {
+        val card = CardDefinition("overflow_block", "Overflow Block", Hue.MOSS, CardType.SKILL, CardRarity.RARE,
+            CardCost(), listOf(CardEffect.Block(1)))
+        val local = CardEngine(mapOf(card.id to card))
+        val base = combat().copy(player = PlayerState(block = Int.MAX_VALUE))
+        val state = CardBattleState.start(base, listOf(card.id), mapOf(card.id to card))
+            .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, card.id)), combat = base.copy(phase = CombatPhase.CAST))
+        val result = local.transition(state, CardBattleCommand.Play(0))
+        assertEquals(CardRejection.EFFECT_FAILED, assertIs<CardBattleResult.Rejected>(result).reason)
+        assertEquals(Int.MAX_VALUE, state.combat.player.block)
+        assertEquals(1, state.hand.size)
+    }
+
 }
