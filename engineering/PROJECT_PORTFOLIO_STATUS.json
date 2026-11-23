@@ -44,18 +44,18 @@
       "review_input": "maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json"
     },
     "efb002": {
-      "status": "IMPLEMENTED_PAYOUT_CORRECTED_EXACT_CI_PASS_MASTERY_PENDING",
+      "status": "PRODUCT_OWNER_ACCEPTED_REVIEW_WAIVED",
       "pr": 14,
       "candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
       "draft": true,
       "mergeable": true,
       "workflow_id": "18096733-d9eb-4ce6-bac5-c3c77a947e60",
-      "workflow_stage": "MASTERY",
-      "workflow_status": "ACTIVE",
+      "workflow_stage": "REPETITION_COMPLETE",
+      "workflow_status": "ACCEPTED_BY_PRODUCT_OWNER",
       "revision": 5,
       "completed_momentum_items": 3,
       "pending_mastery_items": 1,
-      "review_assignment_status": "PROPOSED_NOT_ASSIGNED",
+      "review_assignment_status": "WAIVED_BY_PRODUCT_OWNER",
       "required_checks": [
         {
           "name": "gradle-junit-exact-candidate",
@@ -86,7 +86,7 @@
           "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
         }
       ],
-      "required_next": "Independent Mastery review of exact current candidate; EFB-000 merged-tree review; then record Repetition/acceptance. Copilot cloud reviewer dispatch currently blocked by HTTP 412 insufficient premium quota.",
+      "required_next": "EFB-000 merged-tree review and explicit rights disposition; then EFB-003 after Maestro durable state continuity and independent-review dispatch are operational.",
       "review_input": "maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json",
       "original_remediation_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
       "branch": "feat/efb002-remediation-rebased",
@@ -101,7 +101,21 @@
       "pre_review_findings": {
         "half_ink_truncation": "FIXED_IN_CANDIDATE_AND_EXACT_CI_VERIFIED; independent review pending",
         "hue_weight_test_oracle": "FIXED_WITH_GOLDEN_EXPECTED_VALUES; independent review pending"
-      }
+      },
+      "product_owner_acceptance": {
+        "disposition": "ACCEPTED",
+        "exact_candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+        "review_rounds_required": 1,
+        "additional_independent_mastery": "WAIVED_BY_PRODUCT_OWNER",
+        "acceptance_comment": "https://github.com/grep999/Apo/pull/14#issuecomment-7114277343",
+        "evidence_runs": [
+          45265105730,
+          45265105467,
+          45265105426
+        ],
+        "note": "This is explicit Product Owner acceptance, not an independent Mastery review submission."
+      },
+      "repetition_record": "maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json"
     }
   },
   "epics": [
@@ -119,15 +133,15 @@
     },
     {
       "id": "EFB-002-BOARD-CORE",
-      "status": "PARTIAL",
-      "maestro_state": "CANDIDATE",
-      "next": "PR #14 exact-head CI passed after half-Ink payout correction; independent Mastery reviewer not assigned; EFB-000 review and Repetition pending."
+      "status": "ACCEPTED",
+      "maestro_state": "ACCEPTED_BY_PRODUCT_OWNER",
+      "next": "Exact candidate 6b6e1398 accepted by Product Owner; further independent Mastery round waived; Repetition recorded. EFB-000 provenance/review and Maestro continuity remain separate gates."
     },
     {
       "id": "EFB-003-TURN-COMBAT",
       "status": "BLOCKED",
       "maestro_state": "PREPARED",
-      "next": "Grounding packet prepared; implementation blocked on EFB-002 acceptance."
+      "next": "EFB-002 accepted by Product Owner. Start implementation only after EFB-000 merged-tree review/rights disposition and durable Maestro state continuity plus a working independent-review route."
     },
     {
       "id": "EFB-004-CARD-EFFECTS",
@@ -218,9 +232,8 @@
     "M5": "NOT_STARTED"
   },
   "next_sequence": [
-    "EFB-000 independent review",
-    "EFB-002 independent Mastery",
-    "EFB-002 Repetition/acceptance",
+    "EFB-000 merged-tree independent review and rights disposition",
+    "Maestro durable workflow continuity and independent-review dispatch",
     "EFB-003 turn/combat",
     "EFB-004 card/effects",
     "EFB-005 classes",
@@ -241,6 +254,6 @@
     "reason": "PR workflow creates a fresh coding-start workflow/database on each run; latest artifact is run-scoped and does not prove durable resume.",
     "reviewer_dispatch": "BLOCKED_PREMIUM_QUOTA",
     "reason_reviewer": "Both EFB-000 and EFB-002 Copilot cloud-agent dispatch attempts failed HTTP 412: insufficient premium quota to create assignment. No reviewer session exists.",
-    "next_action": "Obtain an actual independent reviewer through an available human or funded agent route; complete EFB-000/EFB-002 reviews, confirm source rights, persist/resume Maestro state, and record Repetition before EFB-003."
+    "next_action": "Complete independent EFB-000 merged-tree review and obtain explicit source ownership/reuse-rights disposition; repair durable Maestro workflow continuity and reviewer dispatch; then begin EFB-003."
   }
 }
