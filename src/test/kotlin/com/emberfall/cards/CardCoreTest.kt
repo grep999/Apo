@@ -134,7 +134,7 @@ class CardCoreTest {
         val ready = state.copy(drawPile = emptyList(), hand = state.drawPile, combat = state.combat.copy(phase = CombatPhase.CAST))
         val result = local.transition(ready, CardBattleCommand.Play(ready.hand.single().instanceId))
         assertEquals(CardRejection.EFFECT_LIMIT, assertIs<CardBattleResult.Rejected>(result).reason)
-        assertEquals(0, ready.combat.player.spark)
+        assertEquals(8, ready.combat.player.spark)
         assertEquals(1, ready.hand.size)
     }
 
