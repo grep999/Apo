@@ -1,6 +1,16 @@
 name: Emberfall EFB-002 Maestro Lifecycle
 
 on:
+  pull_request:
+    branches: [handoff/emberfall-coding-agent-v1.0]
+    paths:
+      - 'src/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - 'scripts/record_efb002_maestro_gates.py'
+      - 'maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json'
+      - 'maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json'
+      - '.github/workflows/efb002-maestro-workflow.yml'
   push:
     branches: [feat/efb-002-board-core-exactsha]
     paths:
@@ -26,7 +36,7 @@ jobs:
       - name: Checkout exact pushed candidate
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Set up Python
