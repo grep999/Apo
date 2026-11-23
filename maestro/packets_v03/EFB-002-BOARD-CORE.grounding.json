@@ -60,7 +60,7 @@
     "Pure-JVM boundary check passes; unit/property/golden tests, formatting, lint and build pass.",
     "Independent Mastery review examines exact candidate SHA and test artifacts.",
     "Pop resolution returns a deterministic immutable result containing resolved base hue, ordered group cells, group size, base Ink payout, Spectrum Run state/multiplier and chip damage; turn-level payment/application remains outside this increment.",
-    "Playable-hue pop Ink follows ADR-003 and ADR-005 exactly: min(n, 8) + floor(max(n - 8, 0) / 2), multiplied by the resolved Run factor with the single final rounding rule; Ash pays zero base Ink.",
+    "Playable-hue pop Ink follows ADR-003 and ADR-005 exactly: min(n, 8) + floor(max(n - 8, 0) / 2), multiplied by the resolved Run factor with round-half-up exactly once at final payout, ties upward, using integer arithmetic `(baseInk * (2 + run) + 1) / 2`; Ash pays zero base Ink.",
     "Spectrum Run follows ADR-005 golden cases: first pop ×1.0; ordered wheel progression; wrap; repeated/out-of-order reset; Prism substitutes for the next expected hue for one step only; reset at turn boundary.",
     "Pop chip damage is n - 1 and is returned as a board action result; enemy Block application is deferred to EFB-003.",
     "Board generation follows ADR-002: rows 0–1 empty, rows 2–6 seeded, 32 whole-board retries on the same deterministic RNG stream, then one adjacent-pair fallback with BoardGenerationFallback telemetry; verify fallback rate <0.01% across 100,000 seeds."
