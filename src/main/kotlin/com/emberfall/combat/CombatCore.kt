@@ -142,6 +142,8 @@ sealed interface CombatCommand {
     data object EndWeave : CombatCommand
     /** Integration seam for EFB-004; only a resolved card effect may issue this during Cast. */
     data class CardDamage(val amount: Int) : CombatCommand { init { require(amount > 0) } }
+    /** Card Pop resolves a board group during Cast without spending a Weave Tap. */
+    data class CardPop(val coord: Coord) : CombatCommand
     /** Integration seam for EFB-004; only a resolved card effect may issue this during Cast. */
     data class CardBlock(val amount: Int) : CombatCommand { init { require(amount > 0) } }
     /** Integration seam for EFB-004 (e.g. Tide Surge). */
@@ -163,6 +165,7 @@ enum class CombatRejection {
 
 sealed interface CombatEvent {
     data object DrawStarted : CombatEvent
+    data class GroupPopped(val coord: Coord, val groupSize: Int, val hue: Hue?, val chipDamage: Int) : CombatEvent
     data class TapResolved(val coord: Coord, val groupSize: Int, val hue: Hue?, val chipDamage: Int) : CombatEvent
     data class InkGained(val hue: Hue, val accepted: Int, val convertedToSpark: Int) : CombatEvent
     data class VigilLost(val amount: Int, val cause: String) : CombatEvent
@@ -199,6 +202,7 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
             CombatCommand.EndWeave -> if (state.phase != CombatPhase.WEAVE) rejectPhase()
                 else accept(state.copy(phase = CombatPhase.CAST))
             is CombatCommand.CardDamage -> cardDamage(state, command.amount)
+            is CombatCommand.CardPop -> cardPop(state, command.coord)
             is CombatCommand.CardBlock -> cardBlock(state, command.amount)
             CombatCommand.DelayNextIntent -> if (state.phase != CombatPhase.CAST) rejectPhase()
                 else accept(state.copy(delayedIntents = state.delayedIntents + 1))
@@ -215,6 +219,15 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
     private fun tap(state: CombatState, coord: Coord): CombatResult {
         if (state.phase != CombatPhase.WEAVE) return rejectPhase()
         if (state.tapsRemaining <= 0) return CombatResult.Rejected(CombatRejection.NO_TAPS)
+        return resolvePop(state, coord, consumeTap = true)
+    }
+
+    private fun cardPop(state: CombatState, coord: Coord): CombatResult {
+        if (state.phase != CombatPhase.CAST) return rejectPhase()
+        return resolvePop(state, coord, consumeTap = false)
+    }
+
+    private fun resolvePop(state: CombatState, coord: Coord, consumeTap: Boolean): CombatResult {
         return when (val outcome = boardEngine.tap(state.board, coord, state.spectrum)) {
             is TapOutcome.Rejected -> CombatResult.Rejected(CombatRejection.ILLEGAL_BOARD_TAP)
             is TapOutcome.Accepted -> {
@@ -243,7 +256,8 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                 val actualBrandLoss = minOf(state.player.vigil, brandCost)
                 val vigil = state.player.vigil - actualBrandLoss
                 if (actualBrandLoss > 0) events += CombatEvent.VigilLost(actualBrandLoss, "Brand")
-                events += CombatEvent.TapResolved(coord, pop.groupSize, pop.resolvedHue, pop.chipDamage)
+                events += CombatEvent.GroupPopped(coord, pop.groupSize, pop.resolvedHue, pop.chipDamage)
+                if (consumeTap) events += CombatEvent.TapResolved(coord, pop.groupSize, pop.resolvedHue, pop.chipDamage)
                 val defeated = enemyVigor == 0
                 val playerDefeated = vigil == 0
                 val next = state.copy(
@@ -251,8 +265,8 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                     spectrum = pop.spectrum,
                     player = state.player.copy(vigil = vigil, ink = ink, spark = spark),
                     enemy = state.enemy.copy(vigor = enemyVigor, block = enemyBlock),
-                    tapsRemaining = state.tapsRemaining - 1,
-                    fogTapsRemaining = maxOf(0, state.fogTapsRemaining - 1),
+                    tapsRemaining = if (consumeTap) state.tapsRemaining - 1 else state.tapsRemaining,
+                    fogTapsRemaining = if (consumeTap) maxOf(0, state.fogTapsRemaining - 1) else state.fogTapsRemaining,
                     phase = when { playerDefeated -> CombatPhase.DEFEAT; defeated -> CombatPhase.VICTORY; else -> state.phase }
                 )
                 if (defeated) events += CombatEvent.EnemyDefeated
