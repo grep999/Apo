@@ -1,0 +1,69 @@
+{
+  "task_id": "EFB-003-TURN-COMBAT",
+  "record_type": "MOMENTUM_CANDIDATE",
+  "baseline_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+  "branch": "feat/efb003-turn-combat-clean",
+  "outcome": "Implemented a deterministic pure Kotlin/JVM combat reducer on top of the accepted EFB-002 BoardEngine. The candidate includes strict phases, player resources, enemy intent preview/resolution, board-intent effects, Wall/Overflow integration, integration events for card-boundary intents, and a stable combat digest.",
+  "changed_artifacts": [
+    "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md",
+    "maestro/packets_v03/EFB-003-TURN-COMBAT.grounding.json",
+    "src/main/kotlin/com/emberfall/combat/CombatCore.kt",
+    "src/test/kotlin/com/emberfall/combat/CombatCoreTest.kt",
+    ".github/workflows/efb003-turn-combat.yml",
+    "engineering/EFB-003_IMPLEMENTATION_STATUS.md",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
+    "README.md"
+  ],
+  "implemented": [
+    "Draw → Weave → Cast → Wall → Enemy → Cleanup plus terminal Victory/Defeat.",
+    "Atomic command transitions; illegal board taps and invalid phase commands reject without state mutation.",
+    "Three base Taps; accepted Tap pays capped hue Ink, converts overflow to Spark, applies chip damage after enemy Block, applies Brand Vigil cost, and advances Spectrum using EFB-002 BoardEngine.",
+    "Player Vigil, Block, Flasks and enemy Vigor/Block.",
+    "Deterministic two-intent forecast bound to a fixed data-driven intent sequence; resolved intent equals the first forecast.",
+    "Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse.",
+    "Wall/Overflow and Seal durations delegated to EFB-002 BoardEngine.",
+    "Cast integration seams for card damage, Block and intent delay; Snatch/Curse emit explicit EFB-004 integration events.",
+    "Stable replay digest binds board, player/enemy resources, complete intent sequence/cursor, forecast and status counters.",
+    "Defensively immutable combat snapshots, player Ink, intent sequences, Brand targets and wall-row commands.",
+    "Sealed-column incoming rows remain frozen through Wall insertion and enemy Ash Row/Stain effects, honoring ADR-012 at the combat integration boundary.",
+    "Card Pop integration command during Cast: resolves board Pop without spending a Weave Tap or decrementing Fog's three-Tap duration.",
+    "Versioned command replay frames with per-step checkpoint digests and explicit rejected-command frames.",
+    "Run seed is captured in CombatState and included with the combat rules version in every replay checkpoint digest."
+  ],
+  "checks": [
+    {
+      "name": "Pure JVM / Android boundary",
+      "status": "PASS",
+      "run_id": 45274051704,
+      "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
+    },
+    {
+      "name": "Gradle clean test",
+      "status": "PASS",
+      "run_id": 45274051704,
+      "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
+    },
+    {
+      "name": "Independent Mastery",
+      "status": "PENDING"
+    },
+    {
+      "name": "Repetition",
+      "status": "PENDING"
+    }
+  ],
+  "scope_exclusions": [
+    "Legacy prototype source/assets: explicitly excluded; no import or dependency.",
+    "Card definitions, deck draw/discard and effect DSL: EFB-004.",
+    "Class-specific content and full enemy catalogue/boss phases: later increments.",
+    "Android UI, art, audio, save migration, progression and backend: later increments."
+  ],
+  "risks": [
+    "Snatch and Curse are emitted as EFB-004 integration events; actual hand/discard mutation belongs to the card model.",
+    "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
+    "No Android/device evidence is claimed for this pure JVM increment."
+  ],
+  "next_action": "Dispatch or obtain an independent Mastery review of exact candidate e9864637575275323aeb1104f9bd0a606c94a80a using the accepted v0.2 specification, ADRs, changed-path diff and raw CI evidence. Resolve any findings, then record Repetition. Do not merge before both gates.",
+  "candidate_sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
+  "candidate_ref": "git:e9864637575275323aeb1104f9bd0a606c94a80a"
+}

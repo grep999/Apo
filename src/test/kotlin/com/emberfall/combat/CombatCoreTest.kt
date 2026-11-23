@@ -1,0 +1,462 @@
+package com.emberfall.combat
+
+import com.emberfall.board.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
+
+class CombatCoreTest {
+    private val engine = CombatEngine()
+
+    private fun boardWith(vararg entries: Pair<Coord, Cell>): BoardState {
+        var board = BoardState.empty()
+        entries.forEach { board = board.withCell(it.first, it.second) }
+        return board
+    }
+
+    private fun enemy(vararg intents: EnemyIntent) =
+        EnemyDefinition("test-enemy", 40, intents.toList())
+
+    private fun accepted(result: CombatResult): CombatResult.Accepted =
+        assertIs<CombatResult.Accepted>(result)
+
+    private fun beginCast(state: CombatState): CombatState {
+        var s = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        s = accepted(engine.transition(s, CombatCommand.EndWeave)).state
+        return s
+    }
+
+    private fun beginEnemy(state: CombatState, incoming: List<Cell?> = List(7) { null }): CombatState {
+        var s = beginCast(state)
+        s = accepted(engine.transition(s, CombatCommand.EndCast)).state
+        s = accepted(engine.transition(s, CombatCommand.ResolveWall(listOf(incoming)))).state
+        return s
+    }
+
+    @Test fun initialStateExposesTwoStableIntentsAndStartsInDraw() {
+        val definition = enemy(EnemyIntent.Strike(8), EnemyIntent.AshRow)
+        val state = CombatState.start(BoardState.empty(), definition)
+        assertEquals(CombatPhase.DRAW, state.phase)
+        assertEquals(listOf(EnemyIntent.Strike(8), EnemyIntent.AshRow), state.nextIntents)
+        assertEquals(70, state.player.vigil)
+        assertEquals(2, state.player.flasks)
+        assertEquals(3, state.tapsRemaining)
+    }
+
+    @Test fun successfulTapPaysInkDealsChipAndConsumesExactlyOneTap() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(1, 6) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(8)))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        val result = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6))))
+        assertEquals(2, result.state.player.immutableInk.getValue(Hue.EMBER))
+        assertEquals(39, result.state.enemy.vigor)
+        assertEquals(2, result.state.tapsRemaining)
+        assertTrue(result.events.any { it is CombatEvent.TapResolved })
+    }
+
+    @Test fun rejectedTapIsAtomicAndDoesNotConsumeTapOrChangeDigest() {
+        val state = accepted(engine.transition(
+            CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(8))),
+            CombatCommand.CompleteDraw
+        )).state
+        val before = CombatStateDigest.sha256(state)
+        val result = engine.transition(state, CombatCommand.Tap(Coord(0, 0)))
+        assertEquals(CombatRejection.ILLEGAL_BOARD_TAP, assertIs<CombatResult.Rejected>(result).reason)
+        assertEquals(before, CombatStateDigest.sha256(state))
+        assertEquals(3, state.tapsRemaining)
+    }
+
+    @Test fun fourthTapIsRejectedAndDoesNotChangeState() {
+        val board = boardWith(
+            Coord(0, 5) to Cell.hue(Hue.EMBER), Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 5) to Cell.hue(Hue.GOLD), Coord(2, 6) to Cell.hue(Hue.GOLD),
+            Coord(4, 5) to Cell.hue(Hue.MOSS), Coord(4, 6) to Cell.hue(Hue.MOSS),
+            Coord(6, 5) to Cell.hue(Hue.TIDE), Coord(6, 6) to Cell.hue(Hue.TIDE)
+        )
+        var state = accepted(engine.transition(CombatState.start(board, enemy(EnemyIntent.Strike(1))), CombatCommand.CompleteDraw)).state
+        listOf(Coord(0, 5), Coord(2, 5), Coord(4, 5)).forEach { target ->
+            state = accepted(engine.transition(state, CombatCommand.Tap(target))).state
+        }
+        val before = CombatStateDigest.sha256(state)
+        val rejected = engine.transition(state, CombatCommand.Tap(Coord(6, 5)))
+        assertEquals(CombatRejection.NO_TAPS, assertIs<CombatResult.Rejected>(rejected).reason)
+        assertEquals(before, CombatStateDigest.sha256(state))
+    }
+
+    @Test fun phasesAreStrictAndCastEffectsCannotRunDuringWeave() {
+        val state = accepted(engine.transition(CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(1))), CombatCommand.CompleteDraw)).state
+        assertEquals(CombatRejection.WRONG_PHASE,
+            assertIs<CombatResult.Rejected>(engine.transition(state, CombatCommand.CardBlock(5))).reason)
+        assertEquals(CombatPhase.CAST, accepted(engine.transition(state, CombatCommand.EndWeave)).state.phase)
+    }
+
+    @Test fun strikeUsesPlayerBlockAndPlayerBlockResetsAtNextTurn() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(10), EnemyIntent.Strike(10)))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        state = accepted(engine.transition(state, CombatCommand.CardBlock(14))).state
+        state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(70, state.player.vigil)
+        assertEquals(4, state.player.block)
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        assertEquals(0, state.player.block)
+        assertEquals(1, state.turn)
+        assertEquals(CombatPhase.DRAW, state.phase)
+    }
+
+    @Test fun enemyBlockIsAbsorbedByChipAndCardDamage() {
+        val board = boardWith(Coord(0, 6) to Cell.hue(Hue.EMBER), Coord(1, 6) to Cell.hue(Hue.EMBER))
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(enemy = EnemyState(40, 2))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(40, state.enemy.vigor)
+        assertEquals(1, state.enemy.block)
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        state = accepted(engine.transition(state, CombatCommand.CardDamage(2))).state
+        assertEquals(39, state.enemy.vigor)
+        assertEquals(0, state.enemy.block)
+    }
+
+    @Test fun flaskHealsThirtyConsumesOneAndRejectsAtFullVigil() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(1)))
+        state = state.copy(player = state.player.copy(vigil = 40))
+        state = accepted(engine.transition(state, CombatCommand.UseFlask)).state
+        assertEquals(1, state.player.flasks)
+        assertEquals(70, state.player.vigil)
+        assertEquals(CombatRejection.FULL_VIGIL,
+            assertIs<CombatResult.Rejected>(engine.transition(state, CombatCommand.UseFlask)).reason)
+    }
+
+    @Test fun brandCostsTwoVigilPerBrandedBlockPopped() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER, branded = true),
+            Coord(1, 6) to Cell.hue(Hue.EMBER, branded = true)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(66, state.player.vigil)
+    }
+
+    @Test fun overflowDealsEightUnmitigatedVigilAndConsumesOneFlask() {
+        val board = boardWith(Coord(0, 0) to Cell.ash())
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = beginCast(state)
+        state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
+        assertEquals(62, state.player.vigil)
+        assertEquals(1, state.player.flasks)
+        assertEquals(CombatPhase.ENEMY, state.phase)
+    }
+
+    @Test fun ashRowAndStoneSeedChangeBoardDeterministically() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.AshRow, EnemyIntent.StoneSeed(2)))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertTrue(state.board.incoming.all { it?.kind == TileKind.ASH })
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(3, (0..6).count { y -> state.board[Coord(2, y)]?.kind == TileKind.STONE })
+    }
+
+    @Test fun stainSkipsSealedColumnsAndSealLastsThreeEnemyPhases() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.TIDE),
+            Coord(1, 6) to Cell.hue(Hue.TIDE)
+        ).sealColumn(1, 3).copy(incoming = listOf(
+            Cell.hue(Hue.TIDE), Cell.hue(Hue.TIDE), null, null, null, null, null
+        ))
+        var state = CombatState.start(board, enemy(EnemyIntent.Stain(Hue.TIDE), EnemyIntent.Seal(2)))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertTrue((0..6).any { y -> state.board[Coord(0, y)]?.kind == TileKind.ASH })
+        assertEquals(Hue.TIDE, state.board[Coord(1, 6)]?.hue)
+        assertEquals(null, state.board.incoming[0])
+        assertEquals(Hue.TIDE, state.board.incoming[1]?.hue)
+        assertEquals(2, state.board.sealTurnsRemaining[1])
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(3, state.board.sealTurnsRemaining[2])
+        assertEquals(1, state.board.sealTurnsRemaining[1])
+    }
+
+    @Test fun fogIsThreeSuccessfulTapsAndSurgeRequestsTwoWallRises() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Fog, EnemyIntent.Surge))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(3, state.fogTapsRemaining)
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        assertEquals(CombatRejection.INVALID_WALL_ROWS,
+            assertIs<CombatResult.Rejected>(engine.transition(state.copy(phase = CombatPhase.WALL), CombatCommand.ResolveWall(listOf(List(7) { null }, List(7) { null })))).reason)
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(2, state.wallRisesNextTurn)
+    }
+
+    @Test fun surgeConsumesExactlyTwoReplacementRowsOnNextWall() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Surge))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+        val rows = listOf(List(7) { Cell.ash() }, List(7) { Cell.stone() })
+        val wall = accepted(engine.transition(state, CombatCommand.ResolveWall(rows)))
+        assertEquals(CombatPhase.ENEMY, wall.state.phase)
+        assertEquals(1, wall.state.wallRisesNextTurn)
+        assertTrue(wall.events.any { it == CombatEvent.WallResolved(false, 2) })
+    }
+
+    @Test fun delayedIntentIsNotConsumedAndForecastRemainsStable() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(9), EnemyIntent.AshRow))
+        state = beginCast(state)
+        state = accepted(engine.transition(state, CombatCommand.DelayNextIntent)).state
+        state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+        state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
+        val before = state.nextIntents
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(0, state.intentCursor)
+        assertEquals(before, state.nextIntents)
+        assertEquals(0, state.delayedIntents)
+        assertTrue(state.nextIntents == before)
+    }
+
+    @Test fun snatchAndCurseAreExplicitCardEngineIntegrationEvents() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Snatch, EnemyIntent.Curse))
+        state = beginEnemy(state)
+        val snatch = accepted(engine.transition(state, CombatCommand.ResolveEnemy))
+        assertTrue(snatch.events.contains(CombatEvent.CardExhaustRequested))
+        state = accepted(engine.transition(snatch.state, CombatCommand.FinishCleanup)).state
+        state = beginEnemy(state)
+        val curse = accepted(engine.transition(state, CombatCommand.ResolveEnemy))
+        assertTrue(curse.events.contains(CombatEvent.CurseDiscardRequested))
+    }
+
+    @Test fun replayedCommandSequenceProducesIdenticalFinalDigest() {
+        val definition = enemy(EnemyIntent.Strike(7), EnemyIntent.AshRow)
+        val initial = CombatState.start(BoardState.empty(), definition)
+        fun run(): CombatState {
+            var state = accepted(engine.transition(initial, CombatCommand.CompleteDraw)).state
+            state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+            state = accepted(engine.transition(state, CombatCommand.EndCast)).state
+            state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
+            return accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        }
+        assertEquals(CombatStateDigest.sha256(run()), CombatStateDigest.sha256(run()))
+        assertNotEquals(CombatStateDigest.sha256(initial), CombatStateDigest.sha256(run()))
+    }
+    @Test fun inkOverflowConvertsToSparkAtPerHueCap() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(1, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 6) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(player = state.player.copy(ink = state.player.immutableInk + (Hue.EMBER to 7)))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(8, state.player.immutableInk.getValue(Hue.EMBER))
+        assertEquals(2, state.player.spark)
+    }
+
+    @Test fun enemyBlockExpiresAtStartOfEnemyPhase() {
+        var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(1)))
+        state = state.copy(enemy = EnemyState(40, 9))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(0, state.enemy.block)
+    }
+
+    @Test fun fogExpiresAfterThreeSuccessfulTapsNotRejectedAttempts() {
+        val board = boardWith(
+            Coord(0, 5) to Cell.hue(Hue.EMBER), Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(2, 5) to Cell.hue(Hue.GOLD), Coord(2, 6) to Cell.hue(Hue.GOLD),
+            Coord(4, 5) to Cell.hue(Hue.MOSS), Coord(4, 6) to Cell.hue(Hue.MOSS)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Fog))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        assertEquals(CombatRejection.ILLEGAL_BOARD_TAP,
+            assertIs<CombatResult.Rejected>(engine.transition(state, CombatCommand.Tap(Coord(6, 6)))).reason)
+        assertEquals(3, state.fogTapsRemaining)
+        listOf(Coord(0, 5), Coord(2, 5), Coord(4, 5)).forEach { target ->
+            state = accepted(engine.transition(state, CombatCommand.Tap(target))).state
+        }
+        assertEquals(0, state.fogTapsRemaining)
+    }
+
+    @Test fun lethalPopAndLethalStrikeEnterTerminalStates() {
+        val board = boardWith(Coord(0, 6) to Cell.hue(Hue.EMBER), Coord(1, 6) to Cell.hue(Hue.EMBER))
+        var victory = CombatState.start(board, EnemyDefinition("one-hit", 1, listOf(EnemyIntent.Strike(1))))
+        victory = accepted(engine.transition(victory, CombatCommand.CompleteDraw)).state
+        victory = accepted(engine.transition(victory, CombatCommand.Tap(Coord(0, 6)))).state
+        assertEquals(CombatPhase.VICTORY, victory.phase)
+
+        var defeat = CombatState.start(BoardState.empty(), EnemyDefinition("heavy-striker", 10, listOf(EnemyIntent.Strike(80))))
+        defeat = beginEnemy(defeat)
+        defeat = accepted(engine.transition(defeat, CombatCommand.ResolveEnemy)).state
+        assertEquals(CombatPhase.DEFEAT, defeat.phase)
+        assertEquals(0, defeat.player.vigil)
+    }
+
+    @Test fun combatInputsAndIntentSnapshotsAreDefensivelyCopied() {
+        val ink = mutableMapOf(Hue.EMBER to 4)
+        val player = PlayerState(ink = ink)
+        ink[Hue.EMBER] = 0
+        assertEquals(4, player.immutableInk.getValue(Hue.EMBER))
+        assertFailsWith<UnsupportedOperationException> {
+            (player.ink as MutableMap<Hue, Int>)[Hue.EMBER] = 0
+        }
+
+        val sequence = mutableListOf<EnemyIntent>(EnemyIntent.Strike(5), EnemyIntent.AshRow)
+        val definition = EnemyDefinition("immutable", 20, sequence)
+        sequence.clear()
+        assertEquals(EnemyIntent.Strike(5), definition.intentAt(0))
+
+        val targets = mutableListOf(Coord(1, 2))
+        val brand = EnemyIntent.Brand(targets)
+        targets.clear()
+        assertEquals(listOf(Coord(1, 2)), brand.targets)
+
+        val state = CombatState.start(BoardState.empty(), definition)
+        assertEquals(listOf(EnemyIntent.Strike(5), EnemyIntent.AshRow), state.nextIntents)
+        assertFailsWith<UnsupportedOperationException> {
+            (state.forecast as MutableList<EnemyIntent>).clear()
+        }
+
+        val row = MutableList<Cell?>(7) { null }
+        row[0] = Cell.ash()
+        val rows = mutableListOf<List<Cell?>>(row)
+        val command = CombatCommand.ResolveWall(rows)
+        rows.clear()
+        row[0] = Cell.hue(Hue.EMBER)
+        assertEquals(Cell.ash(), command.rows[0][0])
+    }
+
+    @Test fun simultaneousLethalPopAndBrandPenaltyResolveAsPlayerDefeat() {
+        val cells = List(49) { Cell.hue(Hue.EMBER, branded = true) }
+        val board = BoardState(cells, List(7) { null })
+        var state = CombatState.start(board, EnemyDefinition("simultaneous", 1, listOf(EnemyIntent.Strike(1))))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 0)))).state
+        assertEquals(0, state.enemy.vigor)
+        assertEquals(0, state.player.vigil)
+        assertEquals(CombatPhase.DEFEAT, state.phase)
+    }
+
+    @Test fun combatDigestBindsEnemyDefinitionHealthAndNotOnlyCurrentHealth() {
+        val first = CombatState.start(BoardState.empty(), EnemyDefinition("same-id", 40, listOf(EnemyIntent.Strike(3))))
+        val second = CombatState.start(BoardState.empty(), EnemyDefinition("same-id", 41, listOf(EnemyIntent.Strike(3))))
+        val aligned = second.copy(enemy = EnemyState(40))
+        assertEquals(first.enemy.vigor, aligned.enemy.vigor)
+        assertNotEquals(CombatStateDigest.sha256(first), CombatStateDigest.sha256(aligned))
+    }
+
+    @Test fun ashRowDoesNotOverwriteSealedIncomingColumn() {
+        val board = BoardState.empty().sealColumn(3, 3).copy(
+            incoming = listOf(null, null, null, Cell.hue(Hue.VIOLET), null, null, null)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.AshRow))
+        state = beginEnemy(state)
+        state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
+        assertEquals(Hue.VIOLET, state.board.incoming[3]?.hue)
+        assertEquals(TileKind.ASH, state.board.incoming[0]?.kind)
+        assertEquals(TileKind.ASH, state.board.incoming[6]?.kind)
+    }
+
+    @Test fun lethalOverflowStopsRemainingSurgeRise() {
+        val board = boardWith(
+            Coord(0, 0) to Cell.ash(),
+            Coord(0, 2) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Surge))
+        state = state.copy(
+            phase = CombatPhase.WALL,
+            player = PlayerState(vigil = 8, flasks = 0),
+            wallRisesNextTurn = 2
+        )
+        val result = accepted(engine.transition(
+            state,
+            CombatCommand.ResolveWall(listOf(List(7) { null }, List(7) { Cell.ash() }))
+        ))
+        assertEquals(CombatPhase.DEFEAT, result.state.phase)
+        assertEquals(0, result.state.player.vigil)
+        assertEquals(Cell.hue(Hue.EMBER), result.state.board[Coord(0, 2)])
+        assertTrue(result.events.contains(CombatEvent.WallResolved(true, 1)))
+    }
+
+    @Test fun BrandReportsActualVigilLostWhenCostExceedsRemainingVigil() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER, branded = true),
+            Coord(1, 6) to Cell.hue(Hue.EMBER, branded = true)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(player = PlayerState(vigil = 1, flasks = 0))
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        val result = accepted(engine.transition(state, CombatCommand.Tap(Coord(0, 6))))
+        assertEquals(0, result.state.player.vigil)
+        assertTrue(result.events.contains(CombatEvent.VigilLost(1, "Brand")))
+        assertEquals(CombatPhase.DEFEAT, result.state.phase)
+    }
+
+    @Test fun commandReplayProducesIdenticalCheckpointSequenceIncludingRejections() {
+        val initial = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(6), EnemyIntent.AshRow))
+        val commands = listOf(
+            CombatCommand.CompleteDraw,
+            CombatCommand.EndWeave,
+            CombatCommand.EndCast,
+            CombatCommand.ResolveWall(listOf(List(7) { null })),
+            CombatCommand.ResolveEnemy,
+            CombatCommand.FinishCleanup,
+            CombatCommand.CardDamage(2)
+        )
+        val replay = CombatReplay()
+        val first = replay.replay(initial, commands)
+        val second = replay.replay(initial, commands)
+        assertEquals(first.map { it.digest }, second.map { it.digest })
+        assertEquals(CombatRejection.WRONG_PHASE, first.last().rejection)
+        assertEquals(first[first.lastIndex - 1].digest, first.last().digest)
+        assertEquals(COMBAT_RULES_VERSION, "emberfall-v0.2-combat-1")
+    }
+
+    @Test fun cardPopResolvesDuringCastWithoutSpendingTapOrFogDuration() {
+        val board = boardWith(
+            Coord(0, 6) to Cell.hue(Hue.EMBER),
+            Coord(1, 6) to Cell.hue(Hue.EMBER)
+        )
+        var state = CombatState.start(board, enemy(EnemyIntent.Strike(1)))
+        state = state.copy(fogTapsRemaining = 3)
+        state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
+        state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
+        val result = accepted(engine.transition(state, CombatCommand.CardPop(Coord(0, 6))))
+        assertEquals(3, result.state.tapsRemaining)
+        assertEquals(3, result.state.fogTapsRemaining)
+        assertEquals(2, result.state.player.immutableInk.getValue(Hue.EMBER))
+        assertEquals(39, result.state.enemy.vigor)
+        assertTrue(result.events.any { it is CombatEvent.GroupPopped })
+        assertTrue(result.events.none { it is CombatEvent.TapResolved })
+    }
+    @Test fun combatDigestBindsRunSeedForDeterministicReplayIdentity() {
+        val definition = enemy(EnemyIntent.Strike(3))
+        val first = CombatState.start(BoardState.empty(), definition, runSeed = 101L)
+        val second = CombatState.start(BoardState.empty(), definition, runSeed = 102L)
+        assertNotEquals(CombatStateDigest.sha256(first), CombatStateDigest.sha256(second))
+    }
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "task_id": "EFB-003-TURN-COMBAT",
+  "review_type": "INDEPENDENT_MASTERY",
+  "status": "READY_FOR_INDEPENDENT_REVIEW",
+  "candidate": {
+    "repository": "grep999/Apo",
+    "pull_request": 15,
+    "branch": "feat/efb003-turn-combat-clean",
+    "base_ref": "feat/efb002-remediation-rebased",
+    "base_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+    "candidate_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
+  },
+  "authoritative_baseline": [
+    "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+    "docs/adr/ADR-001-turn-phases.md",
+    "docs/adr/ADR-008-wall-and-overflow.md",
+    "docs/adr/ADR-012-seal-column.md",
+    "docs/adr/ADR-013-enemy-vigor-and-block.md",
+    "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md",
+    "maestro/packets_v03/EFB-003-TURN-COMBAT.grounding.json"
+  ],
+  "changed_paths": [
+    ".github/workflows/efb003-turn-combat.yml",
+    "README.md",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
+    "engineering/EFB-003_IMPLEMENTATION_STATUS.md",
+    "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md",
+    "maestro/packets_v03/EFB-003-TURN-COMBAT.grounding.json",
+    "maestro/packets_v03/EFB-003-TURN-COMBAT.momentum.json",
+    "src/main/kotlin/com/emberfall/combat/CombatCore.kt",
+    "src/test/kotlin/com/emberfall/combat/CombatCoreTest.kt"
+  ],
+  "verification": {
+    "workflow_run_id": 45274051704,
+    "workflow_url": "https://github.com/grep999/Apo/actions/runs/45274051704",
+    "exact_sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
+    "pure_jvm_boundary": "PASS",
+    "gradle_clean_test": "PASS",
+    "command": "gradle --no-daemon clean test"
+  },
+  "acceptance_criteria": [
+    "Explicit legal phase transitions and terminal-state handling.",
+    "Invalid commands are atomic and do not mutate the input snapshot.",
+    "Three base manual Taps; Card Pop during Cast does not consume a Tap.",
+    "Player Vigil/Block/Flasks/Ink/Spark and enemy Vigor/Block obey ADRs.",
+    "Enemy Block expires at the start of the enemy phase; Player Block expires at the start of the next player turn.",
+    "Two-intent forecast is deterministic and the resolved intent is exactly the forecast head.",
+    "Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse behavior is correct.",
+    "Seal duration and all enemy board effects respect sealed columns, including pending incoming rows.",
+    "Wall/Overflow behavior delegates to EFB-002 BoardEngine and lethal overflow stops remaining scheduled rises.",
+    "Run seed and combat rules version are bound into stable replay checkpoint digests.",
+    "Command replay yields identical per-step checkpoint digests and records rejected commands without changing state.",
+    "No Android/Compose dependencies or legacy prototype code/assets are imported."
+  ],
+  "review_focus": [
+    "Adversarially inspect all phase and command transitions, especially terminal transitions and simultaneous lethal Tap resolution.",
+    "Check ordering of chip damage, enemy Block, Brand Vigil cost and enemy defeat.",
+    "Verify Seal timing (4 internal ticks to provide 3 complete future turns), sealed incoming-row preservation and interactions with Ash Row/Stain/Stone Seed/Brand.",
+    "Check Surge with one or two overflows, Flask consumption and stop-on-lethal behavior.",
+    "Inspect the EFB-002 BoardEngine adapter for sealed incoming columns.",
+    "Review CardPop semantics against the game spec and ensure it does not spend a Tap or decrement Fog.",
+    "Check intent forecast/cursor parity, seed/rules version digest completeness and replay determinism.",
+    "Review immutable snapshots and all integer bounds/overflow behavior.",
+    "Confirm Snatch/Curse are intentionally emitted as EFB-004 integration events, not falsely claimed as full hand/discard mutation.",
+    "Verify tests have independent expected values and meaningful edge coverage; do not rely only on builder's report."
+  ],
+  "known_boundaries": [
+    "Card definitions, deck draw/discard and effect DSL belong to EFB-004; Snatch/Curse are integration events only.",
+    "Enemy catalogue/scaling and content-specific intent sequences belong to later content increments.",
+    "Android presentation/device testing is outside this pure JVM increment.",
+    "The Product Owner explicitly excludes legacy prototype source/assets; no legacy material is reused."
+  ],
+  "reviewer_requirements": {
+    "reviewer_identity": "REQUIRED_REAL_REVIEWER_IDENTITY",
+    "builder_identity": "grep999",
+    "must_be_distinct": true,
+    "outcome_enum": [
+      "PASS",
+      "CONDITIONAL",
+      "FAIL",
+      "BLOCKED"
+    ],
+    "report_path": "maestro/reviews_v03/EFB-003-TURN-COMBAT.mastery.json",
+    "do_not_merge": true
+  }
+}
