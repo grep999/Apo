@@ -137,12 +137,21 @@
       "required_checks": [
         {
           "name": "pure-jvm-boundary",
-          "status": "PASSED_ON_EARLIER_CANDIDATE",
-          "run_id": 45272406052
+          "status": "PASS_ON_PRIOR_CANDIDATE",
+          "run_id": 45273205685,
+          "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
         },
         {
-          "name": "gradle-junit-exact-candidate",
-          "status": "PENDING_FINAL_CANDIDATE"
+          "name": "gradle-junit",
+          "status": "PASS_ON_PRIOR_CANDIDATE",
+          "run_id": 45273205685,
+          "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
+        },
+        {
+          "name": "final-candidate-gradle-junit-and-pure-jvm",
+          "status": "QUEUED",
+          "run_id": 45273418357,
+          "ran_on_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15"
         },
         {
           "name": "independent-mastery",
@@ -163,7 +172,13 @@
           "detail": "Test class closed before later regression tests; corrected by moving all tests inside CombatCoreTest."
         }
       ],
-      "next": "Complete exact-head Gradle/JUnit and pure-JVM CI, then independent Mastery and Repetition. Do not merge or mark accepted until complete."
+      "next": "Complete exact-head Gradle/JUnit and pure-JVM CI, then independent Mastery and Repetition. Do not merge or mark accepted until complete.",
+      "verified_prior_candidate": {
+        "sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
+        "run_id": 45273205685,
+        "conclusion": "success",
+        "tests": "Gradle clean test passed; pure-JVM boundary passed. This is not the final candidate SHA."
+      }
     }
   },
   "epics": [
