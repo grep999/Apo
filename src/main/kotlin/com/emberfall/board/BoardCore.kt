@@ -233,25 +233,25 @@ data class GeneratedBoard(val board: BoardState, val telemetry: GenerationTeleme
 class BoardGenerator {
     fun generate(seed: Long, deck: DeckHueProfile): GeneratedBoard {
         val rng = DeterministicRng(seed)
+        val weights = deck.weights()
         var last: BoardState? = null
         repeat(32) { attempt ->
-            last = sample(rng, deck)
+            last = sample(rng, weights)
             if (hasPair(last!!)) return GeneratedBoard(last!!, GenerationTelemetry(attempt + 1, false, 0))
         }
         val b = last!!
-        val hue = sampleHue(rng, deck)
+        val hue = sampleHue(rng, weights)
         val y = 2 + rng.nextInt(5)
         val x = rng.nextInt(6)
         return GeneratedBoard(b.withCell(Coord(x, y), Cell.hue(hue)).withCell(Coord(x + 1, y), Cell.hue(hue)),
             GenerationTelemetry(32, true, 1))
     }
-    private fun sample(rng: DeterministicRng, deck: DeckHueProfile): BoardState {
+    private fun sample(rng: DeterministicRng, weights: Map<Hue, Long>): BoardState {
         val cells = MutableList<Cell?>(49) { null }
-        for (y in 2..6) for (x in 0..6) cells[y * 7 + x] = Cell.hue(sampleHue(rng, deck))
-        return BoardState(cells, List(7) { Cell.hue(sampleHue(rng, deck)) })
+        for (y in 2..6) for (x in 0..6) cells[y * 7 + x] = Cell.hue(sampleHue(rng, weights))
+        return BoardState(cells, List(7) { Cell.hue(sampleHue(rng, weights)) })
     }
-    private fun sampleHue(rng: DeterministicRng, deck: DeckHueProfile): Hue {
-        val weights = deck.weights()
+    private fun sampleHue(rng: DeterministicRng, weights: Map<Hue, Long>): Hue {
         val roll = rng.nextInt(1_000_000)
         var sum = 0L
         for (h in Hue.entries) { sum += weights.getValue(h); if (roll < sum) return h }
