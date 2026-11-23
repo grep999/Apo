@@ -4,7 +4,7 @@
   "release_status": "NOT_RELEASE_READY",
   "source_spec": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
   "maestro_version": "0.3.0",
-  "evidence_policy": "Only exact-candidate VERIFIED evidence and independent Mastery can satisfy acceptance. Merged is not equivalent to accepted.",
+  "evidence_policy": "Exact-candidate VERIFIED evidence is required. Independent Mastery is the default review gate; any Product Owner waiver must be explicit, recorded with rationale, and must never be represented as an independent review.",
   "baseline": {
     "efb000": {
       "status": "MERGED_BASELINE_REVIEW_PENDING_LICENSE_PROVENANCE",
@@ -50,8 +50,8 @@
       "draft": true,
       "mergeable": true,
       "workflow_id": "18096733-d9eb-4ce6-bac5-c3c77a947e60",
-      "workflow_stage": "REPETITION_COMPLETE",
-      "workflow_status": "ACCEPTED_BY_PRODUCT_OWNER",
+      "workflow_stage": "MASTERY",
+      "workflow_status": "ACTIVE_RUN_SCOPED_NOT_DURABLY_RECONCILED",
       "revision": 5,
       "completed_momentum_items": 3,
       "pending_mastery_items": 1,
@@ -115,7 +115,9 @@
         ],
         "note": "This is explicit Product Owner acceptance, not an independent Mastery review submission."
       },
-      "repetition_record": "maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json"
+      "repetition_record": "maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json",
+      "repetition_status": "RECORDED_AS_PRODUCT_OWNER_GOVERNANCE_PACKET_NOT_NATIVE_MAESTRO_DB_EVENT",
+      "native_workflow_reconciliation": "PENDING; historical workflow artifacts are run-scoped and do not prove durable cross-run resume."
     }
   },
   "epics": [
@@ -134,7 +136,7 @@
     {
       "id": "EFB-002-BOARD-CORE",
       "status": "ACCEPTED",
-      "maestro_state": "ACCEPTED_BY_PRODUCT_OWNER",
+      "maestro_state": "PRODUCT_OWNER_ACCEPTED_REPETITION_RECORDED_NATIVE_WORKFLOW_RECONCILIATION_PENDING",
       "next": "Exact candidate 6b6e1398 accepted by Product Owner; further independent Mastery round waived; Repetition recorded. EFB-000 provenance/review and Maestro continuity remain separate gates."
     },
     {
