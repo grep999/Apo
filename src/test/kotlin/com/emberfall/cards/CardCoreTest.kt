@@ -100,7 +100,7 @@ class CardCoreTest {
         val result = accepted(engine.transition(ready, CardBattleCommand.Play(ready.hand.single().instanceId)))
         assertEquals(beforeTaps, result.state.combat.tapsRemaining)
         assertNull(result.state.combat.board[Coord(0, 6)])
-        assertEquals(97, result.state.combat.enemy.vigor) // 2 chip + 3 card damage
+        assertEquals(95, result.state.combat.enemy.vigor) // 2 chip + 3 card damage
     }
 
     @Test fun echoRepeatsOnlyPreviousTopLevelCardOnceAndExhaustsEchoChime() {
@@ -153,7 +153,6 @@ class CardCoreTest {
             .withCell(Coord(2, 3), Cell.hue(Hue.EMBER))
             .withCell(Coord(3, 3), Cell.hue(Hue.EMBER))
             .sealColumn(3, 3)
-        val ready = cast(battle("quarry_chisel", board = board).copy(hand = emptyList()))
         val definition = CardDefinition("recolor", "Recolor", Hue.VIOLET, CardType.SKILL, CardRarity.COMMON,
             CardCost(), listOf(CardEffect.Recolor3x3(Hue.TIDE)))
         val local = CardEngine(mapOf(definition.id to definition))
