@@ -950,7 +950,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     // When resolving spoils inside the inline CombatArena overlay, stay on the overlay so the
     // player can allocate Upāya passives, Dhāraṇā supports, Tantric artifacts, and single-tap next room!
     if (updated.combat?.phase == TurnPhase.COMBAT_WON) {
-      commitRunUpdate(updated)
+      commitRunUpdate(updated, flushAfterWrite = true)
       return
     }
     val reward = updated.pendingReward
@@ -958,12 +958,12 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     if (allResolved) {
       val finished = GameEngine.execute(updated, GameCommand.FinishRewards)
       if (finished.accepted) {
-        commitRunUpdate(finished.run)
+        commitRunUpdate(finished.run, flushAfterWrite = true)
         _destination.value = AppDestination.ActMap
         return
       }
     }
-    commitRunUpdate(updated)
+    commitRunUpdate(updated, flushAfterWrite = true)
   }
 
   fun unlockPassiveNode(nodeId: String) {
@@ -983,7 +983,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.SocketSupport(supportId, replaceSlot))
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.PRISM, volume = 0.90f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     } else {
       audioEngine.playSfx(MinimalSfx.REJECT, volume = 0.65f)
       _boardFeedback.value = result.rejectionReason?.message
@@ -995,7 +995,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.SkipSupportChoice)
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.UI_CLICK, volume = 0.68f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     }
   }
 
@@ -1004,7 +1004,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.BindArtifact(artifactId))
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.PRISM, volume = 0.90f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     } else {
       audioEngine.playSfx(MinimalSfx.REJECT, volume = 0.65f)
       _boardFeedback.value = result.rejectionReason?.message
@@ -1016,7 +1016,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.SkipArtifactChoice)
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.UI_CLICK, volume = 0.68f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
     }
   }
 
@@ -1066,7 +1066,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
       _selectedGroup.value = null
       _selectedSwapCoord.value = null
       _boardFeedback.value = null
-      commitRunUpdate(finished.run)
+      commitRunUpdate(finished.run, flushAfterWrite = true)
       _destination.value = AppDestination.ActMap
     } else {
       audioEngine.playSfx(MinimalSfx.REJECT, volume = 0.65f)
@@ -1079,7 +1079,7 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     val result = GameEngine.execute(current, GameCommand.FinishRewards)
     if (result.accepted) {
       audioEngine.playSfx(MinimalSfx.SELECT, volume = 0.78f)
-      commitRunUpdate(result.run)
+      commitRunUpdate(result.run, flushAfterWrite = true)
       _destination.value = AppDestination.ActMap
     }
   }
@@ -1386,12 +1386,24 @@ class EmberfallViewModel(application: Application) : AndroidViewModel(applicatio
     }
   }
 
-  private fun commitRunUpdate(updated: RunState) {
+  private fun commitRunUpdate(updated: RunState, flushAfterWrite: Boolean = false) {
     _runState.value = updated
     if (updated.runWon || updated.gameOverReason != null) {
       enqueuePersistence(PersistRequest.RecordFinished(updated))
     } else {
       enqueuePersistence(PersistRequest.SaveActive(updated))
+    }
+    if (flushAfterWrite) {
+      // Reward choices can transition directly into the next encounter. Queue a FIFO barrier after
+      // each accepted choice so the snapshot is committed before a rapid lifecycle interruption.
+      persistenceScope.launch {
+        try {
+          flushPendingPersistence()
+        } catch (e: Exception) {
+          persistenceFailure = e
+          Log.e("EmberfallViewModel", "Reward snapshot flush failed.", e)
+        }
+      }
     }
   }
 
