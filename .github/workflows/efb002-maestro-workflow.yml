@@ -107,21 +107,10 @@ jobs:
           "$CLI" --db "$DB" deliver "$WID" \
             "$GITHUB_WORKSPACE/maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json" \
             --revision "$REV" --actor builder > .maestro/efb-002-delivered.json
-          "$CLI" --db "$DB" show "$WID" > .maestro/efb-002-final-state.json
           "$CLI" --db "$DB" work-items "$WID" > .maestro/efb-002-work-items.json
-          "$CLI" --db "$DB" events "$WID" > .maestro/efb-002-events.json
+          "$MAESTRO_DIR/.venv/bin/python" scripts/finalize_efb002_maestro.py
           cp maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json artifacts/
           cp maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json artifacts/
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          state = json.loads(Path(".maestro/efb-002-final-state.json").read_text())
-          assert state.get("stage") == "MOMENTUM", state
-          assert state.get("status") == "ACTIVE", state
-          print(json.dumps({"workflow_id": state.get("id"), "stage": state.get("stage"),
-                            "status": state.get("status"), "revision": state.get("revision"),
-                            "candidate_ref": state.get("candidate_ref")}, indent=2))
-          PY
 
       - name: Upload Maestro state and exact-SHA evidence
         if: always()
