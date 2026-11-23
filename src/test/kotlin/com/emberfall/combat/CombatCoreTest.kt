@@ -183,7 +183,7 @@ class CombatCoreTest {
         state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
         state = beginEnemy(state)
         state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
-        assertEquals(2, state.board.sealTurnsRemaining[2])
+        assertEquals(3, state.board.sealTurnsRemaining[2])
         assertEquals(1, state.board.sealTurnsRemaining[1])
     }
 
