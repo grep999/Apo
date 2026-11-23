@@ -82,7 +82,7 @@ fun CombatArenaScreen(
   onToggleAudioMute: () -> Unit = {},
   onInvalidSwapDrag: () -> Unit = {},
   onUnlockPassive: (String) -> Unit = {},
-  onSocketSupport: (String) -> Unit = {},
+  onSocketSupport: (String, Int) -> Unit = {},
   onSkipSupport: () -> Unit = {},
   onBindArtifact: (String) -> Unit = {},
   onSkipArtifact: () -> Unit = {},
