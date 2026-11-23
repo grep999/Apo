@@ -35,17 +35,34 @@ class EmberfallEngineTest {
 
   @Test
   fun `balance laboratory exposes all fifteen matched-seed route and combat policy cells`() {
-    val matrix = SimulationRunner.runPolicyMatrix(seedsPerClass = 1, dreadLevel = 0)
+    val seedsPerClass = System.getenv("EMBERFALL_POLICY_MATRIX_SEEDS")?.toIntOrNull()?.coerceIn(1, 1000) ?: 1
+    val matrix = SimulationRunner.runPolicyMatrix(seedsPerClass = seedsPerClass, dreadLevel = 0)
     assertEquals(5 * 3, matrix.cells.size)
-    assertEquals(1, matrix.seedsPerClass)
+    assertEquals(seedsPerClass, matrix.seedsPerClass)
     assertEquals(0, matrix.dreadLevel)
     assertEquals(15, matrix.cells.map { it.routeRewardPolicy to it.combatPolicy }.distinct().size)
     matrix.cells.forEach { cell ->
-      assertEquals(3, cell.report.runsAttempted)
+      assertEquals(seedsPerClass * HeroClass.entries.size, cell.report.runsAttempted)
       assertEquals(cell.report.runsAttempted, cell.report.runsCompleted + cell.report.incompleteRuns)
       assertEquals(HeroClass.entries.toSet(), cell.progressionByClass.keys)
       assertTrue(cell.progressionByClass.values.all { it.avgLevel >= 1.0 })
     }
+    val csv = buildString {
+      appendLine("route_policy,combat_policy,hero_class,runs,wins,incomplete,avg_level,avg_xp_remainder,avg_unspent_points,avg_passives,avg_supports,avg_artifacts,avg_cinders,avg_deck_size,avg_hp,avg_flasks")
+      matrix.cells.forEach { cell ->
+        cell.progressionByClass.forEach { (hero, metrics) ->
+          val stats = cell.report.perClassBreakdown.getValue(hero)
+          appendLine(listOf(
+            cell.routeRewardPolicy.name, cell.combatPolicy.name, hero.name, stats.runsAttempted, stats.wins, stats.incompleteRuns,
+            metrics.avgLevel, metrics.avgXpRemainder, metrics.avgUnspentPassivePoints, metrics.avgUnlockedPassives,
+            metrics.avgSupportSocketsFilled, metrics.avgArtifactsOwned, metrics.avgCinders, metrics.avgDeckSize, metrics.avgHp, metrics.avgFlasks,
+          ).joinToString(","))
+        }
+      }
+    }
+    val reportFile = java.io.File("build/reports/emberfall-policy-matrix.csv")
+    reportFile.parentFile?.mkdirs()
+    reportFile.writeText(csv)
   }
   @Test
   fun `canonical classes hues signature relics and Unlit 12-card Gold starter match baseline`() {
