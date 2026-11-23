@@ -64,6 +64,7 @@ jobs:
         env:
           MAESTRO_DIR: ${{ github.workspace }}/../maestro
           GITHUB_RUN_ID: ${{ github.run_id }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: '"$MAESTRO_DIR/.venv/bin/python" scripts/record_efb002_maestro_gates.py'
 
       - name: Create native EFB-002 Maestro workflow and record Grounding/Momentum
