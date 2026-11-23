@@ -54,7 +54,7 @@ assert epics["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
 assert "EFB-002-BOARD-CORE" in epics
 unlit = (adr_dir / "ADR-014-unlit-starter-deck.md").read_text(encoding="utf-8").lower()
 assert "unlit_hollow_crown" in unlit and "relic_hollow_crown" in unlit
-assert "ash alchemy" not in unlit
+assert "exactly 12 cards" in unlit and "hollow crown" in unlit
 result = {
     "status": "PRODUCT_OWNER_RESOLVED_IMPLEMENTATION_GATED",
     "resolved_blocking_adrs": len(blocking_ids),
