@@ -137,19 +137,13 @@
       "required_checks": [
         {
           "name": "pure-jvm-boundary",
-          "status": "PASS_ON_PRIOR_CANDIDATE",
-          "run_id": 45273205685,
-          "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
+          "status": "PASS",
+          "run_id": 45274051704,
+          "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
         },
         {
           "name": "gradle-junit",
-          "status": "PASS_ON_PRIOR_CANDIDATE",
-          "run_id": 45273205685,
-          "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
-        },
-        {
-          "name": "final-candidate-gradle-junit-and-pure-jvm",
-          "status": "PENDING",
+          "status": "PASS",
           "run_id": 45274051704,
           "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
         },
@@ -176,12 +170,19 @@
           "detail": "Final retry compiled production source but test compilation found run-seed test outside CombatCoreTest; moved inside class. First attempt in same run had Maven 429."
         }
       ],
-      "next": "Complete exact-head Gradle/JUnit and pure-JVM CI, then independent Mastery and Repetition. Do not merge or mark accepted until complete.",
+      "next": "Obtain independent Mastery review of exact SHA e9864637575275323aeb1104f9bd0a606c94a80a, resolve any findings and complete Repetition. Keep PR #15 draft until then.",
       "verified_prior_candidate": {
         "sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
         "run_id": 45273205685,
         "conclusion": "success",
         "tests": "Gradle clean test passed; pure-JVM boundary passed. This is not the final candidate SHA."
+      },
+      "verified_final_candidate": {
+        "sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
+        "run_id": 45274051704,
+        "conclusion": "success",
+        "pure_jvm_boundary": "PASS",
+        "gradle_clean_test": "PASS"
       }
     }
   },
@@ -208,7 +209,7 @@
       "id": "EFB-003-TURN-COMBAT",
       "status": "IN_PROGRESS",
       "maestro_state": "MOMENTUM_CANDIDATE_PR15_PENDING_EXACT_SHA_CI_MASTERY_REPETITION",
-      "next": "PR #15 clean-room candidate e9864637575275323aeb1104f9bd0a606c94a80a. Prior candidate passed run 45273205685; final candidate run 45274051704 pending. Independent Mastery and Repetition pending."
+      "next": "Candidate e9864637575275323aeb1104f9bd0a606c94a80a passed exact-SHA run 45274051704 (pure-JVM and full Gradle/JUnit). Independent Mastery and Repetition remain pending."
     },
     {
       "id": "EFB-004-CARD-EFFECTS",
