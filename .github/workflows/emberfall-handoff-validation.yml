@@ -18,9 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - name: Checkout complete repository history
+      - name: Checkout exact candidate commit and complete repository history
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Set up Python 3.12
@@ -90,6 +91,7 @@ jobs:
         with:
           name: emberfall-efb-000-maestro-evidence
           if-no-files-found: warn
+          include-hidden-files: true
           path: |
             artifacts/
             .maestro/
