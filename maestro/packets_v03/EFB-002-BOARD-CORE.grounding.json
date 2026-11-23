@@ -1,5 +1,5 @@
 {
-  "purpose": "Implement the deterministic Emberfall v0.2 board domain core: 7x7 board, orthogonal connected-group Tap/Pop, Prism/Ash/Stone resolution, vertical-only gravity, sealed-column behavior and Wall pressure. This packet prepares the first gameplay implementation increment; it does not authorize execution before the baseline gate is accepted.",
+  "purpose": "Implement the deterministic Emberfall v0.2 board domain core: 7x7 board, orthogonal connected-group Tap/Pop, Prism/Ash/Stone resolution, vertical-only gravity, sealed-column behavior and Wall pressure.",
   "sources": [
     "references/EMBERFALL_GAME_SPEC_v0.2.txt",
     "engineering/PRODUCT_OWNER_GOVERNANCE.md",
@@ -19,7 +19,7 @@
     "docs/adr/ADR-010-brand-cost.md"
   ],
   "constraints": [
-    "Execution is authorized for the EFB-002 GROUNDING and isolated implementation cycle because PR #4 (EFB-000) and PR #5 (EFB-001) are merged in order. Their merge commits are 5130215cb0a033345752311903de7f9c08aced4d and f9a41aa373d36d41a0c134c8005fb5984fecd2b3. Do not treat merge as independent Mastery approval: exact merged tree still requires independent review before EFB-002 PASS or implementation merge.",
+    "EFB-000 PR #4 and EFB-001 PR #5 are merged at 5130215cb0a033345752311903de7f9c08aced4d and f9a41aa373d36d41a0c134c8005fb5984fecd2b3. EFB-002 isolated implementation is authorized; exact-candidate EFB-000 independent review and evidence remain required before EFB-002 acceptance/merge.",
     "Use an isolated implementation branch from the accepted v0.2 handoff baseline; do not modify the legacy prototype branch.",
     "The only live player board action is connected-group Tap/Pop. Do not implement or route live combat through SwapCells or match-3 line matching.",
     "Board is 7x7 with orthogonal connectivity and minimum legal pop size 2; one hidden incoming row is maintained separately.",
@@ -36,8 +36,8 @@
     "No unapproved merge, publish or deploy; no secrets in commits or logs."
   ],
   "dependencies": [
-    "EFB-000-BASELINE: merged PR #4 at 5130215cb0a033345752311903de7f9c08aced4d; source inventory/GateRunner builder evidence passed on reviewed pre-merge head 3555ae5a8e7b74e181c201e0a20482ac8f7a3bce (run 45179968109); merged report/packet records still require post-merge reconciliation and independent review.",
-    "EFB-001-RULES-ADR: merged PR #5 at f9a41aa373d36d41a0c134c8005fb5984fecd2b3; ADR validator passed on pre-merge head 76d07ff80121a465371a785350f7a6a2c6c853fe (run 45180407668); merged rules accepted, implementation contract requires post-merge check."
+    "EFB-000-BASELINE: PR #4 merged at 5130215cb0a033345752311903de7f9c08aced4d; exact merged tree independent review still required for acceptance.",
+    "EFB-001-RULES-ADR: PR #5 merged at f9a41aa373d36d41a0c134c8005fb5984fecd2b3; Product Owner ADR resolutions accepted."
   ],
   "risks": [
     "R1: legacy SwapCells paths may remain reachable through ViewModel/navigation unless removed or isolated at the command boundary.",
@@ -45,7 +45,8 @@
     "R1: Seal and Wall rise can create irregular per-column movement if frozen-column rules are not modeled explicitly.",
     "R1: board generation fallback can bias hue distribution if it silently repairs local cells.",
     "R1: replay divergence can occur if board, enemy and card RNG streams are coupled or advanced inconsistently.",
-    "R1: merged handoff branch has no Android app or Kotlin/Gradle module; EFB-002 must create/reuse a pure Kotlin/JVM module and bootstrap build infrastructure without implying an Android build is currently available."
+    "R1: merged handoff branch has no Android app or Kotlin/Gradle module; EFB-002 must create/reuse a pure Kotlin/JVM module and bootstrap build infrastructure without implying an Android build is currently available.",
+    "Initial generation currently samples playable hues only. Do not invent neutral-tile spawn probabilities: ADR-002 delegates neutral-block rules but the retrieved accepted ADR does not quantify them; obtain an explicit rule before enabling random Ash/Stone/Prism generation."
   ],
   "acceptance": [
     "Board domain model has explicit 7x7 coordinates, one incoming row and sealed-column state.",
@@ -65,9 +66,11 @@
     "Pop chip damage is n - 1 and is returned as a board action result; enemy Block application is deferred to EFB-003.",
     "Board generation follows ADR-002: rows 0–1 empty, rows 2–6 seeded, 32 whole-board retries on the same deterministic RNG stream, then one adjacent-pair fallback with BoardGenerationFallback telemetry; verify fallback rate <0.01% across 100,000 seeds.",
     "Independent Mastery review examines the exact EFB-002 candidate SHA and artifacts before its merge; this is the EFB-002 implementation gate, not a precondition to begin Grounding.",
-    "Build and test only at the established handoff baseline; because it contains no Kotlin/Gradle project, first implementation commit must introduce a minimal reproducible pure Kotlin/JVM module and CI workflow, with explicit toolchain pinning and no Android imports."
+    "Build and test only at the established handoff baseline; because it contains no Kotlin/Gradle project, first implementation commit must introduce a minimal reproducible pure Kotlin/JVM module and CI workflow, with explicit toolchain pinning and no Android imports.",
+    "Initial board generation must not introduce neutral tiles at guessed probabilities; neutral insertion remains an explicit enemy/effect input until a quantified accepted rule exists."
   ],
-  "next_increment": "Start the official Maestro coding-start and Grounding workflow for EFB-002 on the accepted handoff baseline f9a41aa373d36d41a0c134c8005fb5984fecd2b3. Then begin Momentum and build the minimal pure Kotlin/JVM board module with deterministic RNG, BoardState, connected-group resolver and gravity as the first coherent implementation batch. Follow with Ash/Stone/Prism/Seal/Wall/Overflow, payout and seed/replay tests. Do not start EFB-003 combat/cards until EFB-002 passes exact-SHA Mastery and Product Owner acceptance.",
-  "current_status": "READY_FOR_GROUNDING",
-  "no_implementation_authorized": false
+  "next_increment": "Momentum: finish BoardCore golden/property coverage, produce 100,000-seed hue distribution and fallback report, validate exact-candidate CI, then submit the candidate for independent Mastery. EFB-003 begins only after EFB-002 acceptance.",
+  "current_status": "GROUNDING_COMPLETE_MOMENTUM_CANDIDATE",
+  "no_implementation_authorized": false,
+  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23"
 }
