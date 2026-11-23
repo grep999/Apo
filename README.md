@@ -42,3 +42,10 @@ This repository is private. Every human or service agent that needs to collabora
 ## Scope and provenance
 
 Generated artboards are concept references, not final licensed sprites, card illustrations or UI assets. The selected base image is the canonical visual design authority, copied byte-for-byte and hash-locked in graphics v0.4. Preserve source/artist/license metadata for every production asset. Final app integration and device verification are still required.
+
+
+## EFB-002 implementation candidate
+
+The isolated branch `feat/efb-002-board-core-victory` now contains the first pure Kotlin/JVM board-core implementation candidate. It is deliberately separate from the legacy Android SwapCells prototype. See `src/main/kotlin/com/emberfall/board/BoardCore.kt`, `src/test/kotlin/com/emberfall/board/BoardCoreTest.kt`, and `.github/workflows/efb002-board-core.yml`.
+
+This is an implementation increment, not a release or EFB-002 acceptance. Exact-candidate CI, full 100,000-seed distribution/fallback report, independent Mastery, and Product Owner acceptance remain required. The EFB-000 independent review condition remains an acceptance gate; it does not prevent isolated EFB-002 implementation from starting under the refreshed packet.
