@@ -216,6 +216,7 @@ sealed interface CardBattleCommand {
 }
 
 enum class CardRejection { WRONG_PHASE, UNKNOWN_CARD, INVALID_TARGET, UNAFFORDABLE, INVALID_PAYMENT, EFFECT_LIMIT, EFFECT_FAILED }
+enum class RelicTriggerResource { INK, SPARK, BOARD }
 sealed interface CardEvent {
     data class Drew(val instanceId: Long, val cardId: String) : CardEvent
     data class Played(val instanceId: Long, val cardId: String, val echoed: Boolean) : CardEvent
@@ -224,6 +225,7 @@ sealed interface CardEvent {
     data class CardDiscarded(val instanceId: Long) : CardEvent
     data class CardExhausted(val instanceId: Long) : CardEvent
     data class EchoQueued(val cardId: String) : CardEvent
+    data class RelicTriggered(val relicId: String, val resource: RelicTriggerResource, val amount: Int) : CardEvent
 }
 sealed interface CardBattleResult {
     data class Accepted(val state: CardBattleState, val events: List<CardEvent>) : CardBattleResult
@@ -256,15 +258,16 @@ class CardEngine(
     private fun tap(state: CardBattleState, coord: Coord): CardBattleResult {
         val beforePop = boardEngine.tap(state.combat.board, coord, state.combat.spectrum)
         val result = combatEngine.transition(state.combat, CombatCommand.Tap(coord))
+        val events = mutableListOf<CardEvent>()
         return when (result) {
             is CombatResult.Rejected -> CardBattleResult.Rejected(CardRejection.INVALID_TARGET)
             is CombatResult.Accepted -> {
                 var next = state.copy(combat = result.state)
                 if (beforePop is TapOutcome.Accepted) {
-                    next = applyPopRelics(state, next, beforePop.result, manualTap = true)
+                    next = applyPopRelics(state, next, beforePop.result, manualTap = true, events = events)
                         ?: return CardBattleResult.Rejected(CardRejection.EFFECT_FAILED)
                 }
-                CardBattleResult.Accepted(next, emptyList())
+                CardBattleResult.Accepted(next, events)
             }
         }
     }
@@ -283,7 +286,7 @@ class CardEngine(
         val board = state.combat.board.withCell(command.coord, Cell.hue(command.hue, cell.branded))
         return CardBattleResult.Accepted(
             state.copy(combat = state.combat.copy(board = board), usedRelicIds = state.usedRelicIds + relicId),
-            emptyList()
+            listOf(CardEvent.RelicTriggered(relicId, RelicTriggerResource.BOARD, 1))
         )
     }
 
@@ -291,7 +294,8 @@ class CardEngine(
         before: CardBattleState,
         after: CardBattleState,
         pop: PopResult,
-        manualTap: Boolean
+        manualTap: Boolean,
+        events: MutableList<CardEvent>
     ): CardBattleState? {
         var player = after.combat.player
         val ashBlocks = pop.orderedCells.count { before.combat.board[it]?.kind == TileKind.ASH }
@@ -299,6 +303,7 @@ class CardEngine(
             val spark = player.spark.toLong() + ashBlocks.toLong()
             if (spark > Int.MAX_VALUE) return null
             player = player.copy(spark = spark.toInt())
+            events += CardEvent.RelicTriggered("relic_hollow_crown", RelicTriggerResource.SPARK, ashBlocks)
         }
         var beadsUsed = before.prayerBeadsUsedThisTurn
         if (manualTap && "relic_prayer_beads" in before.equippedRelicIds && !beadsUsed) {
@@ -307,9 +312,12 @@ class CardEngine(
                 val ink = player.immutableInk.toMutableMap()
                 val accepted = minOf(INK_CAP_PER_HUE - ink.getValue(hue), 2)
                 ink[hue] = ink.getValue(hue) + accepted
-                val spark = player.spark.toLong() + (2 - accepted).toLong()
+                val overflow = 2 - accepted
+                val spark = player.spark.toLong() + overflow.toLong()
                 if (spark > Int.MAX_VALUE) return null
                 player = player.copy(ink = ink, spark = spark.toInt())
+                if (accepted > 0) events += CardEvent.RelicTriggered("relic_prayer_beads", RelicTriggerResource.INK, accepted)
+                if (overflow > 0) events += CardEvent.RelicTriggered("relic_prayer_beads", RelicTriggerResource.SPARK, overflow)
             }
             beadsUsed = true
         }
@@ -419,7 +427,7 @@ class CardEngine(
                     if (cmd is CombatCommand.CardPop) {
                         val pop = boardEngine.tap(before.combat.board, cmd.coord, before.combat.spectrum)
                         if (pop is TapOutcome.Accepted) {
-                            accepted = applyPopRelics(before, accepted, pop.result, manualTap = false) ?: return false
+                            accepted = applyPopRelics(before, accepted, pop.result, manualTap = false, events = events) ?: return false
                         }
                     }
                     next = accepted
