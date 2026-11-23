@@ -1,6 +1,6 @@
 {
   "purpose": "EFB-002 Momentum delivery: deterministic pure Kotlin/JVM board-core candidate with explicit remaining acceptance gates.",
-  "candidate_ref": "git:e776a4810ff9881662bb47e06eac8db62e60ce50",
+  "candidate_ref": "git:493e3d4aa97f8534b755dde688f9d0dba27e3a5e",
   "outcome": "Implemented the first coherent board-core vertical slice: immutable 7x7 state, deterministic deck-weighted generation, orthogonal Tap/Pop, Prism/Ash/Stone, gravity, Brand, three-turn Seal, Spectrum payout, Wall/Overflow and replay digest. Local source-mirror compilation and seeded mechanics/statistical simulations passed. Exact repository Gradle/JUnit CI and independent review remain pending.",
   "changed_artifacts": [
     "src/main/kotlin/com/emberfall/board/BoardCore.kt",
@@ -8,7 +8,6 @@
     "build.gradle.kts",
     "settings.gradle.kts",
     ".gitignore",
-    ".github/workflows/efb002-board-core.yml",
     "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json",
     "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
     "README.md"
@@ -73,18 +72,6 @@
       "runner_identity": null,
       "ran_on_sha": null,
       "category": "test"
-    },
-    {
-      "name": "independent-mastery-review",
-      "outcome": "not_run",
-      "required": true,
-      "command": "Independent reviewer inspects exact candidate SHA and evidence",
-      "exit_code": null,
-      "log_hash": null,
-      "evidence_class": "PLANNED",
-      "runner_identity": null,
-      "ran_on_sha": null,
-      "category": "review"
     }
   ],
   "risks": [
@@ -92,6 +79,7 @@
     "Gradle/JUnit exact-candidate CI has no returned workflow-run evidence yet.",
     "EFB-000 merged baseline still lacks independent Mastery evidence.",
     "ADR-002 references neutral-block rules without quantified initial spawn probabilities; no probabilities are invented and initial generation samples playable hues only.",
-    "Full acceptance requires remaining golden/property vectors and exact candidate review."
+    "Full acceptance requires remaining golden/property vectors and exact candidate review.",
+    "Independent Mastery is a separate stage and must be performed by an actor different from the builder; it is not a builder-side Momentum check."
   ]
 }
