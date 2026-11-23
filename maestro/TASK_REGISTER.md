@@ -2,7 +2,7 @@
 
 The machine-readable task seed is `maestro/EMBERFALL_TASKS_V2.json`; the epic register is `engineering/IMPLEMENTATION_WBS.json`. Detailed sequencing and release acceptance criteria are in `engineering/CODING_AGENT_ROADMAP.md` and `engineering/RELEASE_READINESS.md`.
 
-Agent dispatch, role boundaries, prompt/return contracts, state continuity, security and recovery are governed by [`engineering/AGENT_ORCHESTRATION.md`](../engineering/AGENT_ORCHESTRATION.md). This is a proposed process contract; do not mark dispatch operational until the AO-01–AO-07 validation gates pass.
+Agent dispatch, role boundaries, prompt/return contracts, state continuity, security and recovery are governed by [`engineering/AGENT_ORCHESTRATION.md`](../engineering/AGENT_ORCHESTRATION.md). A first Copilot cloud-agent dispatch/status MVP is assembled in `.github/workflows/emberfall-agent-{dispatch,status}.yml`; it requires `COPILOT_AGENT_TOKEN` and successful Actions receipts before any session is claimed started.
 
 ## Task catalogue
 
@@ -35,6 +35,14 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 - EFB-002 exact candidate: `3fcb5f2c0ba3ae68690f64342e686f06b8f76061`. Review input with candidate file hashes: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
 - EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
 - EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing; see `engineering/RELEASE_READINESS.md`.
+
+## Agent orchestration MVP
+
+- Dispatch workflow: `.github/workflows/emberfall-agent-dispatch.yml`; one JSON task packet per push under `maestro/dispatch-requests/`.
+- Status workflow: `.github/workflows/emberfall-agent-status.yml`; task IDs are queried through the Copilot cloud-agent tasks API.
+- Initial packets committed: AO-01 workflow/Maestro inventory, AO-02 Maestro SQLite/WAL resume architecture, AO-03 dispatch security review.
+- Required secret: `COPILOT_AGENT_TOKEN` (user-to-server fine-grained PAT; repository Actions, Contents, Issues and Pull Requests read/write). Copilot cloud agent must be enabled.
+- Dispatch state is NOT yet confirmed. Verify each Actions run and its 30-day receipt artifact. Maestro SQLite cross-run resume remains unimplemented.
 
 ## Workflow-control-plane actions
 
