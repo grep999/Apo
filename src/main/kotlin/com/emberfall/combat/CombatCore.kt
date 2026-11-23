@@ -276,7 +276,6 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                 overflow = true
                 vigil = maxOf(0, vigil - result.vigilDamage)
                 events += CombatEvent.VigilLost(result.vigilDamage, "Wall overflow")
-                break
             }
             rises++
         }
