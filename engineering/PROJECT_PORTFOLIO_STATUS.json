@@ -129,7 +129,7 @@
       "pr": 15,
       "branch": "feat/efb003-turn-combat-clean",
       "base_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
-      "candidate_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+      "candidate_sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
       "draft": true,
       "mergeable": true,
       "implementation": "Deterministic pure Kotlin/JVM turn/combat reducer; explicit phases; player resources; two-intent deterministic preview; all ten intent contracts; Wall/Overflow/Seal integration; Card Pop/Block/Damage/Delay seams; versioned command replay and checkpoint digest.",
@@ -149,9 +149,9 @@
         },
         {
           "name": "final-candidate-gradle-junit-and-pure-jvm",
-          "status": "QUEUED",
-          "run_id": 45273418357,
-          "ran_on_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15"
+          "status": "PENDING",
+          "run_id": 45274051704,
+          "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
         },
         {
           "name": "independent-mastery",
@@ -165,11 +165,15 @@
       "known_earlier_failures": [
         {
           "run_id": 45272406052,
-          "detail": "58 tests, 1 stale Seal/Stain incoming-row assertion; corrected in subsequent candidate."
+          "detail": "Old candidate: stale Seal/Stain incoming-row assertion; corrected."
         },
         {
           "run_id": 45272688983,
-          "detail": "Test class closed before later regression tests; corrected by moving all tests inside CombatCoreTest."
+          "detail": "Old candidate: regression tests placed outside test class; corrected."
+        },
+        {
+          "run_id": 45273418357,
+          "detail": "Final retry compiled production source but test compilation found run-seed test outside CombatCoreTest; moved inside class. First attempt in same run had Maven 429."
         }
       ],
       "next": "Complete exact-head Gradle/JUnit and pure-JVM CI, then independent Mastery and Repetition. Do not merge or mark accepted until complete.",
@@ -204,7 +208,7 @@
       "id": "EFB-003-TURN-COMBAT",
       "status": "IN_PROGRESS",
       "maestro_state": "MOMENTUM_CANDIDATE_PR15_PENDING_EXACT_SHA_CI_MASTERY_REPETITION",
-      "next": "PR #15 on clean EFB-002 baseline; candidate fbb8b07c134b77825cedac3f65389be13f11fd15. Finish exact-SHA CI, independent Mastery and Repetition."
+      "next": "PR #15 clean-room candidate e9864637575275323aeb1104f9bd0a606c94a80a. Prior candidate passed run 45273205685; final candidate run 45274051704 pending. Independent Mastery and Repetition pending."
     },
     {
       "id": "EFB-004-CARD-EFFECTS",
