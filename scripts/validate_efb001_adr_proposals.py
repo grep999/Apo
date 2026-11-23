@@ -45,7 +45,7 @@ assert not invalid, f"invalid ADR contract: {invalid}"
 fast = (adr_dir / "ADR-017-fast-true-ending.md").read_text(encoding="utf-8").lower()
 assert "three consecutive full turns" in fast
 assert "not required to spend all three ordinary taps" in fast
-assert "swap-match-3 is legacy-only" in resolution
+assert "swap-match-3 is legacy-only" in resolution.lower()
 assert "EFB-000 independent review" in resolution
 epics = {e["id"]: e for e in wbs["epics"]}
 assert epics["EFB-001-RULES-ADR"]["dependencies"] == ["EFB-000-BASELINE"]
