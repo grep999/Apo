@@ -1,0 +1,56 @@
+{
+  "task_id": "EFB-002-BOARD-CORE",
+  "record_type": "PRODUCT_OWNER_REPETITION_AND_ACCEPTANCE",
+  "recorded_at": "2026-11-23",
+  "candidate": {
+    "pr": 14,
+    "branch": "feat/efb002-remediation-rebased",
+    "exact_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+    "original_remediation_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf"
+  },
+  "expected": {
+    "outcome": "A deterministic pure Kotlin/JVM 7x7 board core implementing the accepted v0.2 board rules, with immutable state, deterministic RNG/replay, connected-group Tap/Pop, tile behaviors, wall/overflow/seal and stable state digest.",
+    "evidence": "Exact-candidate Gradle/JUnit, pure-JVM boundary, Maestro GateRunner and EFB-001 ADR validation pass."
+  },
+  "actual": {
+    "outcome": "Candidate implements the scoped deterministic board core and includes the Product Owner pre-review corrections for half-Ink precision and independent golden hue-weight expectations.",
+    "verification": [
+      {
+        "name": "Board Core Gradle/JUnit",
+        "run_id": 45265105730,
+        "status": "PASS",
+        "sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+      },
+      {
+        "name": "Maestro GateRunner",
+        "run_id": 45265105467,
+        "status": "PASS",
+        "sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+      },
+      {
+        "name": "EFB-001 ADR validator",
+        "run_id": 45265105426,
+        "status": "PASS",
+        "sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+      }
+    ],
+    "corrections": [
+      "Half-Ink remains exact in integer half-units through Spectrum multiplication; final payout rounds once, half-up.",
+      "Hue-weight tests use independent golden expected values rather than deriving expected output from the implementation."
+    ]
+  },
+  "lessons": [
+    "Preserve fractional resource payouts until every multiplier has been applied; round once at the boundary.",
+    "Golden tests must use independent expected values and must not mirror implementation logic.",
+    "Bind every verification claim to the exact candidate SHA and preserve the distinction between Product Owner acceptance and independent review."
+  ],
+  "disposition": {
+    "status": "ACCEPTED_BY_PRODUCT_OWNER",
+    "acceptance_basis": "The Product Owner explicitly stated the prior feedback required only one review, confirmed the result is acceptable, and directed that EFB-002 be marked complete.",
+    "further_independent_mastery_review": "WAIVED_BY_PRODUCT_OWNER",
+    "formal_github_approve_review": "Not submitted; GitHub prevents the PR author from approving their own pull request.",
+    "acceptance_comment": "https://github.com/grep999/Apo/pull/14#issuecomment-7114277343",
+    "limitations": "This is not represented as an independent Mastery review. EFB-000 merged-tree review and rights disposition remain separate prerequisites; no legacy code/assets are cleared for reuse."
+  },
+  "next_increment": "EFB-003 turn/combat state machine, after EFB-000 review/rights disposition and Maestro durable workflow continuity/reviewer dispatch are complete."
+}
