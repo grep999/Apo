@@ -371,6 +371,98 @@ class BoardCoreTest {
         assertEquals(List(32) { control.cards.nextLong() }, List(32) { interleaved.cards.nextLong() })
     }
 
+    @Test fun popResultCellListsAreImmutableSnapshots() {
+        val b = board(
+            Coord(0,0) to Cell.hue(Hue.GOLD),
+            Coord(1,0) to Cell.hue(Hue.GOLD),
+            Coord(0,1) to Cell.hue(Hue.GOLD),
+            Coord(1,1) to Cell.hue(Hue.GOLD),
+            Coord(2,1) to Cell.stone()
+        )
+        val result = assertIs<TapOutcome.Accepted>(engine.tap(b, Coord(0,0))).result
+        assertEquals(listOf(Coord(2,1)), result.brokenStoneCells)
+        assertFailsWith<UnsupportedOperationException> {
+            (result.orderedCells as MutableList<Coord>).clear()
+        }
+        assertFailsWith<UnsupportedOperationException> {
+            (result.brokenStoneCells as MutableList<Coord>).clear()
+        }
+    }
+
+    @Test fun coordinatesRejectValuesOutsideTheSevenBySevenBoard() {
+        assertFailsWith<IllegalArgumentException> { Coord(-1, 0) }
+        assertFailsWith<IllegalArgumentException> { Coord(0, -1) }
+        assertFailsWith<IllegalArgumentException> { Coord(7, 0) }
+        assertFailsWith<IllegalArgumentException> { Coord(0, 7) }
+    }
+
+    @Test fun randomizedBoardPropertiesHoldAcrossSeeds() {
+        repeat(256) { seed ->
+            val rng = DeterministicRng(seed.toLong())
+            val cells = MutableList<Cell?>(49) {
+                when (rng.nextInt(6)) {
+                    0 -> null
+                    1 -> Cell.ash(rng.nextInt(2) == 0)
+                    2 -> Cell.stone()
+                    3 -> Cell.prism()
+                    else -> Cell.hue(Hue.entries[rng.nextInt(Hue.entries.size)], rng.nextInt(2) == 0)
+                }
+            }
+            val sealed = (0..6).filter { rng.nextInt(5) == 0 }.toSet()
+            val durations = sealed.associateWith { 1 + rng.nextInt(3) }
+            val incoming = List<Cell?>(7) {
+                if (rng.nextInt(3) == 0) null else Cell.hue(Hue.entries[rng.nextInt(Hue.entries.size)])
+            }
+            val board = BoardState(cells, incoming, sealed, sealTurnsRemaining = durations)
+            val settled = engine.gravity(board)
+
+            for (x in 0..6) {
+                val beforeColumn = (0..6).map { y -> board[Coord(x, y)] }
+                val afterColumn = (0..6).map { y -> settled[Coord(x, y)] }
+                assertEquals(beforeColumn.filterNotNull(), afterColumn.filterNotNull(), "column=$x seed=$seed")
+                if (x in sealed) {
+                    assertEquals(beforeColumn, afterColumn, "sealed column=$x seed=$seed")
+                } else {
+                    val firstOccupied = afterColumn.indexOfFirst { it != null }.let { if (it < 0) 7 else it }
+                    assertTrue((0 until firstOccupied).all { afterColumn[it] == null }, "leading gap column=$x seed=$seed")
+                    assertTrue((firstOccupied..6).all { afterColumn[it] != null }, "gravity gap column=$x seed=$seed")
+                }
+            }
+
+            repeat(12) {
+                val target = Coord(rng.nextInt(7), rng.nextInt(7))
+                val outcome = engine.tap(board, target)
+                if (outcome is TapOutcome.Accepted) {
+                    val pop = outcome.result
+                    val group = pop.orderedCells.toSet()
+                    assertEquals(pop.orderedCells.size, group.size, "duplicate group cell seed=$seed")
+                    assertTrue(target in group, "target missing from group seed=$seed")
+                    assertTrue(group.none { it.x in sealed }, "sealed cell entered group seed=$seed")
+
+                    val reached = mutableSetOf<Coord>()
+                    val queue = ArrayDeque<Coord>()
+                    queue.add(target)
+                    while (queue.isNotEmpty()) {
+                        val at = queue.removeFirst()
+                        if (!reached.add(at)) continue
+                        at.neighbors().filter { it in group && it !in reached }.forEach(queue::add)
+                    }
+                    assertEquals(group, reached, "disconnected group seed=$seed")
+
+                    if (pop.resolvedHue == null) {
+                        assertTrue(group.all { board[it]?.kind in setOf(TileKind.ASH, TileKind.PRISM) })
+                    } else {
+                        assertTrue(group.all {
+                            val cell = board[it]
+                            cell?.kind == TileKind.PRISM ||
+                                (cell?.kind == TileKind.HUE && cell.hue == pop.resolvedHue)
+                        })
+                    }
+                }
+            }
+        }
+    }
+
     @Test fun oneHundredThousandSeedDistributionAndFallbackGate() {
         val deck = DeckHueProfile(12, mapOf(Hue.EMBER to 5, Hue.TIDE to 4, Hue.MOSS to 3))
         val expected = deck.weights()

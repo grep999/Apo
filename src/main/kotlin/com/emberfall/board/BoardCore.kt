@@ -184,8 +184,8 @@ class BoardEngine {
         val runState = advance(spectrum, hue, containsPrism)
         val base = if (ash) 0 else minOf(group.size, 8) + maxOf(group.size - 8, 0) / 2
         val payout = if (base == 0) 0 else (base * (2 + runState.run) + 1) / 2
-        return PopResult(settled, group, hue, ash, group.size, base, payout, group.size - 1,
-            cells.count { it.branded } * 2, stones, runState)
+        return PopResult(settled, Collections.unmodifiableList(group.toList()), hue, ash, group.size, base, payout, group.size - 1,
+            cells.count { it.branded } * 2, Collections.unmodifiableList(stones.toList()), runState)
     }
 
     fun resetSpectrumAtTurnBoundary(): SpectrumState = SpectrumState()
