@@ -155,10 +155,10 @@ data class CharacterGrowthState(
     if (ProgressionCatalog.supportByIdOrNull(supportId) == null) return this
     if (supportId in socketedSupportIds) return this
     val updated = when {
-      socketedSupportIds.size < maxSockets -> socketedSupportIds + supportId
-      replaceSlot in socketedSupportIds.indices -> socketedSupportIds.toMutableList().apply { set(replaceSlot, supportId) }
-      socketedSupportIds.isNotEmpty() -> socketedSupportIds.dropLast(1) + supportId
-      else -> listOf(supportId)
+      socketedSupportIds.size < maxSockets && replaceSlot == -1 -> socketedSupportIds + supportId
+      socketedSupportIds.size >= maxSockets && replaceSlot in socketedSupportIds.indices ->
+        socketedSupportIds.toMutableList().apply { set(replaceSlot, supportId) }
+      else -> return this
     }
     return copy(socketedSupportIds = updated)
   }
