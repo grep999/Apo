@@ -8,10 +8,10 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 | ID | Increment | Owner | Risk | Current portfolio state |
 |---|---|---|---|---|
-| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Merged; independent merged-tree review pending; governance follow-up revalidation PASS; license/IP rights still unconfirmed |
+| EFB-000-BASELINE | Repository/source/build baseline | ARCHITECT | R1 | Historical baseline retained for audit. Product Owner explicitly excluded legacy prototype and associated source/assets from clean product baseline; no rights clearance is sought for excluded material. Not an EFB-003 dependency |
 | EFB-001-RULES-ADR | Rules contract and P0 decisions | ARCHITECT | R1 | Merged; Product Owner ADR validator PASS; no formal review submission or native Maestro workflow |
-| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | **Accepted by Product Owner** at exact head 6b6e139; one review round completed, further independent Mastery waived by owner; exact CI PASS; Repetition recorded. PR #14 remains draft pending separate EFB-000/governance gates |
-| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | Grounding packet refreshed; EFB-002 accepted. Still blocked on EFB-000 merged-tree review/rights disposition and durable Maestro state plus independent-review dispatch readiness |
+| EFB-002-BOARD-CORE | Deterministic headless board | BUILDER | R1 | **Accepted by Product Owner** at exact head 6b6e139; one review round completed, further independent Mastery waived by owner; exact CI PASS; Repetition recorded. PR #14 remains draft; no additional EFB-002 review is required absent new evidence |
+| EFB-003-TURN-COMBAT | Turn phases, player/enemy combat, intents | BUILDER | R1 | **IN PROGRESS — PR #15** clean-room candidate `fbb8b07c`; based on accepted EFB-002 SHA `6b6e139`. Exact-head CI, independent Mastery and Repetition pending. Legacy prototype excluded |
 | EFB-004-CARD-EFFECTS | Typed data-driven card/effect engine | BUILDER | R1 | Not started; blocked on EFB-002/003 |
 | EFB-005-CLASSES-STARTER | Three classes and starter decks | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-004 |
 | EFB-006-ENEMIES-BOSSES | Enemies, elites, phased bosses | DOMAIN_SPECIALIST | R1 | Not started; blocked on EFB-003/004 |
@@ -29,12 +29,20 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 ## Current Maestro state
 
-- EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1; two READY work items; no assignments. Merged-tree review is outstanding; pre-review identified absent LICENSE/COPYING/NOTICE files in both the handoff and legacy trees, so legacy code reuse is not cleared.
+- EFB-000 workflow: `9dcb920b-4da4-4e96-bd96-584db5d3c4ab`; ACTIVE / GROUNDING / revision 1. Product Owner has excluded the legacy prototype and all associated source/assets from the product baseline. EFB-000 provenance is retained for audit only; no rights clearance is pursued for excluded material.
 - EFB-001: Product Owner ADR validation run `45180407668` passed; a subsequent cross-check run `45261280912` also passed on the current EFB-002 PR head. No native EFB-001 Maestro workflow or formal review submission exists. Review input: `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json`.
 - EFB-002 workflow artifacts are run-scoped; the proposed reviewer assignment was not dispatched and durable cross-run state is not proven. The Product Owner subsequently accepted exact candidate `6b6e139890a205ead337a94226464a0b5ddd82da` and waived any further EFB-002 Mastery round; Repetition is recorded in `maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json`. Native Maestro workflow reconciliation remains pending.
-- EFB-002 current candidate: PR #14, head `6b6e139890a205ead337a94226464a0b5ddd82da`; original remediation commit `6932b747d78f9310ecb859cc9079cb2fc28ac9bf` is preserved in its ancestry. Exact-head GateRunner run `45265105467`, Board Core run `45265105730`, ADR validator run `45265105426` all passed. The half-Ink truncation defect was corrected and golden hue-weight tests strengthened. Review input with current blob hashes and artifacts: `maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json`.
+- EFB-002 accepted candidate: PR #14, head `6b6e139890a205ead337a94226464a0b5ddd82da`; exact-head GateRunner run `45265105467`, Board Core run `45265105730`, ADR validator run `45265105426` all passed. Product Owner accepted after one feedback round and waived further EFB-002 Mastery. The half-Ink defect and hue-weight oracle were corrected.
 - EFB-000 merged-tree review input: `maestro/reviews_v03/EFB-000-BASELINE.review-input.json`.
 - EFB-002 exact-candidate Gradle/JUnit and pure-JVM checks are VERIFIED and passing on head `6b6e139...`; half-Ink payout correction is included. Formatting/lint tooling is not configured and is not claimed. See `engineering/RELEASE_READINESS.md`.
+
+## EFB-003 clean-core candidate
+
+- PR #15: `https://github.com/grep999/Apo/pull/15`, branch `feat/efb003-turn-combat-clean`, accepted EFB-002 base `6b6e139890a205ead337a94226464a0b5ddd82da`.
+- Candidate code SHA: `fbb8b07c134b77825cedac3f65389be13f11fd15`. It adds the deterministic turn/combat reducer, player resources, two-intent preview, ten intent contracts, Wall/Seal integration, Card Pop seam, immutable snapshots and versioned replay.
+- Earlier CI failures were found and corrected: one stale Seal/Stain incoming-row assertion and a misplaced test-class brace. Final-candidate CI is pending; no PASS is claimed.
+- Independent Mastery and Repetition remain required before acceptance/merge.
+- Legacy prototype and assets are explicitly excluded; no legacy code/assets are imported.
 
 ## Agent orchestration MVP
 
@@ -46,11 +54,11 @@ Agent dispatch, role boundaries, prompt/return contracts, state continuity, secu
 
 ## Workflow-control-plane actions
 
-- [ ] Complete EFB-000 independent merged-tree review; explicitly record the missing license/IP provenance and prohibit legacy code reuse until rights are confirmed. Copilot cloud reviewer dispatch is blocked by HTTP 412 insufficient premium quota.
+- [x] Product Owner explicitly excluded the legacy prototype and associated assets; no legacy rights clearance is sought for excluded material. Keep EFB-000 provenance evidence as historical archive.
 - [ ] Reconcile EFB-001 into a native Maestro task state without reopening accepted ADRs.
 - [ ] Persist and resume the same Maestro DB/workflow ID across candidate pushes; current PR workflow creates a fresh database each run.
 - [ ] Configure a real independent-review adapter; PROPOSED is not ASSIGNED. Both current EFB-000/EFB-002 Copilot dispatch attempts returned HTTP 412; no reviewer session was created.
-- [ ] Require candidate file hashes, exact SHA, VERIFIED gates, distinct reviewer identity and Repetition before acceptance.
+- [ ] Require EFB-003 exact candidate file hashes, exact SHA, VERIFIED gates, distinct independent reviewer identity and Repetition before acceptance.
 
 ## Graphics task baseline
 
