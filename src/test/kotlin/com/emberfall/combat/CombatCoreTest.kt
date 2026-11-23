@@ -100,12 +100,12 @@ class CombatCoreTest {
         var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(10), EnemyIntent.Strike(10)))
         state = accepted(engine.transition(state, CombatCommand.CompleteDraw)).state
         state = accepted(engine.transition(state, CombatCommand.EndWeave)).state
-        state = accepted(engine.transition(state, CombatCommand.CardBlock(4))).state
+        state = accepted(engine.transition(state, CombatCommand.CardBlock(14))).state
         state = accepted(engine.transition(state, CombatCommand.EndCast)).state
         state = accepted(engine.transition(state, CombatCommand.ResolveWall(listOf(List(7) { null })))).state
         state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
-        assertEquals(64, state.player.vigil)
-        assertEquals(0, state.player.block)
+        assertEquals(70, state.player.vigil)
+        assertEquals(4, state.player.block)
         state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
         assertEquals(0, state.player.block)
         assertEquals(1, state.turn)
@@ -128,7 +128,7 @@ class CombatCoreTest {
 
     @Test fun flaskHealsThirtyConsumesOneAndRejectsAtFullVigil() {
         var state = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(1)))
-        state = state.copy(player = state.player.copy(vigil = 50))
+        state = state.copy(player = state.player.copy(vigil = 40))
         state = accepted(engine.transition(state, CombatCommand.UseFlask)).state
         assertEquals(1, state.player.flasks)
         assertEquals(70, state.player.vigil)
