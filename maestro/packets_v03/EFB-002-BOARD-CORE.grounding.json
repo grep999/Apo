@@ -14,7 +14,9 @@
     "docs/adr/ADR-008-wall-and-overflow.md",
     "docs/adr/ADR-012-seal-column.md",
     "EFB-000 baseline dependency: PR #4 accepted merge commit, after independent review of the current head and matching E00 evidence",
-    "EFB-001 rules dependency: PR #5 accepted merge commit containing Product Owner resolutions"
+    "EFB-001 rules dependency: PR #5 accepted merge commit containing Product Owner resolutions",
+    "docs/adr/ADR-005-spectrum-run.md",
+    "docs/adr/ADR-010-brand-cost.md"
   ],
   "constraints": [
     "Execution status is BLOCKED until independent review accepts the current PR #4 head with matching successful E00 workflow evidence and PR #5 Product Owner resolutions are accepted.",
@@ -56,9 +58,14 @@
     "Property tests cover coordinate bounds, no duplicate cells, group connectivity, gravity conservation, sealed-column invariants and save/replay.",
     "Statistical test over at least 100,000 seeds validates deck-derived hue weights and records fallback frequency.",
     "Pure-JVM boundary check passes; unit/property/golden tests, formatting, lint and build pass.",
-    "Independent Mastery review examines exact candidate SHA and test artifacts."
+    "Independent Mastery review examines exact candidate SHA and test artifacts.",
+    "Pop resolution returns a deterministic immutable result containing resolved base hue, ordered group cells, group size, base Ink payout, Spectrum Run state/multiplier and chip damage; turn-level payment/application remains outside this increment.",
+    "Playable-hue pop Ink follows ADR-003 and ADR-005 exactly: min(n, 8) + floor(max(n - 8, 0) / 2), multiplied by the resolved Run factor with the single final rounding rule; Ash pays zero base Ink.",
+    "Spectrum Run follows ADR-005 golden cases: first pop ×1.0; ordered wheel progression; wrap; repeated/out-of-order reset; Prism substitutes for the next expected hue for one step only; reset at turn boundary.",
+    "Pop chip damage is n - 1 and is returned as a board action result; enemy Block application is deferred to EFB-003.",
+    "Board generation follows ADR-002: rows 0–1 empty, rows 2–6 seeded, 32 whole-board retries on the same deterministic RNG stream, then one adjacent-pair fallback with BoardGenerationFallback telemetry; verify fallback rate <0.01% across 100,000 seeds."
   ],
-  "next_increment": "After EFB-002 is accepted, EFB-003 implements turn phases, Ink resources, enemy intents and transactional effect queue; EFB-005 content expansion remains behind the board/combat vertical slice.",
+  "next_increment": "After EFB-002 is accepted, EFB-003 consumes the typed board action results to implement Draw/Weave/Cast/Wall/Enemy/Cleanup, Ink resource caps and carry-over, Vigil/Block/Flasks, two-intent enemy state and transactional legal actions. Cards/effect queues remain EFB-004; class/content breadth remains behind the playable first-encounter vertical slice.",
   "current_status": "BLOCKED_PENDING_EFB000_INDEPENDENT_REVIEW",
   "no_implementation_authorized": true
 }
