@@ -27,40 +27,35 @@
     "Defensively immutable combat snapshots, player Ink, intent sequences, Brand targets and wall-row commands.",
     "Sealed-column incoming rows remain frozen through Wall insertion and enemy Ash Row/Stain effects, honoring ADR-012 at the combat integration boundary.",
     "Card Pop integration command during Cast: resolves board Pop without spending a Weave Tap or decrementing Fog's three-Tap duration.",
-    "Versioned command replay frames with per-step checkpoint digests and explicit rejected-command frames."
+    "Versioned command replay frames with per-step checkpoint digests and explicit rejected-command frames.",
+    "Run seed is captured in CombatState and included with the combat rules version in every replay checkpoint digest."
   ],
   "checks": [
     {
       "name": "Pure JVM / Android boundary",
-      "status": "PASSED_ON_EARLIER_CANDIDATE",
-      "run_id": 45272406052,
-      "required": true
+      "status": "PASS_ON_PRIOR_CANDIDATE",
+      "run_id": 45273205685,
+      "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
     },
     {
       "name": "Gradle clean test",
-      "status": "PENDING_FINAL_CANDIDATE",
+      "status": "PASS_ON_PRIOR_CANDIDATE",
       "run_id": 45273205685,
-      "required": true
+      "ran_on_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c"
     },
     {
-      "name": "Earlier test run 45272406052",
-      "status": "FAILED_OLD_CANDIDATE",
-      "detail": "58 tests, 1 stale assertion on sealed incoming row; corrected in later candidate."
-    },
-    {
-      "name": "Earlier test run 45272688983",
-      "status": "FAILED_OLD_CANDIDATE",
-      "detail": "Test source brace placed later regression tests outside CombatCoreTest; corrected in candidate 8dd0a03."
+      "name": "Final-candidate Gradle/JUnit + pure-JVM",
+      "status": "QUEUED",
+      "run_id": 45273418357,
+      "ran_on_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15"
     },
     {
       "name": "Independent Mastery",
-      "status": "PENDING",
-      "required": true
+      "status": "PENDING"
     },
     {
       "name": "Repetition",
-      "status": "PENDING",
-      "required": true
+      "status": "PENDING"
     }
   ],
   "scope_exclusions": [
@@ -74,7 +69,7 @@
     "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
     "No Android/device evidence is claimed for this pure JVM increment."
   ],
-  "next_action": "Complete exact-head Gradle/JUnit and pure-JVM run 45273205685 on candidate 8dd0a03ceae047a72d783eeee81df037952ac18c; fix any remaining defects, then independent Mastery and Repetition.",
-  "candidate_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
-  "candidate_ref": "git:8dd0a03ceae047a72d783eeee81df037952ac18c"
+  "next_action": "Complete run 45273418357 against final candidate fbb8b07c134b77825cedac3f65389be13f11fd15. Then independent Mastery and Repetition.",
+  "candidate_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+  "candidate_ref": "git:fbb8b07c134b77825cedac3f65389be13f11fd15"
 }
