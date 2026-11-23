@@ -12,11 +12,13 @@
     "engineering/CODING_AGENT_ROADMAP.md#16",
     "engineering/CODING_AGENT_ROADMAP.md#17",
     "docs/adr/ADR-001-turn-phases.md",
-    "EFB-002 candidate: git:3fcb5f2c0ba3ae68690f64342e686f06b8f76061",
-    "EFB-002 exact-candidate CI: GitHub Actions runs 45209604945 and 45209604883"
+    "EFB-002 current draft candidate: git:6b6e139890a205ead337a94226464a0b5ddd82da (PR #14; not accepted)",
+    "EFB-002 exact-head CI: Board Core run 45265105730; Maestro GateRunner run 45265105467; ADR validator run 45265105426",
+    "EFB-000 merged baseline: git:5130215cb0a033345752311903de7f9c08aced4d; follow-up validator run 45265389152 passed but independent merged-tree review and rights disposition remain pending",
+    "EFB-000 provenance: no LICENSE/COPYING/NOTICE in pinned handoff snapshot 26f0e9... or legacy prototype snapshot e3610946...; legacy code reuse is not cleared until ownership/rights are confirmed"
   ],
   "constraints": [
-    "No implementation until EFB-002 independent Mastery PASS/accepted disposition, EFB-000 merged-tree review and EFB-002 Repetition are complete.",
+    "No implementation until EFB-002 independent Mastery PASS/accepted disposition, EFB-000 merged-tree review, EFB-002 Repetition, a real independent-review dispatch route and durable Maestro state continuity are complete.",
     "Preserve all accepted v0.2 rules and Product Owner decisions. Do not re-litigate closed ADRs.",
     "Pure Kotlin/JVM simulation remains independent of Android APIs; no Android UI in this increment.",
     "Use a deterministic command/reducer architecture. UI preview must be pure and must not consume RNG or mutate state.",
@@ -31,8 +33,9 @@
     "No unapproved merge, publish, store submission or deploy; no secrets in commits or logs."
   ],
   "dependencies": [
-    "EFB-002-BOARD-CORE: candidate 3fcb5f2c0ba3ae68690f64342e686f06b8f76061 has exact CI PASS but is not accepted; independent Mastery remains pending.",
-    "EFB-000-BASELINE: merged tree 5130215cb0a033345752311903de7f9c08aced4d; independent review remains pending."
+    "EFB-002-BOARD-CORE: current draft candidate 6b6e139890a205ead337a94226464a0b5ddd82da has exact-head CI PASS but is not accepted; the half-Ink payout correction is included; independent Mastery remains pending.",
+    "EFB-000-BASELINE: merged tree 5130215cb0a033345752311903de7f9c08aced4d; follow-up validator revalidation passed, but independent review and rights confirmation remain pending.",
+    "Maestro governance: Copilot reviewer dispatch currently fails HTTP 412 insufficient premium quota; durable cross-run state continuity is unresolved. EFB-003 must not start until a working independent-review route and durable workflow checkpoint exist."
   ],
   "risks": [
     "R1: incorrect phase order can create double Wall rises, missed intents or unintended card/board timing.",
@@ -40,7 +43,9 @@
     "R1: Block reset timing, damage ordering, Delay and status durations can create hidden or exploitable outcomes.",
     "R1: enemy board attacks may target sealed, missing or invalid cells unless target legality is explicit.",
     "R1: lethal damage, Flask use and end-turn cleanup can leave partially committed states without atomic transitions.",
-    "R1: premature card integration will entangle EFB-003 and EFB-004; define interfaces only."
+    "R1: premature card integration will entangle EFB-003 and EFB-004; define interfaces only.",
+    "P1: legacy prototype license/ownership/reuse rights are not evidenced; EFB-003 must not copy legacy source or assets.",
+    "P1: EFB-002 remains an unaccepted draft candidate; do not code against its API as a frozen contract until Mastery/Repetition acceptance."
   ],
   "acceptance": [
     "Explicit state machine covers Draw, Weave, Cast, Wall, Enemy and Cleanup with legal transitions and phase-specific commands.",
@@ -61,7 +66,7 @@
     "Repetition records expected/actual outcome, durable lessons, accepted state and next increment."
   ],
   "next_increment": "After EFB-002 acceptance and Repetition, start the EFB-003 Maestro workflow, ground the exact turn/combat interfaces, then implement one bounded player-vs-first-enemy vertical combat slice before broadening enemy content.",
-  "current_status": "PREPARED_BLOCKED_PENDING_EFB002_ACCEPTANCE",
+  "current_status": "PREPARED_BLOCKED_PENDING_EFB002_AND_EFB000_ACCEPTANCE_AND_MAESTRO_GOVERNANCE",
   "no_implementation_authorized": true,
-  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@1f9d8c3a3b027e4412cb9b8db7689eda9fd93f23"
+  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@32edb053f786bdffbf20d978364cdece192bba32"
 }
