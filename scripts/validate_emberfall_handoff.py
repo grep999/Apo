@@ -10,15 +10,16 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+BASELINE_HANDOFF_COMMIT = "26f0e9afb6c175b1d2a26c55de8098ae5deab580"
 LEGACY_REF = "origin/implementation/emberfall-latest-source"
+EXPECTED_LEGACY_COMMIT = "e3610946ecf4caf91f0e1d2a232af714b88e65c2"
 EXPECTED_MAESTRO_COMMIT = "e5247d950fd48a8e1e07acec68ffd04d1445ba55"
 
 
 def read(path: str) -> str:
-    p = ROOT / path
-    if not p.is_file():
-        raise SystemExit(f"REQUIRED FILE MISSING: {path}")
-    return p.read_text(encoding="utf-8")
+    # Validate the immutable EFB-000 handoff snapshot, not today's moving
+    # handoff branch (which legitimately changes as later epics land).
+    return git_show(BASELINE_HANDOFF_COMMIT, path)
 
 
 def git_show(ref: str, path: str) -> str:
@@ -91,8 +92,17 @@ def main() -> None:
 
     # The handoff branch is intentionally docs-led. Absence of app source is a
     # recorded applicability result, not a failed Android build.
-    handoff_has_app = (ROOT / "app/src/main").exists()
-    handoff_has_gradle = (ROOT / "settings.gradle.kts").exists() and (ROOT / "build.gradle.kts").exists()
+    handoff_tree = subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", BASELINE_HANDOFF_COMMIT],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.splitlines()
+    handoff_has_app = any(path.startswith("app/src/main/") for path in handoff_tree)
+    handoff_has_gradle = (
+        "settings.gradle.kts" in handoff_tree and "build.gradle.kts" in handoff_tree
+    )
     assert not handoff_has_app and not handoff_has_gradle, (
         "Handoff branch unexpectedly contains Android source/build files; update E00 applicability."
     )
@@ -101,6 +111,16 @@ def main() -> None:
     legacy_catalog = git_show(LEGACY_REF, "app/src/main/java/com/example/engine/GameCatalog.kt")
     legacy_progression = git_show(LEGACY_REF, "app/src/main/java/com/example/engine/ProgressionSystem.kt")
     legacy_contract = git_show(LEGACY_REF, "docs/AAA/emberfall/ENGINE_CONTRACT.md")
+    legacy_commit = subprocess.run(
+        ["git", "rev-parse", LEGACY_REF],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    assert legacy_commit == EXPECTED_LEGACY_COMMIT, (
+        f"legacy prototype ref drifted: expected {EXPECTED_LEGACY_COMMIT}, got {legacy_commit}"
+    )
     legacy_tree = subprocess.run(
         ["git", "ls-tree", "-r", "--name-only", LEGACY_REF],
         cwd=ROOT,
@@ -108,6 +128,13 @@ def main() -> None:
         text=True,
         check=True,
     ).stdout.splitlines()
+
+    def is_license_path(path: str) -> bool:
+        name = Path(path).name.upper()
+        return name in {"LICENSE", "COPYING", "NOTICE"} or name.startswith(("LICENSE.", "COPYING.", "NOTICE."))
+
+    legacy_license_files = sorted(path for path in legacy_tree if is_license_path(path))
+    handoff_license_files = sorted(path for path in handoff_tree if is_license_path(path))
 
     card_count = len(re.findall(r"CardDef\(", legacy_catalog))
     relic_count = len(re.findall(r"RelicDef\(", legacy_catalog))
@@ -133,14 +160,28 @@ def main() -> None:
     result = {
         "project_id": "EMBERFALL",
         "baseline_sha": git_sha(),
+        "source_baseline_commit": BASELINE_HANDOFF_COMMIT,
         "handoff_branch_android_source": handoff_has_app,
         "handoff_branch_gradle_build": handoff_has_gradle,
         "wbs_epic_count": len(epics),
         "maestro_task_count": len(task_ids),
         "adr_row_count": len(adr_rows),
         "adr_status_counts": dict(status_counts),
+        "handoff_license_files": handoff_license_files,
+        "handoff_source_reuse_authorization": (
+            "NO_GRANT_VISIBLE_RIGHTS_CONFIRMATION_REQUIRED"
+            if not handoff_license_files
+            else "LICENSE_FILES_PRESENT_MANUAL_CONTENT_AND_OWNERSHIP_REVIEW_REQUIRED"
+        ),
         "legacy_prototype": {
             "ref": LEGACY_REF,
+            "commit": legacy_commit,
+            "license_files": legacy_license_files,
+            "source_reuse_authorization": (
+                "NO_GRANT_VISIBLE_RIGHTS_CONFIRMATION_REQUIRED"
+                if not legacy_license_files
+                else "LICENSE_FILES_PRESENT_MANUAL_CONTENT_AND_OWNERSHIP_REVIEW_REQUIRED"
+            ),
             "card_definitions": card_count,
             "relic_definitions": relic_count,
             "support_definitions": support_count,

@@ -145,3 +145,12 @@ After EFB-000 independent review and PR #5 acceptance, begin EFB-002 group-pop b
 ## 11. Current EFB-000 disposition
 
 Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The reviewer must inspect the current PR #4 head and its matching successful E00 workflow artifact, verifying source classification, v0.2/legacy rule divergence, ADR-count discrepancy, workflow/validator correctness and exact evidence. Any new commit supersedes prior review evidence and requires a fresh workflow run and review. Only after approval should Maestro advance from GROUNDING.
+
+
+## 12. License and source-provenance boundary
+
+A repository-tree inspection at the EFB-000 merged commit found no `LICENSE`, `COPYING` or `NOTICE` file in either the handoff tree (`5130215cb0a033345752311903de7f9c08aced4d`) or the inspected legacy prototype tree (`implementation/emberfall-latest-source@e3610946ecf4caf91f0e1d2a232af714b88e65c2`). GitHub repository metadata also reports no declared license.
+
+**Disposition:** no repository-level license grant is visible. Treat the legacy prototype source as not cleared for copying, redistribution or incorporation into the v0.2 product until ownership and reuse rights are explicitly confirmed. Reusable architectural ideas may inform independent implementation, but this baseline does not establish permission to copy legacy source. Record any third-party assets/dependencies and their licenses before external distribution.
+
+This is a provenance/reuse gate, not a claim that the project owner lacks ownership. The missing license metadata must not be silently interpreted as MIT, Apache-2.0 or any other open-source grant.

@@ -1,0 +1,343 @@
+{
+  "project_id": "EMBERFALL",
+  "checkpoint_date": "2026-11-23",
+  "release_status": "NOT_RELEASE_READY",
+  "source_spec": "references/EMBERFALL_GAME_SPEC_v0.2.txt",
+  "maestro_version": "0.3.0",
+  "evidence_policy": "Exact-candidate VERIFIED evidence is required. Independent Mastery is the default review gate; any Product Owner waiver must be explicit, recorded with rationale, and must never be represented as an independent review.",
+  "baseline": {
+    "efb000": {
+      "status": "HISTORICAL_ARCHIVE_LEGACY_EXCLUDED",
+      "pr": 4,
+      "merge_sha": "5130215cb0a033345752311903de7f9c08aced4d",
+      "review_submissions": 0,
+      "required_next": "Product Owner explicitly excluded the legacy prototype and all associated source/assets from the clean product baseline. No ownership/reuse clearance is sought for excluded material. Retain EFB-000 provenance and validator evidence for historical audit only; it is not a prerequisite for EFB-003.",
+      "maestro_workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
+      "maestro_stage": "GROUNDING",
+      "maestro_revision": 1,
+      "ready_work_items": 2,
+      "assignments": 0,
+      "e00_run_id": 45179968109,
+      "e00_artifact_id": 14819098938,
+      "review_input": "maestro/reviews_v03/EFB-000-BASELINE.review-input.json",
+      "follow_up_validation": {
+        "run_id": 45265389152,
+        "head_sha": "0e33494e5285e78bf269d28665c55bdaf93c5835",
+        "status": "success",
+        "artifact_id": 14861569882,
+        "artifact_sha256": "ae91952f9d7a029e6524cc1a3765751307db7f724fa423c249a89bd6a082bb6b",
+        "source_baseline_commit": "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
+        "legacy_prototype_commit": "e3610946ecf4caf91f0e1d2a232af714b88e65c2",
+        "handoff_license_files": [],
+        "legacy_license_files": [],
+        "reuse_authorization": "NOT_APPLICABLE_LEGACY_EXCLUDED_BY_PRODUCT_OWNER"
+      },
+      "product_owner_disposition": {
+        "decision": "LEGACY_PROTOTYPE_AND_ASSOCIATED_ASSETS_EXCLUDED",
+        "source_of_truth": "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md",
+        "effect": "No copying, porting, linking, packaging or dependency on legacy prototype source/assets; EFB-000 historical review/rights clearance no longer gates clean-room increments."
+      }
+    },
+    "efb001": {
+      "status": "MERGED_PRODUCT_OWNER_ADR_VALIDATION_PASS_NO_FORMAL_REVIEW_SUBMISSION",
+      "pr": 5,
+      "merge_sha": "f9a41aa373d36d41a0c134c8005fb5984fecd2b3",
+      "review_submissions": 0,
+      "required_next": "Preserve accepted Product Owner decisions; formal review/Maestro evidence remains absent; do not reopen accepted ADRs.",
+      "validation_run_id": 45180407668,
+      "validation_artifact_id": 14821425791,
+      "review_input": "maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json"
+    },
+    "efb002": {
+      "status": "PRODUCT_OWNER_ACCEPTED_REVIEW_WAIVED",
+      "pr": 14,
+      "candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+      "draft": true,
+      "mergeable": true,
+      "workflow_id": "18096733-d9eb-4ce6-bac5-c3c77a947e60",
+      "workflow_stage": "MASTERY",
+      "workflow_status": "ACTIVE_RUN_SCOPED_NOT_DURABLY_RECONCILED",
+      "revision": 5,
+      "completed_momentum_items": 3,
+      "pending_mastery_items": 1,
+      "review_assignment_status": "WAIVED_BY_PRODUCT_OWNER",
+      "required_checks": [
+        {
+          "name": "gradle-junit-exact-candidate",
+          "status": "VERIFIED",
+          "exit_code": 0,
+          "run_id": 45265105467,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+          "log_sha256": "568e0a0033596669f33015617774f4f7f5d7d607c6f204345991ad57971f28fa"
+        },
+        {
+          "name": "pure-jvm-boundary",
+          "status": "VERIFIED",
+          "exit_code": 0,
+          "run_id": 45265105467,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+          "log_sha256": "ce4db7edbc0b3f58a04e8a857be2076d906aea037be04da98da8f4d452d6c2c3"
+        },
+        {
+          "name": "board-core-pr-workflow",
+          "status": "SUCCESS",
+          "run_id": 45265105730,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+        },
+        {
+          "name": "efb001-adr-validator",
+          "status": "SUCCESS",
+          "run_id": 45265105426,
+          "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+        }
+      ],
+      "required_next": "EFB-002 accepted by Product Owner at exact SHA 6b6e139890a205ead337a94226464a0b5ddd82da; one review round completed and further Mastery waived. PR #14 remains draft; no additional EFB-002 review is required absent new evidence.",
+      "review_input": "maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json",
+      "original_remediation_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
+      "branch": "feat/efb002-remediation-rebased",
+      "workflow_scope": "RUN_SCOPED_ARTIFACT_NOT_DURABLE_RESUME",
+      "review_assignment_id": "9cb25ee3-3a1e-43fd-99e4-3eb9fde2a81f",
+      "evidence_artifact": {
+        "run_id": 45265105467,
+        "artifact_id": 14861514908,
+        "name": "emberfall-efb-002-maestro-evidence",
+        "sha256": "02d107084f1ea96a750e378d557224af8556c5534eca2c0a202263fd02043f00"
+      },
+      "pre_review_findings": {
+        "half_ink_truncation": "FIXED_IN_CANDIDATE_AND_EXACT_CI_VERIFIED; independent review pending",
+        "hue_weight_test_oracle": "FIXED_WITH_GOLDEN_EXPECTED_VALUES; independent review pending"
+      },
+      "product_owner_acceptance": {
+        "disposition": "ACCEPTED",
+        "exact_candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+        "review_rounds_required": 1,
+        "additional_independent_mastery": "WAIVED_BY_PRODUCT_OWNER",
+        "acceptance_comment": "https://github.com/grep999/Apo/pull/14#issuecomment-7114277343",
+        "evidence_runs": [
+          45265105730,
+          45265105467,
+          45265105426
+        ],
+        "note": "This is explicit Product Owner acceptance, not an independent Mastery review submission."
+      },
+      "repetition_record": "maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json",
+      "repetition_status": "RECORDED_AS_PRODUCT_OWNER_GOVERNANCE_PACKET_NOT_NATIVE_MAESTRO_DB_EVENT",
+      "native_workflow_reconciliation": "PENDING; historical workflow artifacts are run-scoped and do not prove durable cross-run resume."
+    },
+    "efb003": {
+      "status": "IMPLEMENTATION_CANDIDATE_PENDING_EXACT_SHA_CI_AND_MASTERY",
+      "pr": 15,
+      "branch": "feat/efb003-turn-combat-clean",
+      "base_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+      "candidate_sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
+      "draft": true,
+      "mergeable": true,
+      "implementation": "Deterministic pure Kotlin/JVM turn/combat reducer; explicit phases; player resources; two-intent deterministic preview; all ten intent contracts; Wall/Overflow/Seal integration; Card Pop/Block/Damage/Delay seams; versioned command replay and checkpoint digest.",
+      "legacy_policy": "EXCLUDED_NO_SOURCE_OR_ASSET_REUSE",
+      "required_checks": [
+        {
+          "name": "pure-jvm-boundary",
+          "status": "PASS",
+          "run_id": 45274051704,
+          "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
+        },
+        {
+          "name": "gradle-junit",
+          "status": "PASS",
+          "run_id": 45274051704,
+          "ran_on_sha": "e9864637575275323aeb1104f9bd0a606c94a80a"
+        },
+        {
+          "name": "independent-mastery",
+          "status": "PENDING"
+        },
+        {
+          "name": "repetition",
+          "status": "PENDING"
+        }
+      ],
+      "known_earlier_failures": [
+        {
+          "run_id": 45272406052,
+          "detail": "Old candidate: stale Seal/Stain incoming-row assertion; corrected."
+        },
+        {
+          "run_id": 45272688983,
+          "detail": "Old candidate: regression tests placed outside test class; corrected."
+        },
+        {
+          "run_id": 45273418357,
+          "detail": "Final retry compiled production source but test compilation found run-seed test outside CombatCoreTest; moved inside class. First attempt in same run had Maven 429."
+        }
+      ],
+      "next": "Obtain independent Mastery review of exact SHA e9864637575275323aeb1104f9bd0a606c94a80a, resolve any findings and complete Repetition. Keep PR #15 draft until then.",
+      "verified_prior_candidate": {
+        "sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
+        "run_id": 45273205685,
+        "conclusion": "success",
+        "tests": "Gradle clean test passed; pure-JVM boundary passed. This is not the final candidate SHA."
+      },
+      "verified_final_candidate": {
+        "sha": "e9864637575275323aeb1104f9bd0a606c94a80a",
+        "run_id": 45274051704,
+        "conclusion": "success",
+        "pure_jvm_boundary": "PASS",
+        "gradle_clean_test": "PASS"
+      }
+    }
+  },
+  "epics": [
+    {
+      "id": "EFB-000-BASELINE",
+      "status": "PARTIAL",
+      "maestro_state": "MERGED",
+      "next": "Independent merged-tree review pending; no LICENSE/COPYING/NOTICE in handoff or legacy tree, so legacy source reuse is not cleared."
+    },
+    {
+      "id": "EFB-001-RULES-ADR",
+      "status": "PARTIAL",
+      "maestro_state": "MERGED",
+      "next": "Product Owner decisions and validator evidence present; no formal review submission/native Maestro workflow."
+    },
+    {
+      "id": "EFB-002-BOARD-CORE",
+      "status": "ACCEPTED",
+      "maestro_state": "PRODUCT_OWNER_ACCEPTED_REPETITION_RECORDED_NATIVE_WORKFLOW_RECONCILIATION_PENDING",
+      "next": "Accepted by Product Owner at exact candidate 6b6e1398; additional independent Mastery waived; Repetition recorded. No further EFB-002 review required absent new evidence."
+    },
+    {
+      "id": "EFB-003-TURN-COMBAT",
+      "status": "IN_PROGRESS",
+      "maestro_state": "MOMENTUM_CANDIDATE_PR15_PENDING_EXACT_SHA_CI_MASTERY_REPETITION",
+      "next": "Candidate e9864637575275323aeb1104f9bd0a606c94a80a passed exact-SHA run 45274051704 (pure-JVM and full Gradle/JUnit). Independent Mastery and Repetition remain pending."
+    },
+    {
+      "id": "EFB-004-CARD-EFFECTS",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-002 and EFB-003."
+    },
+    {
+      "id": "EFB-005-CLASSES-STARTER",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-004."
+    },
+    {
+      "id": "EFB-006-ENEMIES-BOSSES",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-003 and EFB-004."
+    },
+    {
+      "id": "EFB-007-RUN-PROGRESSION",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-005 and EFB-006."
+    },
+    {
+      "id": "EFB-008-SHADE-NARRATIVE",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-007."
+    },
+    {
+      "id": "EFB-009-ANDROID-CLIENT",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-002, EFB-003 and EFB-004."
+    },
+    {
+      "id": "EFB-010-ART-ASSET-PIPELINE",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-009 and approved art direction/assets."
+    },
+    {
+      "id": "EFB-011-AUDIO-HAPTICS",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-009 and EFB-010."
+    },
+    {
+      "id": "EFB-012-SAVE-REPLAY",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-002 and EFB-007."
+    },
+    {
+      "id": "EFB-013-BALANCE-LAB",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on EFB-004, EFB-006, EFB-007 and EFB-012."
+    },
+    {
+      "id": "EFB-014-FULL-CONTENT",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on classes, enemies, progression, narrative and balance."
+    },
+    {
+      "id": "EFB-015-BACKEND",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on saves/replay and balance; optional and must not block offline play."
+    },
+    {
+      "id": "EFB-016-QA-RELEASE",
+      "status": "NOT_STARTED",
+      "maestro_state": "INBOX",
+      "next": "Blocked on all required client, art, audio, persistence, balance and content deliverables."
+    }
+  ],
+  "release_milestones": {
+    "M-1": "PARTIAL",
+    "M0": "NOT_STARTED",
+    "M1": "NOT_STARTED",
+    "M2": "NOT_STARTED",
+    "M3": "NOT_STARTED",
+    "M4": "NOT_STARTED",
+    "M5": "NOT_STARTED"
+  },
+  "next_sequence": [
+    "EFB-000 merged-tree independent review and rights disposition",
+    "Maestro durable workflow continuity and independent-review dispatch",
+    "EFB-003 turn/combat",
+    "EFB-004 card/effects",
+    "EFB-005 classes",
+    "EFB-006 enemies/bosses",
+    "EFB-007 progression",
+    "EFB-008 Shade/narrative",
+    "EFB-009 Android client",
+    "EFB-010 art",
+    "EFB-011 audio/haptics",
+    "EFB-012 save/replay",
+    "EFB-013 balance",
+    "EFB-014 full content",
+    "EFB-015 optional backend",
+    "EFB-016 QA/release"
+  ],
+  "maestro_governance": {
+    "state_continuity": "NEEDS_FIX_BEFORE_NEXT_INCREMENT",
+    "reason": "PR workflow creates a fresh coding-start workflow/database on each run; latest artifact is run-scoped and does not prove durable resume.",
+    "reviewer_dispatch": "BLOCKED_PREMIUM_QUOTA",
+    "reason_reviewer": "Both EFB-000 and EFB-002 Copilot cloud-agent dispatch attempts failed HTTP 412: insufficient premium quota to create assignment. No reviewer session exists.",
+    "next_action": "EFB-003 clean-room implementation is underway; complete exact-candidate CI, independent Mastery and Repetition. Maestro cross-run state continuity and real reviewer dispatch remain governance improvements, not source implementation blockers. EFB-000 rights clearance for excluded legacy material is retired."
+  },
+  "next": [
+    "EFB-003 exact-SHA CI, independent Mastery and Repetition",
+    "EFB-004 card/effects",
+    "EFB-005 classes",
+    "EFB-006 enemies/bosses",
+    "EFB-007 progression",
+    "EFB-008 Shade/narrative",
+    "EFB-009 Android client",
+    "EFB-010 art",
+    "EFB-011 audio/haptics",
+    "EFB-012 save/replay",
+    "EFB-013 balance",
+    "EFB-014 full content",
+    "EFB-015 optional backend",
+    "EFB-016 QA/release"
+  ]
+}

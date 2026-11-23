@@ -1,0 +1,120 @@
+{
+  "review_type": "INDEPENDENT_MASTERY_REVIEW_INPUT",
+  "project_id": "EMBERFALL",
+  "task_id": "EFB-000-BASELINE",
+  "target_merged_commit": "5130215cb0a033345752311903de7f9c08aced4d",
+  "pr_number": 4,
+  "pr_head_sha": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+  "merge_parents": [
+    "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
+    "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce"
+  ],
+  "e00_validation_run": {
+    "run_id": 45179968109,
+    "status": "success",
+    "artifact_id": 14819098938,
+    "artifact_name": "emberfall-efb-000-maestro-evidence",
+    "artifact_sha256": "2d2e94cd381f82177252772170df55b5ea30810febff501858784282bec2c5dc",
+    "validated_pr_head": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+    "gate_runner_check": {
+      "name": "compileall",
+      "status": "VERIFIED",
+      "exit_code": 0,
+      "runner_identity": "gate-runner@runnervm0hi8g",
+      "ran_on_sha": "3555ae5a8e7b74e181c201e0a20482ac8f7a3bce",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "maestro_workflow": {
+    "workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
+    "stage": "GROUNDING",
+    "status": "ACTIVE",
+    "revision": 1,
+    "ready_grounding_items": 2,
+    "assignments": 0,
+    "mastery_started": false
+  },
+  "review_scope": [
+    "Inspect the merged tree at target_merged_commit, not merely the former PR head.",
+    "Verify authoritative v0.2 spec, WBS, ADR and source hierarchy.",
+    "Verify legacy prototype branch provenance and explicit separation of swap-match-3 rules from v0.2 connected-group Tap/Pop.",
+    "Verify branch inventory, source/license/IP risk records and build applicability.",
+    "Verify the handoff baseline has no Android app and that Android build gates are correctly NOT_APPLICABLE rather than PASS.",
+    "Verify the discrepancy between 19 blocking ADRs and the simulated QA report's 18 is recorded accurately.",
+    "Verify pinned Maestro v0.3.0, bootstrap, contract tests and GateRunner evidence.",
+    "Verify E00 artifact's baseline_sha, runner identity, ran_on_sha and log hash; reconcile that the artifact checks PR head 3555... while the reviewed target is merge commit 513... with that PR head as second parent.",
+    "Verify no simulated persona review is represented as human playtest evidence.",
+    "Identify missing or stale source references, WBS/task mismatches and any unsupported claims.",
+    "Verify whether the merged baseline repository and legacy prototype carry LICENSE, COPYING or NOTICE files; the repository API reports no declared license and both inspected trees currently contain no license file."
+  ],
+  "required_output": {
+    "verdict": [
+      "PASS",
+      "REQUEST_CHANGES",
+      "BLOCKED"
+    ],
+    "findings": "File/line-specific findings and severity.",
+    "evidence": "Exact merged SHA, E00 artifact/run, reviewer identity and coverage.",
+    "acceptance": "No PASS if the merged tree diverges from evidence or any source/provenance claim is unsupported."
+  },
+  "independence_requirement": "Reviewer must be distinct from the EFB-000 builder/orchestrator and record an explicit identity.",
+  "read_only": true,
+  "target_merged_tree_sha": "46ab2989e863f9bb165d75404e35cbeb2e2c02b5",
+  "pr_head_tree_sha": "01bfd33543581fffacb0894b9c1421f488e05b02",
+  "pre_review_findings": {
+    "evidence_class": "PRODUCT_OWNER_ORCHESTRATOR_PRE_REVIEW_NOT_INDEPENDENT_MASTERY",
+    "exact_target": "5130215cb0a033345752311903de7f9c08aced4d",
+    "findings": [
+      {
+        "id": "E00-P1-LICENSE-PROVENANCE",
+        "severity": "P1",
+        "status": "OPEN_UNTIL_RIGHTS_CONFIRMED",
+        "location": [
+          "engineering/E00_REPOSITORY_SOURCE_BASELINE_2026-11-23.md Sections 1,3,7",
+          "scripts/validate_emberfall_handoff.py"
+        ],
+        "finding": "The report identifies legacy prototype code as reusable architecture candidates, but neither inspected tree contains LICENSE/COPYING/NOTICE and repository metadata has no declared license. This does not prove lack of ownership; it means reuse/redistribution rights are not evidenced.",
+        "required_action": "Confirm ownership and reuse rights; until then prohibit copying, incorporation and redistribution of legacy code. PR #12 follow-up records the limitation and emits machine-readable license inventory."
+      },
+      {
+        "id": "E00-P2-MUTABLE-LEGACY-REF",
+        "severity": "P2",
+        "status": "PATCHED_IN_PR12_PENDING_MERGE",
+        "location": [
+          "scripts/validate_emberfall_handoff.py"
+        ],
+        "finding": "The EFB-000 merged validator used a mutable remote legacy branch and did not assert its SHA. The governance follow-up pins expected legacy commit e3610946ecf4caf91f0e1d2a232af714b88e65c2 and emits the resolved SHA."
+      },
+      {
+        "id": "E00-P2-MOVING-HANDOFF-BASELINE",
+        "severity": "P2",
+        "status": "PATCHED_IN_PR12_PENDING_MERGE",
+        "location": [
+          "scripts/validate_emberfall_handoff.py"
+        ],
+        "finding": "The EFB-000 validator originally read current checkout files and expected 19 OPEN/BLOCKING ADRs. Later EFB-001 decisions legitimately changed the current handoff tree, causing a false failure. Follow-up pins the original EFB-000 handoff snapshot 26f0e9afb6c175b1d2a26c55de8098ae5deab580 and validates that immutable baseline while recording the current candidate SHA separately."
+      }
+    ],
+    "dispatch": {
+      "efb000_run": 45264179355,
+      "efb002_run": 45264204838,
+      "result": "HTTP_412_INSUFFICIENT_PREMIUM_QUOTA_TO_CREATE_ASSIGNMENT",
+      "reviewer_session_created": false
+    },
+    "status": "Independent review remains pending; no independent verdict recorded."
+  },
+  "latest_revalidation": {
+    "run_id": 45265389152,
+    "status": "success",
+    "head_sha": "0e33494e5285e78bf269d28665c55bdaf93c5835",
+    "artifact_id": 14861569882,
+    "artifact_sha256": "ae91952f9d7a029e6524cc1a3765751307db7f724fa423c249a89bd6a082bb6b",
+    "source_baseline_commit": "26f0e9afb6c175b1d2a26c55de8098ae5deab580",
+    "legacy_prototype_commit": "e3610946ecf4caf91f0e1d2a232af714b88e65c2",
+    "license_files": {
+      "handoff": [],
+      "legacy": []
+    },
+    "classification": "FOLLOW_UP_VALIDATOR_RECHECK_ON_PR12_GOVERNANCE_BRANCH; NOT_AN_INDEPENDENT_REVIEW_OF_MERGED_COMMIT_5130215"
+  }
+}

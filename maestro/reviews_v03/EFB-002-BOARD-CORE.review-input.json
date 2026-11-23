@@ -1,0 +1,151 @@
+{
+  "review_type": "INDEPENDENT_MASTERY_REVIEW_INPUT",
+  "project_id": "EMBERFALL",
+  "task_id": "EFB-002-BOARD-CORE",
+  "pr_number": 14,
+  "candidate_ref": "git:6b6e139890a205ead337a94226464a0b5ddd82da",
+  "candidate_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+  "base_ref": "handoff/emberfall-coding-agent-v1.0",
+  "base_sha": "32edb053f786bdffbf20d978364cdece192bba32",
+  "workflow_id": "18096733-d9eb-4ce6-bac5-c3c77a947e60",
+  "workflow_stage": "MASTERY",
+  "workflow_status": "ACTIVE",
+  "workflow_revision": 5,
+  "review_assignment_id": "9cb25ee3-3a1e-43fd-99e4-3eb9fde2a81f",
+  "review_assignment_status": "PROPOSED_NOT_ASSIGNED",
+  "builder_actor_recorded": "builder",
+  "builder_identity_quality": "Generic role label only; model/vendor identity was not recorded. Reviewer must record explicit identity and operator-confirmed independence.",
+  "independence_requirement": "Reviewer actor must differ from builder actor; prefer a different model/vendor and operator-confirmed separation. No self-review.",
+  "exact_candidate_checks": [
+    {
+      "name": "gradle-junit-exact-candidate",
+      "status": "VERIFIED",
+      "exit_code": 0,
+      "run_id": 45265105467,
+      "runner_identity": "github-actions/45265105467",
+      "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+      "log_sha256": "568e0a0033596669f33015617774f4f7f5d7d607c6f204345991ad57971f28fa"
+    },
+    {
+      "name": "pure-jvm-boundary",
+      "status": "VERIFIED",
+      "exit_code": 0,
+      "run_id": 45265105467,
+      "runner_identity": "github-actions/45265105467",
+      "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+      "log_sha256": "ce4db7edbc0b3f58a04e8a857be2076d906aea037be04da98da8f4d452d6c2c3"
+    },
+    {
+      "name": "board-core-pr-workflow",
+      "status": "SUCCESS",
+      "run_id": 45265105730,
+      "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+    },
+    {
+      "name": "efb001-adr-validator",
+      "status": "SUCCESS",
+      "run_id": 45265105426,
+      "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
+    }
+  ],
+  "evidence_artifact": {
+    "run_id": 45265105467,
+    "artifact_id": 14861514908,
+    "name": "emberfall-efb-002-maestro-evidence",
+    "sha256": "02d107084f1ea96a750e378d557224af8556c5534eca2c0a202263fd02043f00"
+  },
+  "changed_paths": [
+    ".github/workflows/efb002-board-core.yml",
+    ".gitignore",
+    "README.md",
+    "build.gradle.kts",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json",
+    "scripts/finalize_efb002_maestro.py",
+    "scripts/record_efb002_maestro_gates.py",
+    "scripts/validate_efb001_adr_proposals.py",
+    "settings.gradle.kts",
+    "src/main/kotlin/com/emberfall/board/BoardCore.kt",
+    "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt"
+  ],
+  "candidate_sha256": {
+    ".github/workflows/efb002-board-core.yml": "3d89c6e543043c227ec09072e0994c75d9206d9d0380d1e24b07f7e75a229f7c",
+    ".github/workflows/efb002-maestro-workflow.yml": "cbbf17a406b7ed3aad1a32db57d7a0a906df466467ca507fc37f44fa847c5fef",
+    ".gitignore": "36c9c9dee764ca7adbf35928f0ec1fb5062bcb6329be27706b7729aac5be696f",
+    "README.md": "647e3f7b7139ea93cbb7d42063265ba1ece4ecba79d8af479da981a06fa905da",
+    "build.gradle.kts": "a288aad85ce7ecd2cd0b1d156b397f7b44d0d960570066953c13aa1877eab0ee",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md": "ce3700e2129fef8cbf94179d0044ab99bce8ea4926ad255fbf2a0447176e041a",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json": "89d4a0fcef265de37c0ce73751b2b969d3eedc570a423aa62d73298c15a0f23a",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json": "19c7263300cbba6f949c3c129b7c41fb622c723e63a7a1a2480e77f97d57de6c",
+    "scripts/finalize_efb002_maestro.py": "9c19a73abe36c60d62d7a1f945a3a977cb03407c28160a71e095967cb214eff0",
+    "scripts/record_efb002_maestro_gates.py": "99ce3ae43acf16fe8fbf031bbbd98bae49522f263892aa6d3988fbc6e7ecf6c2",
+    "scripts/validate_efb001_adr_proposals.py": "e12708052d9f3e67d9596b7fc8180b0aa9ad9fdfd0f4a8252f991d71a330573f",
+    "settings.gradle.kts": "d4246c628b7999a5a127d12363533c3ea4c3d77c7ffae74bb351bc2072382f43",
+    "src/main/kotlin/com/emberfall/board/BoardCore.kt": "b2fcd158fe7be81884960654f7b6e62c3efbd108eae18381e2ae47e37209ca51",
+    "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt": "b96299324dd5c5fddf5a44749ed9bc950405f334c12d3b3c0bd0b9ff2182dbdd"
+  },
+  "review_scope": [
+    "BoardState immutability, invariants and construction boundaries.",
+    "Coordinate validation, group traversal ordering, deterministic Prism direct/adjacency resolution and prohibition on cross-hue bridging.",
+    "Ash zero-Ink/n-1 chip, Stone snapshot break ordering, Brand cost, Seal timer/frozen-column behavior, Wall/Overflow semantics.",
+    "Gravity conservation/order and no horizontal movement; randomized property coverage quality.",
+    "Spectrum wheel progression, Prism one-step substitution, Ash+Prism zero-Ink and payout rounding.",
+    "RNG stream separation, seed determinism, command replay, digest stability and transactional rejection.",
+    "100,000-seed generation/distribution/fallback tests and whether they actually assert the specified thresholds.",
+    "Test quality: edge cases, false positives, property test oracle independence and reproducibility.",
+    "Build configuration, pure-JVM boundary workflow, Gradle test workflow, Maestro gate script and exact-SHA binding.",
+    "Known ADR-002 neutral-spawn ambiguity: no guessed initial neutral spawn probabilities; verify implementation respects the accepted constraint."
+  ],
+  "review_gaps_to_resolve": {
+    "builder_identity": "Maestro event records generic actor 'builder'; model/vendor identity was not captured. Reviewer must record explicit identity and operator-confirmed independence.",
+    "review_assignment": "Assignment remains PROPOSED; no independent reviewer has been confirmed or dispatched.",
+    "separate_dependency": "EFB-000 merged-tree review remains a separate acceptance prerequisite; license/IP provenance rights are not yet confirmed.",
+    "state_continuity": "PR workflow creates a fresh Maestro workflow/database each run; latest artifact is run-scoped and does not prove durable resume.",
+    "tooling": "Formatting/lint tooling is not configured in the minimal Kotlin/JVM module; exact configured checks only should be claimed.",
+    "dispatch": "Copilot cloud reviewer dispatch failed HTTP 412 insufficient premium quota; no reviewer session exists."
+  },
+  "required_output": {
+    "verdict": [
+      "PASS",
+      "REQUEST_CHANGES",
+      "BLOCKED"
+    ],
+    "findings": "File/line-specific findings with severity, impact, reproduction and recommended fix.",
+    "evidence": "Exact candidate SHA, reviewed paths, tests rerun or evidence inspected, gate log hashes and reviewer identity.",
+    "acceptance": "Do not return PASS if a required invariant, acceptance criterion or exact-candidate evidence is not proven."
+  },
+  "no_self_approval": true,
+  "read_only": true,
+  "integration_branch": "feat/efb002-remediation-rebased",
+  "remediation_commit_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
+  "candidate_blob_sha": {
+    ".github/workflows/efb002-board-core.yml": "d595f67dc9d6710cd9a4aa574bff0abe3d1e6d59",
+    ".gitignore": "5c582ca52937d6daeb596fff580773eaea50015c",
+    "README.md": "0012f5cf5e09304de6cc57d9496366020dd62c83",
+    "build.gradle.kts": "75c59a9b287e1a68d0bc82f1f1b0fe02b938d304",
+    "engineering/EFB-002_IMPLEMENTATION_STATUS.md": "387fa064e62112c4ace49739aeb619431108eaa5",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json": "6e7c820aac0090e391e1ddd592c7eee14c008e84",
+    "maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json": "f8ab153dc8db88d6d41c00a0e04ba1310202e519",
+    "scripts/finalize_efb002_maestro.py": "2ce1ab0ef78acd780b30cde7edf38962a788753c",
+    "scripts/record_efb002_maestro_gates.py": "7e1aa41db1ef5215da1800691e1ca32b86901079",
+    "scripts/validate_efb001_adr_proposals.py": "dbf1c6a1e323321d50e01dae021072a0bb13930f",
+    "settings.gradle.kts": "bbba5a14eb21ff0cfa77b4eafe7ebcecd8b9f066",
+    "src/main/kotlin/com/emberfall/board/BoardCore.kt": "4a00b8535cee5ae5c8b103db7755253b9222a047",
+    "src/test/kotlin/com/emberfall/board/BoardCoreTest.kt": "e7631b644c27cc5cd467bc31f07bc9f5b196cfbb"
+  },
+  "pre_review_findings": [
+    {
+      "id": "EFB002-P1-HALF-INK-TRUNCATION",
+      "status": "RESOLVED_IN_CODE_PENDING_INDEPENDENT_VERIFICATION",
+      "resolution": "PopResult now retains baseInkHalfUnits; payout applies Spectrum multiplier to the exact half-unit numerator and rounds once half-up at final payout. Tests cover 9/11/13-cell cases and Run 0/1.",
+      "source_review_comment": "PR #14 Product Owner pre-review comment 7113765015"
+    },
+    {
+      "id": "EFB002-P2-HUE-WEIGHT-ORACLE",
+      "status": "RESOLVED_IN_TESTS_PENDING_INDEPENDENT_VERIFICATION",
+      "resolution": "Golden normalized weights and floor-dominated profile are asserted against independently calculated constants; 100,000-seed distribution test remains.",
+      "source_review_comment": "PR #14 Product Owner pre-review comment 7113765015"
+    }
+  ]
+}
