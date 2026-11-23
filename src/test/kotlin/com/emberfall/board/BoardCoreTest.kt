@@ -270,10 +270,34 @@ class BoardCoreTest {
         assertTrue(hasLegalPair(a.board))
     }
 
-    @Test fun hueWeightsNormalizeAndRespectFloor() {
-        val weights = DeckHueProfile(12, mapOf(Hue.EMBER to 5, Hue.TIDE to 4, Hue.MOSS to 3)).weights()
-        assertEquals(1_000_000L, weights.values.sum())
-        assertTrue(weights.values.all { it > 0L })
+    @Test fun hueWeightsMatchGoldenFormulaAndFloorBeforeNormalization() {
+        val golden = DeckHueProfile(
+            12, mapOf(Hue.EMBER to 5, Hue.TIDE to 4, Hue.MOSS to 3)
+        ).weights()
+        assertEquals(
+            mapOf(
+                Hue.EMBER to 338_600L,
+                Hue.TIDE to 282_166L,
+                Hue.MOSS to 225_733L,
+                Hue.GOLD to 76_749L,
+                Hue.VIOLET to 76_752L
+            ),
+            golden
+        )
+        assertEquals(1_000_000L, golden.values.sum())
+
+        val floorDominated = DeckHueProfile(100, mapOf(Hue.EMBER to 100)).weights()
+        assertEquals(
+            mapOf(
+                Hue.EMBER to 750_371L,
+                Hue.GOLD to 62_407L,
+                Hue.MOSS to 62_407L,
+                Hue.TIDE to 62_407L,
+                Hue.VIOLET to 62_408L
+            ),
+            floorDominated
+        )
+        assertEquals(1_000_000L, floorDominated.values.sum())
     }
 
     @Test fun directPrismTiePrefersNextSpectrumHue() {
@@ -300,15 +324,44 @@ class BoardCoreTest {
         assertEquals(TapOutcome.Rejected(PopRejection.NO_LEGAL_GROUP), engine.tap(b, Coord(3,3)))
     }
 
-    @Test fun largeGroupInkUsesHalfRateAboveEight() {
-        val entries = ((0..6).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) } + (0..1).map { Coord(it, 1) to Cell.hue(Hue.VIOLET) }).toTypedArray()
-        val nine = assertIs<TapOutcome.Accepted>(engine.tap(board(*entries), Coord(0,0))).result
-        assertEquals(8, nine.baseInk)
-        assertEquals(8, nine.inkPayout)
-        val tenEntries = (0..6).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) } +
-            (0..2).map { Coord(it, 1) to Cell.hue(Hue.VIOLET) }
-        val ten = assertIs<TapOutcome.Accepted>(engine.tap(board(*tenEntries.toTypedArray()), Coord(0,0))).result
-        assertEquals(9, ten.baseInk)
+    @Test fun largeGroupInkPreservesHalfUnitsUntilFinalSpectrumRounding() {
+        fun group(size: Int): BoardState {
+            val entries = (0 until size).map { i ->
+                Coord(i % 7, i / 7) to Cell.hue(Hue.VIOLET)
+            }
+            return board(*entries.toTypedArray())
+        }
+
+        val nineAtRunZero = assertIs<TapOutcome.Accepted>(
+            engine.tap(group(9), Coord(0,0), SpectrumState())
+        ).result
+        assertEquals(17, nineAtRunZero.baseInkHalfUnits)
+        assertEquals(8.5, nineAtRunZero.baseInk)
+        assertEquals(9, nineAtRunZero.inkPayout) // 8.5 rounds half-up once.
+
+        val nineAtRunOne = assertIs<TapOutcome.Accepted>(
+            engine.tap(group(9), Coord(0,0), SpectrumState(1, Hue.EMBER))
+        ).result
+        assertEquals(17, nineAtRunOne.baseInkHalfUnits)
+        assertEquals(13, nineAtRunOne.inkPayout) // 8.5 × 1.5 = 12.75.
+
+        val eleven = assertIs<TapOutcome.Accepted>(
+            engine.tap(group(11), Coord(0,0), SpectrumState())
+        ).result
+        assertEquals(19, eleven.baseInkHalfUnits)
+        assertEquals(10, eleven.inkPayout) // 9.5 rounds half-up.
+
+        val thirteen = assertIs<TapOutcome.Accepted>(
+            engine.tap(group(13), Coord(0,0), SpectrumState())
+        ).result
+        assertEquals(21, thirteen.baseInkHalfUnits)
+        assertEquals(11, thirteen.inkPayout) // 10.5 rounds half-up.
+
+        val ten = assertIs<TapOutcome.Accepted>(
+            engine.tap(group(10), Coord(0,0), SpectrumState())
+        ).result
+        assertEquals(18, ten.baseInkHalfUnits)
+        assertEquals(9, ten.inkPayout)
     }
 
     @Test fun spectrumOutOfOrderPopResetsAndBecomesNewAnchor() {
