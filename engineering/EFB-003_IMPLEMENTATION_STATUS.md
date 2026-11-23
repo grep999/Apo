@@ -1,7 +1,7 @@
 # EFB-003 — Turn / Combat Core
 
 **Status:** IMPLEMENTATION CANDIDATE — exact-SHA CI and independent Mastery pending  
-**Candidate SHA:** `8dd0a03ceae047a72d783eeee81df037952ac18c`  
+**Candidate SHA:** `fbb8b07c134b77825cedac3f65389be13f11fd15`  
 **Baseline:** accepted EFB-002 board core `6b6e139890a205ead337a94226464a0b5ddd82da`  
 **Branch:** `feat/efb003-turn-combat-clean`  
 **Policy:** clean-room implementation; legacy prototype source/assets explicitly excluded by `engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md`.
@@ -16,7 +16,7 @@
 - Enemy Vigor/Block, two-intent deterministic forecast and exact forecast/resolution identity.
 - Strike, Ash Row, Stone Seed, Stain, Fog, Seal, Brand, Surge, Snatch and Curse intent contracts; board-targeting enemy intents respect sealed columns.
 - Card integration seam for Cast damage/Block/delay and Card Pop without spending a Tap; Snatch and Curse emit explicit EFB-004 integration events rather than inventing a card model early.
-- Versioned command replay frames and deterministic combat checkpoint digest including board, resources, full enemy definition/intent sequence/cursor and status counters.
+- Versioned command replay frames and deterministic combat checkpoint digest including run seed, rules version, board, resources, full enemy definition/intent sequence/cursor and status counters.
 
 ## Scope intentionally excluded
 
