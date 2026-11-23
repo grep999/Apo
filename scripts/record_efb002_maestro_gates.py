@@ -13,7 +13,7 @@ from maestro.checks import CheckSpec, GateRunner
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / "artifacts"
 ARTIFACTS.mkdir(parents=True, exist_ok=True)
-sha = os.environ.get("GITHUB_SHA", "").strip()
+sha = (os.environ.get("CANDIDATE_SHA") or os.environ.get("GITHUB_SHA", "")).strip()
 if not re.fullmatch(r"[0-9a-f]{40}", sha):
     raise SystemExit("GITHUB_SHA must be an exact 40-character commit SHA")
 actual = __import__("subprocess").run(
