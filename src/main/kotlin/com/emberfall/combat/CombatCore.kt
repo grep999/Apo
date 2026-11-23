@@ -251,7 +251,7 @@ class CombatEngine(private val boardEngine: BoardEngine = BoardEngine()) {
                     enemy = state.enemy.copy(vigor = enemyVigor, block = enemyBlock),
                     tapsRemaining = state.tapsRemaining - 1,
                     fogTapsRemaining = maxOf(0, state.fogTapsRemaining - 1),
-                    phase = when { defeated -> CombatPhase.VICTORY; playerDefeated -> CombatPhase.DEFEAT; else -> state.phase }
+                    phase = when { playerDefeated -> CombatPhase.DEFEAT; defeated -> CombatPhase.VICTORY; else -> state.phase }
                 )
                 if (defeated) events += CombatEvent.EnemyDefeated
                 if (playerDefeated) events += CombatEvent.PlayerDefeated
@@ -442,7 +442,8 @@ object CombatStateDigest {
             append(state.player.vigil).append('|').append(state.player.block).append('|').append(state.player.flasks).append('|')
             append(state.player.immutableInk.toSortedMap(compareBy { it.ordinal }).entries.joinToString(",") { "${it.key.name}:${it.value}" }).append('|')
             append(state.player.spark).append('|').append(state.enemy.vigor).append('|').append(state.enemy.block).append('|')
-            append(state.enemyDefinition.id).append('|').append(state.enemyDefinition.intentSequence.joinToString(";")).append('|').append(state.intentCursor).append('|')
+            append(state.enemyDefinition.id).append('|').append(state.enemyDefinition.maxVigor).append('|')
+            append(state.enemyDefinition.intentSequence.joinToString(";")).append('|').append(state.intentCursor).append('|')
             append(state.nextIntents.joinToString(";") { it.toString() }).append('|')
             append(state.wallRisesNextTurn).append('|').append(state.fogTapsRemaining).append('|').append(state.delayedIntents)
         }
