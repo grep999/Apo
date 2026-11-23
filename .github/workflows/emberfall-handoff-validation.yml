@@ -1,14 +1,6 @@
 name: Emberfall Handoff and Maestro v0.3 Validation
 
 on:
-  push:
-    branches: [audit/e00-repository-source-baseline]
-    paths:
-      - engineering/**
-      - maestro/**
-      - scripts/**
-      - references/**
-      - .github/workflows/emberfall-handoff-validation.yml
   pull_request:
     branches: [handoff/emberfall-coding-agent-v1.0]
   workflow_dispatch:
