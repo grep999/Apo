@@ -128,6 +128,59 @@ class BoardCoreTest {
         assertTrue(weights.values.all { it > 0L })
     }
 
+    @Test fun directPrismTiePrefersNextSpectrumHue() {
+        val b = board(Coord(3,3) to Cell.prism(),
+            Coord(2,3) to Cell.hue(Hue.GOLD), Coord(1,3) to Cell.hue(Hue.GOLD),
+            Coord(4,3) to Cell.hue(Hue.EMBER), Coord(5,3) to Cell.hue(Hue.EMBER))
+        val result = assertIs<TapOutcome.Accepted>(
+            engine.tap(b, Coord(3,3), SpectrumState(0, Hue.EMBER))
+        ).result
+        assertEquals(Hue.GOLD, result.resolvedHue)
+        assertEquals(3, result.groupSize)
+    }
+
+    @Test fun prismMayJoinAshButAshStillPaysNoInk() {
+        val b = board(Coord(2,3) to Cell.ash(), Coord(1,3) to Cell.ash(), Coord(3,3) to Cell.prism())
+        val result = assertIs<TapOutcome.Accepted>(engine.tap(b, Coord(3,3))).result
+        assertTrue(result.isAsh)
+        assertEquals(3, result.groupSize)
+        assertEquals(0, result.inkPayout)
+    }
+
+    @Test fun prismOnlyClusterIsNotLegal() {
+        val b = board(Coord(3,3) to Cell.prism(), Coord(2,3) to Cell.prism())
+        assertEquals(TapOutcome.Rejected(PopRejection.NO_LEGAL_GROUP), engine.tap(b, Coord(3,3)))
+    }
+
+    @Test fun largeGroupInkUsesHalfRateAboveEight() {
+        val entries = (0..8).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) }.toTypedArray()
+        val nine = assertIs<TapOutcome.Accepted>(engine.tap(board(*entries), Coord(0,0))).result
+        assertEquals(8, nine.baseInk)
+        assertEquals(8, nine.inkPayout)
+        val tenEntries = (0..6).map { Coord(it, 0) to Cell.hue(Hue.VIOLET) } +
+            (0..2).map { Coord(it, 1) to Cell.hue(Hue.VIOLET) }
+        val ten = assertIs<TapOutcome.Accepted>(engine.tap(board(*tenEntries.toTypedArray()), Coord(0,0))).result
+        assertEquals(9, ten.baseInk)
+    }
+
+    @Test fun spectrumOutOfOrderPopResetsAndBecomesNewAnchor() {
+        val b = board(Coord(0,0) to Cell.hue(Hue.MOSS), Coord(1,0) to Cell.hue(Hue.MOSS))
+        val result = assertIs<TapOutcome.Accepted>(
+            engine.tap(b, Coord(0,0), SpectrumState(2, Hue.GOLD))
+        ).result
+        assertEquals(0, result.spectrum.run)
+        assertEquals(Hue.MOSS, result.spectrum.lastHue)
+    }
+
+    @Test fun overflowWithoutFlaskStillDealsEightAndPreservesPreview() {
+        val incoming = List<Cell?>(7) { Cell.prism() }
+        val b = board(Coord(6,0) to Cell.hue(Hue.EMBER)).copy(incoming = incoming)
+        val result = engine.riseWall(b, List(7) { Cell.ash() }, 0)
+        assertEquals(8, result.vigilDamage)
+        assertEquals(0, result.flasksConsumed)
+        assertEquals(incoming, result.board.incoming)
+    }
+
     @Test fun sealExpiresAfterExactlyThreeEnemyPhases() {
         var b = BoardState.empty().sealColumn(4)
         assertTrue(4 in b.sealedColumns)
