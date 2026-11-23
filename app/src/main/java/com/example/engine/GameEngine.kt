@@ -272,6 +272,8 @@ object GameEngine {
           !rewardOpen -> CommandRejectionReason.WRONG_PHASE
           reward.supportPicked -> CommandRejectionReason.REWARD_ALREADY_CLAIMED
           command.supportId !in reward.supportChoices -> CommandRejectionReason.SUPPORT_UNAVAILABLE
+          run.growth.socketedSupportIds.size >= run.growth.maxSockets && command.replaceSlot !in run.growth.socketedSupportIds.indices -> CommandRejectionReason.WRONG_PHASE
+          run.growth.socketedSupportIds.size < run.growth.maxSockets && command.replaceSlot != -1 -> CommandRejectionReason.WRONG_PHASE
           else -> null
         }
       }
@@ -291,6 +293,8 @@ object GameEngine {
           !rewardOpen -> CommandRejectionReason.WRONG_PHASE
           reward.artifactPicked -> CommandRejectionReason.REWARD_ALREADY_CLAIMED
           command.artifactId !in reward.artifactChoices -> CommandRejectionReason.ARTIFACT_UNAVAILABLE
+          ProgressionCatalog.artifactByIdOrNull(command.artifactId) == null -> CommandRejectionReason.ARTIFACT_UNAVAILABLE
+          command.artifactId in run.growth.tantricArtifactIds -> CommandRejectionReason.ARTIFACT_UNAVAILABLE
           else -> null
         }
       }
@@ -308,9 +312,7 @@ object GameEngine {
         val rewardOpen = reward != null && (run.combat == null || run.combat.phase == TurnPhase.COMBAT_WON)
         if (!rewardOpen) {
           CommandRejectionReason.WRONG_PHASE
-        } else if ((reward.cardChoices.isNotEmpty() && !reward.cardPicked) ||
-          (reward.relicRewardId != null && !reward.relicPicked)
-        ) {
+        } else if (!reward.allChoicesResolved) {
           CommandRejectionReason.WRONG_PHASE
         } else null
       }
