@@ -3,7 +3,7 @@
 **Project:** EMBERFALL  
 **Baseline date:** 2026-11-23  
 **Task:** EFB-000-BASELINE  
-**Status:** BUILDER COMPLETE — E00 validation passed on candidate SHA `694cb36a532a241cfc073a6260ebc50503be4804`; independent review pending  
+**Status:** BUILDER COMPLETE — E00 validation passed; exact review SHA is the `baseline_sha` in the latest successful EFB-000 workflow artifact; independent review pending  
 **Authority:** `handoff/emberfall-coding-agent-v1.0` and `references/EMBERFALL_GAME_SPEC_v0.2.txt`
 
 ## 1. Executive finding
@@ -25,7 +25,7 @@ Apo contains three materially different project surfaces. They must not be confl
 | `qa/five-persona-first-run-audit` | `bbeb5215dbe455e92177756661af65123a70bfa2` | Handoff snapshot plus simulated first-run audit and QA notes | Design critique evidence; not human playtest evidence |
 | `implementation/emberfall-latest-source` | `e3610946ecf4caf91f0e1d2a232af714b88e65c2` | Kotlin/Android source, engine, assets, tests and Gradle build files | Legacy prototype to inspect and selectively reuse |
 | `feat/emberfall-multi-policy-balance-lab` | `911e2272da14371c1fc271ead406c8bcaa04b145` | Legacy reward-flow/persistence and policy-matrix candidate | Draft PR #3; HOLD, do not merge |
-| `audit/e00-repository-source-baseline` | `694cb36a532a241cfc073a6260ebc50503be4804` | EFB-000 inventory, validator, Maestro packet and workflow | Draft PR #4; builder evidence passed, review pending |
+| `audit/e00-repository-source-baseline` | PR #4 head (exact SHA in latest E00 artifact) | EFB-000 inventory, validator, Maestro packet and workflow | Draft PR #4; builder evidence passed, review pending |
 
 At the original handoff baseline SHA `fe94e61e...`, the handoff branch had 30 tracked paths; it now has 31 after adding the EFB-000 workflow. It has no `app/`, `settings.gradle.kts`, root `build.gradle.kts`, Gradle wrapper or Android test source. The legacy implementation branch has 224 tracked paths and a Kotlin Android application.
 
@@ -138,18 +138,18 @@ The EFB-000 workflow is present on the default branch, the handoff base branch a
 
 ## 10. EFB-000 GitHub Actions evidence
 
-Workflow run: `45150948444`  
-Candidate SHA: `694cb36a532a241cfc073a6260ebc50503be4804`  
-Artifact digest: `sha256:074045055acd1e043f07a3c177b5c81a10c163db06d9d0864591c0bb6b69e2bb`
+Workflow run: `45151394670`  
+Candidate SHA: `b214efe1c23d360d53dad9f526c65198d36699a3`  
+Artifact digest: `sha256:b5bea033a5e4338ca8d920ed034493ceb53a3a84e1cebc9e55c0af2a9c0b599e`
 
 - Pinned upstream Maestro v0.3.0 bootstrap completed at `e5247d950fd48a8e1e07acec68ffd04d1445ba55`.
 - Maestro unit tests: **19 passed**.
 - Maestro contract validation: **3/3 passed**.
 - Adapter inventory and echo adapter health check completed.
-- Apo handoff GateRunner smoke check: **passed**, `evidence_class=VERIFIED`, runner identity `gate-runner@runnervm0hi8g`, `ran_on_sha=694cb36a532a241cfc073a6260ebc50503be4804`, log hash `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- Apo handoff GateRunner smoke check: **passed**, `evidence_class=VERIFIED`, runner identity `gate-runner@runnervm0hi8g`, `ran_on_sha=b214efe1c23d360d53dad9f526c65198d36699a3`, log hash `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
 - Source inventory validator: **passed** — 17 WBS epics, 17 Maestro tasks, 23 ADR rows, 19 OPEN/BLOCKING.
 - Android build gate: `NOT_APPLICABLE_NO_ANDROID_SOURCE`; this is explicitly not a build pass.
-- Maestro state artifact: workflow `994eda8e-a44c-4e67-a0b4-5856c9977fbe`, ACTIVE / GROUNDING, revision 1. The state is intentionally not advanced to completion pending independent review.
+- Maestro state artifact: workflow `d209223b-14d0-4137-8be0-4a5214e407aa`, ACTIVE / GROUNDING, revision 1. The state is intentionally not advanced to completion pending independent review.
 
 ## 11. Legacy prototype matrix — diagnostic only
 
@@ -167,5 +167,5 @@ Every route/combat cell averaged all 12 passives, all 3 support sockets and all 
 
 ## 12. Current EFB-000 disposition
 
-Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The exact candidate SHA recorded by the latest successful E00 run is `694cb36a532a241cfc073a6260ebc50503be4804`; any subsequent candidate commit must rerun the E00 workflow before review. The reviewer must verify the source classification, the v0.2/legacy rule divergence, the ADR-count discrepancy, and the GitHub Actions evidence. Only after that review should the Maestro workflow advance from GROUNDING.
+Builder-side baseline and CI evidence are complete. EFB-000 is **ready for independent review**, not complete. The exact candidate SHA for review is the `baseline_sha` in the latest successful E00 workflow artifact attached to PR #4. Any subsequent candidate commit must rerun the E00 workflow before review. The reviewer must verify the source classification, the v0.2/legacy rule divergence, the ADR-count discrepancy, and the GitHub Actions evidence. Only after that review should the Maestro workflow advance from GROUNDING.
 
