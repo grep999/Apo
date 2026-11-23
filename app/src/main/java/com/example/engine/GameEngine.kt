@@ -335,9 +335,13 @@ object GameEngine {
       }
       is GameCommand.ChooseEventOption -> {
         val evt = run.activeEvent
-        if (!run.inNonCombatNode || evt == null || evt.resolvedSummary != null) {
-          CommandRejectionReason.EVENT_UNAVAILABLE
-        } else null
+        val choice = evt?.choices?.firstOrNull { it.id == command.choiceId }
+        when {
+          !run.inNonCombatNode || evt == null || evt.resolvedSummary != null -> CommandRejectionReason.EVENT_UNAVAILABLE
+          choice == null -> CommandRejectionReason.EVENT_UNAVAILABLE
+          run.cinders < choice.minCindersRequired || run.hp < choice.minHpRequired || run.flasks < choice.minFlasksRequired -> CommandRejectionReason.EVENT_UNAVAILABLE
+          else -> null
+        }
       }
       GameCommand.LeaveNode -> {
         if (!run.inNonCombatNode) {
