@@ -35,13 +35,26 @@ data class BoardState(
     val cells: List<Cell?>,
     val incoming: List<Cell?>,
     val sealedColumns: Set<Int> = emptySet(),
-    val rulesVersion: String = RULES_VERSION
+    val rulesVersion: String = RULES_VERSION,
+    val sealTurnsRemaining: Map<Int, Int> = emptyMap()
 ) {
     init {
         require(cells.size == 49 && incoming.size == 7)
         require(sealedColumns.all { it in 0..6 })
+        require(sealTurnsRemaining.keys.all { it in sealedColumns })
+        require(sealTurnsRemaining.values.all { it > 0 })
     }
     operator fun get(c: Coord) = cells[c.index()]
+    fun sealColumn(column: Int, turns: Int = 3): BoardState {
+        require(column in 0..6 && turns > 0)
+        return copy(sealedColumns = sealedColumns + column, sealTurnsRemaining = sealTurnsRemaining + (column to turns))
+    }
+    /** Call once after each enemy phase; columns with no remaining turns are released. */
+    fun advanceSealDurations(): BoardState {
+        val remaining = sealTurnsRemaining.mapValues { (_, turns) -> turns - 1 }.filterValues { it > 0 }
+        val expired = sealTurnsRemaining.keys - remaining.keys
+        return copy(sealedColumns = sealedColumns - expired, sealTurnsRemaining = remaining)
+    }
     fun withCell(c: Coord, value: Cell?) = copy(cells = cells.toMutableList().also { it[c.index()] = value })
     companion object {
         fun empty() = BoardState(List(49) { null }, List(7) { null })
@@ -138,6 +151,8 @@ class BoardEngine {
         return PopResult(settled, group, hue, ash, group.size, base, payout, group.size - 1,
             cells.count { it.branded } * 2, stones, runState)
     }
+
+    fun resetSpectrumAtTurnBoundary(): SpectrumState = SpectrumState()
 
     fun gravity(board: BoardState): BoardState {
         val next = board.cells.toMutableList()
@@ -287,6 +302,7 @@ object BoardStateDigest {
         val canonical = buildString {
             append(board.rulesVersion).append('|').append(spectrum.run).append('|').append(spectrum.lastHue?.name ?: "-").append('|')
             append(board.sealedColumns.sorted().joinToString(",")).append('|')
+            append(board.sealTurnsRemaining.toSortedMap().entries.joinToString(",") { "${it.key}:${it.value}" }).append('|')
             for (c in board.cells + board.incoming) {
                 append(when (c?.kind) { null -> "_"; TileKind.ASH -> "A"; TileKind.STONE -> "S"; TileKind.PRISM -> "P"; TileKind.HUE -> "H${c.hue!!.ordinal}" })
                 append(if (c?.branded == true) "B" else "-").append(';')
