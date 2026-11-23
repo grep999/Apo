@@ -1231,6 +1231,10 @@ class ExampleRobolectricTest {
         cardPicked = false,
         relicPicked = false,
         rerollUsed = true,
+        supportChoices = listOf("sup_echo_strike"),
+        supportPicked = false,
+        artifactChoices = listOf("art_rudraksha_mala"),
+        artifactPicked = false,
       ),
     )
     val encoded = RunSnapshotCodec.encode(decoratedRun)
@@ -1239,6 +1243,10 @@ class ExampleRobolectricTest {
     assertEquals(85, decoded.combat?.player?.overdriveCharge)
     assertEquals(2, decoded.combat?.turn?.bonusMovesGrantedThisTurn)
     assertEquals(true, decoded.pendingReward?.rerollUsed)
+    assertEquals(listOf("sup_echo_strike"), decoded.pendingReward?.supportChoices)
+    assertEquals(false, decoded.pendingReward?.supportPicked)
+    assertEquals(listOf("art_rudraksha_mala"), decoded.pendingReward?.artifactChoices)
+    assertEquals(false, decoded.pendingReward?.artifactPicked)
 
     // 2. TitleScreen Quick Dive button fires callback
     var quickDived = false
