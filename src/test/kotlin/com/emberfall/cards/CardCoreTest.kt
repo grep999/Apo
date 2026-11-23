@@ -201,4 +201,45 @@ class CardCoreTest {
         assertEquals(listOf("normal"), result.state.discardPile.map { it.definitionId })
         assertEquals(CombatPhase.DRAW, result.state.combat.phase)
     }
+    @Test fun spawnBesideUsesStableLowestIndexEmptyNeighbor() {
+        val board = BoardState.empty().withCell(Coord(3, 3), Cell.hue(Hue.MOSS))
+        val card = CardDefinition("spawn", "Spawn", Hue.MOSS, CardType.SKILL, CardRarity.COMMON,
+            CardCost(), listOf(CardEffect.SpawnBeside(Cell.hue(Hue.MOSS))))
+        val local = CardEngine(mapOf(card.id to card))
+        val state = CardBattleState.start(combat(board), listOf("spawn"), mapOf(card.id to card))
+            .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, card.id)), combat = combat(board).copy(phase = CombatPhase.CAST))
+        val result = accepted(local.transition(state, CardBattleCommand.Play(0, target = Coord(3, 3))))
+        assertEquals(Hue.MOSS, result.state.combat.board[Coord(3, 2)]?.hue)
+    }
+
+    @Test fun fuseRecolorsTwoTouchingHueGroupsIntoOneSelectedHue() {
+        val board = BoardState.empty()
+            .withCell(Coord(2, 6), Cell.hue(Hue.EMBER))
+            .withCell(Coord(3, 6), Cell.hue(Hue.GOLD))
+        val card = CardDefinition("fuse", "Fuse", Hue.VIOLET, CardType.SKILL, CardRarity.UNCOMMON,
+            CardCost(), listOf(CardEffect.FuseGroups(Hue.TIDE)))
+        val local = CardEngine(mapOf(card.id to card))
+        val state = CardBattleState.start(combat(board), listOf("fuse"), mapOf(card.id to card))
+            .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, card.id)), combat = combat(board).copy(phase = CombatPhase.CAST))
+        val result = accepted(local.transition(state, CardBattleCommand.Play(0, target = Coord(2, 6), secondTarget = Coord(3, 6))))
+        assertEquals(Hue.TIDE, result.state.combat.board[Coord(2, 6)]?.hue)
+        assertEquals(Hue.TIDE, result.state.combat.board[Coord(3, 6)]?.hue)
+    }
+
+    @Test fun invalidFuseTargetRollsBackCardAndPayment() {
+        val board = BoardState.empty()
+            .withCell(Coord(0, 6), Cell.hue(Hue.EMBER))
+            .withCell(Coord(6, 0), Cell.hue(Hue.GOLD))
+        val card = CardDefinition("fuse", "Fuse", Hue.VIOLET, CardType.SKILL, CardRarity.UNCOMMON,
+            CardCost(mapOf(Hue.VIOLET to 1)), listOf(CardEffect.FuseGroups(Hue.TIDE)))
+        val local = CardEngine(mapOf(card.id to card))
+        val before = combat(board)
+        val state = CardBattleState.start(before, listOf("fuse"), mapOf(card.id to card))
+            .copy(drawPile = emptyList(), hand = listOf(CardInstance(0, card.id)), combat = before.copy(phase = CombatPhase.CAST))
+        val result = local.transition(state, CardBattleCommand.Play(0, target = Coord(0, 6), secondTarget = Coord(6, 0)))
+        assertEquals(CardRejection.INVALID_TARGET, assertIs<CardBattleResult.Rejected>(result).reason)
+        assertEquals(before.player.immutableInk, state.combat.player.immutableInk)
+        assertEquals(1, state.hand.size)
+    }
+
 }
