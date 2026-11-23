@@ -70,6 +70,7 @@
     "Initial board generation must not introduce neutral tiles at guessed probabilities; neutral insertion remains an explicit enemy/effect input until a quantified accepted rule exists."
   ],
   "next_increment": "Momentum: finish BoardCore golden/property coverage, produce 100,000-seed hue distribution and fallback report, validate exact-candidate CI, then submit the candidate for independent Mastery. EFB-003 begins only after EFB-002 acceptance.",
-  "current_status": "READY_FOR_GROUNDING",
-  "no_implementation_authorized": false
+  "current_status": "GROUNDING_COMPLETE_MOMENTUM_CANDIDATE",
+  "no_implementation_authorized": false,
+  "baseline_ref": "git:handoff/emberfall-coding-agent-v1.0@21143925687ab7a28519196b7225e98acb1433ab"
 }
