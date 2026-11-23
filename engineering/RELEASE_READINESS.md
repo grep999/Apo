@@ -23,10 +23,10 @@ Only the Product Owner may approve a scope change or cut. Only a distinct, indep
 
 | Increment | Evidence-backed state | What is met | What remains |
 |---|---|---|---|
-| EFB-000 — source baseline | **PARTIAL — merged; independent review and rights disposition pending** | PR #4 merged as `5130215cb0a033345752311903de7f9c08aced4d`; original E00 run 45179968109 validated former PR head `3555ae5...` (not the merge commit) and uploaded artifact 14819098938. PR #12 follow-up validator run 45265389152 passed on pinned baseline `26f0e9...` and legacy snapshot `e3610946...`, reporting no LICENSE/COPYING/NOTICE files in either tree. | Maestro workflow `9dcb920b-4da4-4e96-bd96-584db5d3c4ab` remains ACTIVE / GROUNDING / revision 1. Independent merged-tree review has not begun. Legacy code reuse/redistribution is not cleared until ownership and rights are confirmed. |
+| EFB-000 — source baseline | **HISTORICAL ARCHIVE — legacy excluded by Product Owner** | PR #4 remains recorded as merged; validator run 45265389152 pins the historical handoff and prototype snapshots and reports no license files. Product Owner has now explicitly excluded the legacy prototype and all associated source/assets from the clean product baseline. | Retain EFB-000 provenance and validator evidence for audit only. No rights clearance is sought for excluded material; no legacy source/assets may enter the product. EFB-000 is not a dependency of clean-room EFB-003. |
 | EFB-001 — rules/ADR freeze | **PARTIAL — merged, validator only** | PR #5 merged as `f9a41aa373d36d41a0c134c8005fb5984fecd2b3`; Product Owner decision baseline and resolved blocking rules ADRs are present; exact-head ADR validation run 45180407668 passed | No EFB-001 Maestro workflow artifact or submitted GitHub review exists. Preserve accepted decisions; reconcile the review/evidence record without silently reopening rules. |
-| EFB-002 — board core | **ACCEPTED BY PRODUCT OWNER** | PR #14 candidate `6b6e139890a205ead337a94226464a0b5ddd82da`; exact-head Gradle/JUnit, pure-JVM and ADR validation pass; half-Ink payout correction and independent hue-weight golden tests are included. Product Owner accepted after the single requested feedback round and waived another independent Mastery round. Repetition is recorded. | PR remains draft. This is Product Owner acceptance, not an independent Mastery submission. EFB-000 rights/review and Maestro continuity remain separate project gates. |
-| EFB-003 — turn/combat | **BLOCKED — prepared only** | Grounding packet is refreshed to accepted EFB-002 API; no implementation is authorized | Do not implement until EFB-000 merged-tree review/explicit rights disposition and durable Maestro state plus a working independent-review route are complete. |
+| EFB-002 — board core | **ACCEPTED BY PRODUCT OWNER** | PR #14 candidate `6b6e139890a205ead337a94226464a0b5ddd82da`; exact-head Gradle/JUnit, pure-JVM and ADR validation pass; half-Ink payout correction and independent hue-weight golden tests are included. Product Owner accepted after the single requested feedback round and waived another independent Mastery round. Repetition is recorded. | PR remains draft. This is Product Owner acceptance, not an independent Mastery submission. The separate EFB-000 legacy-rights question is retired by explicit exclusion; Maestro continuity remains a governance improvement, not a code gate. |
+| EFB-003 — turn/combat | **IN PROGRESS — clean-core candidate PR #15** | Branch `feat/efb003-turn-combat-clean`, candidate code SHA `fbb8b07c134b77825cedac3f65389be13f11fd15`; deterministic turn/combat reducer, player resources, two-intent forecast, ten intent contracts, Wall/Seal integration, Card Pop seam and versioned replay added. Legacy prototype excluded. | Exact-head Gradle/JUnit and pure-JVM checks, independent Mastery and Repetition remain pending. Earlier CI found two issues which were corrected in later candidate revisions. |
 | EFB-004 through EFB-016 | **NOT STARTED / dependency blocked** | WBS and task definitions exist | No implementation or acceptance evidence yet. |
 
 ### Exact EFB-002 evidence
@@ -45,32 +45,32 @@ Only the Product Owner may approve a scope change or cut. Only a distinct, indep
 
 The current artifacts expose a process gap, not merely a code gap:
 
-- **EFB-000:** its native Maestro workflow exists but remains ACTIVE / GROUNDING at revision 1. Two Grounding work items are READY; there are no assignments and no Momentum/Mastery packet.
+- **EFB-000:** native Maestro workflow remains ACTIVE / GROUNDING at revision 1, but its source/rights follow-up is now historical audit only. Product Owner excluded the legacy prototype and all associated assets; no reuse clearance is sought and this is not an EFB-003 dependency.
 - **EFB-001:** the ADR validator workflow passed, but there is no native EFB-001 Maestro workflow artifact. Its static task remains INBOX in the seed task register.
-- **EFB-002:** Product Owner accepted exact candidate `6b6e139890a205ead337a94226464a0b5ddd82da` after one feedback round and explicitly waived another independent Mastery round. The proposed assignment was not dispatched; this acceptance is not represented as independent review. Repetition is recorded. EFB-000 still needs an independent review.
+- **EFB-002:** Product Owner accepted exact candidate `6b6e139890a205ead337a94226464a0b5ddd82da` after one feedback round and explicitly waived another independent Mastery round. The proposed assignment was not dispatched; this acceptance is not represented as independent review. Repetition is recorded. EFB-003 is now underway from this exact base.
 - **State continuity:** the EFB-002 GitHub Actions workflow currently invokes `coding-start` on every push. That creates a new Maestro workflow/database per run rather than resuming one durable workflow for the increment. The latest artifact proves one run, not a persistent multi-commit lifecycle.
 
 Required control-plane fixes:
-- [ ] Complete independent EFB-000 review of merged tree `5130215cb0a033345752311903de7f9c08aced4d`; E00 evidence is available. Confirm source ownership/reuse rights before legacy code is copied or redistributed.
+- [x] Product Owner excluded the legacy prototype and all associated source/assets from the clean product baseline. No legacy code/assets may be copied or redistributed; rights clearance is not pursued for excluded material. Preserve EFB-000 validator evidence for historical audit.
 - [ ] Reconcile EFB-001's merged rules increment into Maestro state; do not change accepted ADR content.
 - [ ] Persist/retrieve the same Maestro database and workflow ID across CI runs, or use a deliberate one-run-per-candidate policy with explicit cycle linkage. Do not silently create unrelated workflow IDs on every push.
 - [ ] Configure an actual independent-review adapter and prove assignment/dispatch is observable. `PROPOSED` is not `ASSIGNED`, and an echo adapter is not an independent reviewer.
 - [ ] Require exact candidate SHA, changed-path hashes, VERIFIED GateRunner evidence and reviewer identity inequality before Mastery PASS.
 - [ ] Export the final state DB, event log, assignments, review attestation and Repetition packet as durable artifacts.
 
-Do not start EFB-003 implementation until EFB-000 merged-tree review and explicit rights disposition, and Maestro workflow continuity/reviewer-dispatch readiness are complete. EFB-002 Product Owner acceptance and Repetition are complete.
+EFB-003 clean-room implementation is underway on PR #15 from accepted EFB-002 SHA `6b6e139890a205ead337a94226464a0b5ddd82da`. Do not merge or accept it until exact-SHA tests, independent Mastery and Repetition pass. Maestro continuity/reviewer-dispatch improvements remain governance work, not a source implementation blocker.
 
 ## 4. Hard gates before feature implementation can proceed
 
 Review dossiers are prepared under `maestro/reviews_v03/`: EFB-000 merged tree, EFB-001 resolved rules and EFB-002 exact implementation candidate. They identify the precise commits, artifacts and review scope.
 
 - [ ] Independent EFB-001 rules review using `maestro/reviews_v03/EFB-001-RULES-ADR.review-input.json` (recommended governance reconciliation; do not reopen accepted decisions without evidence).
-- [ ] Independent EFB-000 review of merged tree `5130215cb0a033345752311903de7f9c08aced4d`, including the matching E00 workflow artifact. Review must inspect source classification, legacy/v0.2 rule separation, ADR inventory, toolchain applicability and evidence provenance.
+- [x] Legacy prototype/source/assets explicitly excluded by Product Owner; no EFB-000 license/ownership clearance required for excluded material. Retain merged-tree provenance dossier as a historical record only.
 - [x] EFB-002 Product Owner acceptance of exact candidate `6b6e139890a205ead337a94226464a0b5ddd82da`; further independent Mastery round explicitly waived by Product Owner and recorded in PR #14.
 - [ ] Reviewer identity must be different from the builder. A proposed assignment or unsubmitted request is not a review.
 - [ ] Resolve every review finding: fix it, or record an explicit Product Owner disposition with rationale and risk owner. Unresolved blocking findings prevent acceptance.
 - [x] Record EFB-002 Repetition: expected vs actual, durable lessons, accepted state, next increment and evidence references (`maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json`).
-- [ ] Complete EFB-000 merged-tree review/rights disposition and Maestro continuity/reviewer-dispatch readiness before authorizing EFB-003.
+- [x] EFB-003 clean-core implementation authorized by Product Owner. Exact-SHA CI, independent Mastery and Repetition remain required before EFB-003 acceptance.
 
 ## 5. Production work breakdown — required before v1.0
 
@@ -305,9 +305,9 @@ Each increment receives its own Maestro workflow, task-specific Grounding packet
 
 ## 8. Current next actions — ordered
 
-1. Complete independent EFB-000 merged-tree review and exact evidence reconciliation; obtain explicit ownership/reuse-rights disposition.
-2. Fix durable Maestro state continuity and establish a working independent-review route for the EFB-000 review.
-3. Start EFB-003 turn/combat in its own Maestro workflow, grounded against the accepted EFB-002 board API.
+1. Complete EFB-003 exact-candidate Gradle/JUnit and pure-JVM verification; fix all findings.
+2. Obtain independent Mastery review of exact EFB-003 candidate SHA and complete Repetition.
+3. Start EFB-004 card/effect engine on the accepted combat API. Continue Maestro state continuity and reviewer-dispatch improvements as parallel governance work.
 7. Build EFB-004 card/effect engine, then classes/enemies, then the first playable M0 loop.
 8. Deliver M1 vertical slice before scaling content or polishing secondary screens.
 9. Progress through M2–M5 with the exit gates above; keep this checklist updated from evidence, not optimism.
