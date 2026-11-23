@@ -1167,6 +1167,10 @@ class ExampleRobolectricTest {
     // 2. Verify RewardsScreen renders prominent Skip Card button and fires callback cleanly
     val realCards = GameCatalog.starterDeckIds(HeroClass.ASHEN_MONK).distinct().take(3)
     val rewardRun = started.copy(
+      growth = CharacterGrowthState(
+        socketedSupportIds = listOf("sup_echo_strike"),
+        maxSockets = 1,
+      ),
       pendingReward = RewardBundle(
         cindersEarned = 28,
         flaskRefill = 0,
@@ -1174,9 +1178,13 @@ class ExampleRobolectricTest {
         relicRewardId = null,
         cardPicked = false,
         relicPicked = false,
+        supportChoices = listOf("sup_prism_forge"),
+        artifactChoices = listOf("art_nada_damaru"),
       ),
     )
     var skipped = false
+    var replacedSlot = -1
+    var boundArtifact: String? = null
     composeTestRule.activityRule.scenario.onActivity { activity ->
       activity.setContent {
         EmberfallTheme {
@@ -1187,11 +1195,18 @@ class ExampleRobolectricTest {
             onClaimRelic = {},
             onSkipRelic = {},
             onFinishRewards = {},
+            onSocketSupport = { _, slot -> replacedSlot = slot },
+            onBindArtifact = { boundArtifact = it },
           )
         }
       }
     }
     composeTestRule.waitForIdle()
+    composeTestRule.onNodeWithTag("reward_support_sup_prism_forge").performScrollTo().assertIsDisplayed().performClick()
+    composeTestRule.onNodeWithTag("replace_support_slot_0").assertIsDisplayed().performClick()
+    assertEquals("Full support sockets must request an explicit replacement slot", 0, replacedSlot)
+    composeTestRule.onNodeWithTag("reward_artifact_art_nada_damaru").performScrollTo().assertIsDisplayed().performClick()
+    assertEquals("Artifact reward must invoke bind callback", "art_nada_damaru", boundArtifact)
     composeTestRule.onNodeWithTag("skip_card_button").performScrollTo().assertIsDisplayed().performClick()
     assertTrue("Clicking Skip Card button must invoke onSkipCard", skipped)
   }
