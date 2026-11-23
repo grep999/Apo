@@ -310,7 +310,7 @@ object SimulationRunner {
           GameCatalog.cardById(id).rarity != CardRarity.STARTER
         } ?: afterArtifact.cardChoices.first()
         RouteRewardPolicy.BALANCED -> afterArtifact.cardChoices.first()
-      }
+      } ?: afterArtifact.cardChoices.first()
       run = if (run.masterDeck.size < 16) {
         GameEngine.pickRewardCard(run, cardId)
       } else {
