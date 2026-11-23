@@ -28,7 +28,7 @@ data class PlayerClassDefinition(
     init {
         require(displayName.isNotBlank() && fantasy.isNotBlank())
         require(starterDeck.size == 12)
-        require(starterDeck.count { it == "pop_shot" } == 2)
+        require(starterDeck.count { it.endsWith("pop_shot") } == 2)
         require(starterDeck.count { it.endsWith("_sift") || it == "monk_sift" } == 1)
     }
 }
@@ -41,9 +41,9 @@ object ClassCardCatalog {
 
     val cards: Map<String, CardDefinition> = (
         StarterCardCatalog.cards.values + listOf(
-            card("monk_sift", "Sift", Hue.EMBER, CardType.SKILL, CardCost(generic = 1),
+            card("monk_sift", "Sift", Hue.GOLD, CardType.SKILL, CardCost(generic = 1),
                 CardEffect.Sift, rarity = CardRarity.COMMON),
-            card("monk_sacrifice_rite", "Sacrifice Rite", Hue.MOSS, CardType.SKILL, CardCost(mapOf(Hue.MOSS to 1)),
+            card("monk_sacrifice_rite", "Sacrifice Rite", Hue.GOLD, CardType.SKILL, CardCost(mapOf(Hue.MOSS to 1)),
                 CardEffect.LoseVigil(6), CardEffect.Damage(12), CardEffect.Draw(2),
                 rarity = CardRarity.RARE, exhaust = true),
 
@@ -51,9 +51,9 @@ object ClassCardCatalog {
                 CardEffect.Damage(6)),
             card("quarry_violet_ward", "Violet Ward", Hue.VIOLET, CardType.SKILL, CardCost(mapOf(Hue.VIOLET to 1)),
                 CardEffect.Block(5)),
-            card("quarry_sift", "Sift", Hue.TIDE, CardType.SKILL, CardCost(generic = 1),
+            card("quarry_sift", "Sift", Hue.GOLD, CardType.SKILL, CardCost(generic = 1),
                 CardEffect.Sift, rarity = CardRarity.COMMON),
-            card("quarry_prism_seed", "Prism Seed", Hue.VIOLET, CardType.SKILL, CardCost(mapOf(Hue.VIOLET to 1)),
+            card("quarry_prism_seed", "Prism Seed", Hue.GOLD, CardType.SKILL, CardCost(mapOf(Hue.VIOLET to 1)),
                 CardEffect.SpawnBeside(Cell.prism()), CardEffect.Draw(1), rarity = CardRarity.RARE),
 
             card("unlit_gold_strike", "Gold Strike", Hue.GOLD, CardType.ATTACK, CardCost(mapOf(Hue.GOLD to 1)),
