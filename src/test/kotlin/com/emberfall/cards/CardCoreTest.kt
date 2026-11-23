@@ -56,7 +56,7 @@ class CardCoreTest {
     }
 
     @Test fun genericPaymentUsesLeastAbundantInkAndWheelTieBreak() {
-        val player = PlayerState(ink = mapOf(Hue.EMBER to 2, Hue.GOLD to 2, Hue.MOSS to 4), spark = 0)
+        val player = PlayerState(ink = mapOf(Hue.EMBER to 2, Hue.GOLD to 2, Hue.MOSS to 4, Hue.TIDE to 4, Hue.VIOLET to 4), spark = 0)
         val plan = CardPayment.automatic(CardCost(generic = 3), player)!!
         assertEquals(2, plan.genericInk.getValue(Hue.EMBER))
         assertEquals(1, plan.genericInk.getValue(Hue.GOLD))
