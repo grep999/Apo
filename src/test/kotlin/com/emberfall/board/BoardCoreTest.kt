@@ -2,6 +2,8 @@ package com.emberfall.board
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
@@ -13,6 +15,60 @@ class BoardCoreTest {
         var b = BoardState.empty()
         entries.forEach { b = b.withCell(it.first, it.second) }
         return b
+    }
+
+    @Test fun boardStateAndDeckProfileDefensivelyCopyMutableInputs() {
+        val cells = MutableList<Cell?>(49) { null }
+        cells[0] = Cell.hue(Hue.EMBER)
+        val incoming = MutableList<Cell?>(7) { null }
+        incoming[0] = Cell.ash()
+        val sealed = mutableSetOf(2)
+        val durations = mutableMapOf(2 to 3)
+        val state = BoardState(cells, incoming, sealed, sealTurnsRemaining = durations)
+
+        cells[0] = null
+        incoming[0] = null
+        sealed.clear()
+        durations[2] = 1
+
+        assertEquals(Cell.hue(Hue.EMBER), state[Coord(0,0)])
+        assertEquals(Cell.ash(), state.incoming[0])
+        assertEquals(setOf(2), state.sealedColumns)
+        assertEquals(mapOf(2 to 3), state.sealTurnsRemaining)
+        assertFailsWith<UnsupportedOperationException> { (state.cells as MutableList<Cell?>)[0] = null }
+        assertFailsWith<UnsupportedOperationException> { (state.sealedColumns as MutableSet<Int>).clear() }
+        assertFailsWith<UnsupportedOperationException> { (state.sealTurnsRemaining as MutableMap<Int, Int>)[2] = 1 }
+
+        val counts = mutableMapOf(Hue.EMBER to 1)
+        val profile = DeckHueProfile(1, counts)
+        val before = profile.weights()
+        counts.clear()
+        assertEquals(before, profile.weights())
+    }
+
+    @Test fun emptyBoardDigestHasStableCanonicalGoldenVector() {
+        assertEquals(
+            "e014ff03c0bcd7bd964644178722d674c52fb933f230d982a2906792d5ce36a6",
+            BoardStateDigest.sha256(BoardState.empty(), SpectrumState())
+        )
+    }
+
+    @Test fun wallRiseIgnoresOccupiedSealedTopCellAndMovesOnlyUnsealedColumns() {
+        val incoming = List<Cell?>(7) { if (it == 0) Cell.ash() else Cell.hue(Hue.VIOLET) }
+        val b = board(
+            Coord(0,0) to Cell.hue(Hue.EMBER),
+            Coord(0,1) to Cell.hue(Hue.GOLD),
+            Coord(1,1) to Cell.hue(Hue.TIDE)
+        ).copy(sealedColumns = setOf(0), incoming = incoming)
+        val nextIncoming = List(7) { Cell.hue(Hue.MOSS) }
+        val rise = engine.riseWall(b, nextIncoming, 0)
+
+        assertFalse(rise.overflow)
+        assertEquals(Cell.hue(Hue.EMBER), rise.board[Coord(0,0)])
+        assertEquals(Cell.hue(Hue.GOLD), rise.board[Coord(0,1)])
+        assertEquals(Cell.hue(Hue.TIDE), rise.board[Coord(1,0)])
+        assertEquals(Cell.hue(Hue.VIOLET), rise.board[Coord(1,6)])
+        assertEquals(nextIncoming, rise.board.incoming)
     }
 
     @Test fun orthogonalGroupPopsButDiagonalDoesNotConnect() {
@@ -276,12 +332,14 @@ class BoardCoreTest {
         assertTrue(4 !in b.sealTurnsRemaining)
     }
 
-    @Test fun randomStreamsAreIndependentOfDerivationOrder() {
-        val first = DeterministicStreams.fromSeed(991L)
-        val second = DeterministicStreams.fromSeed(991L)
-        assertEquals(List(32) { first.enemy.nextLong() }, List(32) { second.enemy.nextLong() })
-        assertEquals(List(32) { first.board.nextLong() }, List(32) { second.board.nextLong() })
-        assertEquals(List(32) { first.cards.nextLong() }, List(32) { second.cards.nextLong() })
+    @Test fun randomStreamsAreIndependentOfConsumptionOrder() {
+        val interleaved = DeterministicStreams.fromSeed(991L)
+        val control = DeterministicStreams.fromSeed(991L)
+        repeat(1_000) { interleaved.board.nextLong() }
+        repeat(257) { interleaved.cards.nextLong() }
+        assertEquals(List(32) { control.enemy.nextLong() }, List(32) { interleaved.enemy.nextLong() })
+        assertEquals(List(32) { control.board.nextLong() }, List(32) { interleaved.board.nextLong() }.drop(1_000))
+        assertEquals(List(32) { control.cards.nextLong() }, List(32) { interleaved.cards.nextLong() }.drop(257))
     }
 
     @Test fun oneHundredThousandSeedDistributionAndFallbackGate() {

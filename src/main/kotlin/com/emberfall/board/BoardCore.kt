@@ -2,6 +2,7 @@ package com.emberfall.board
 
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+import java.util.Collections
 
 const val BOARD_WIDTH = 7
 const val BOARD_HEIGHT = 7
@@ -31,19 +32,35 @@ data class Coord(val x: Int, val y: Int) {
     }
 }
 
-data class BoardState(
-    val cells: List<Cell?>,
-    val incoming: List<Cell?>,
-    val sealedColumns: Set<Int> = emptySet(),
+class BoardState(
+    cells: List<Cell?>,
+    incoming: List<Cell?>,
+    sealedColumns: Set<Int> = emptySet(),
     val rulesVersion: String = RULES_VERSION,
-    val sealTurnsRemaining: Map<Int, Int> = emptyMap()
+    sealTurnsRemaining: Map<Int, Int> = emptyMap()
 ) {
+    // Snapshot and wrap every collection: callers cannot mutate a committed
+    // board by retaining or casting a mutable constructor argument.
+    val cells: List<Cell?> = Collections.unmodifiableList(cells.toList())
+    val incoming: List<Cell?> = Collections.unmodifiableList(incoming.toList())
+    val sealedColumns: Set<Int> = Collections.unmodifiableSet(sealedColumns.toSet())
+    val sealTurnsRemaining: Map<Int, Int> = Collections.unmodifiableMap(sealTurnsRemaining.toMap())
+
     init {
-        require(cells.size == 49 && incoming.size == 7)
-        require(sealedColumns.all { it in 0..6 })
-        require(sealTurnsRemaining.keys.all { it in sealedColumns })
-        require(sealTurnsRemaining.values.all { it > 0 })
+        require(this.cells.size == 49 && this.incoming.size == 7)
+        require(this.sealedColumns.all { it in 0..6 })
+        require(this.sealTurnsRemaining.keys.all { it in this.sealedColumns })
+        require(this.sealTurnsRemaining.values.all { it > 0 })
+        require(rulesVersion.isNotBlank())
     }
+    fun copy(
+        cells: List<Cell?> = this.cells,
+        incoming: List<Cell?> = this.incoming,
+        sealedColumns: Set<Int> = this.sealedColumns,
+        rulesVersion: String = this.rulesVersion,
+        sealTurnsRemaining: Map<Int, Int> = this.sealTurnsRemaining
+    ) = BoardState(cells, incoming, sealedColumns, rulesVersion, sealTurnsRemaining)
+
     operator fun get(c: Coord) = cells[c.index()]
     fun sealColumn(column: Int, turns: Int = 3): BoardState {
         require(column in 0..6 && turns > 0)
@@ -56,6 +73,20 @@ data class BoardState(
         return copy(sealedColumns = sealedColumns - expired, sealTurnsRemaining = remaining)
     }
     fun withCell(c: Coord, value: Cell?) = copy(cells = cells.toMutableList().also { it[c.index()] = value })
+    override fun equals(other: Any?): Boolean = other is BoardState &&
+        cells == other.cells && incoming == other.incoming && sealedColumns == other.sealedColumns &&
+        rulesVersion == other.rulesVersion && sealTurnsRemaining == other.sealTurnsRemaining
+    override fun hashCode(): Int {
+        var result = cells.hashCode()
+        result = 31 * result + incoming.hashCode()
+        result = 31 * result + sealedColumns.hashCode()
+        result = 31 * result + rulesVersion.hashCode()
+        result = 31 * result + sealTurnsRemaining.hashCode()
+        return result
+    }
+    override fun toString(): String =
+        "BoardState(cells=$cells, incoming=$incoming, sealedColumns=$sealedColumns, rulesVersion=$rulesVersion, sealTurnsRemaining=$sealTurnsRemaining)"
+
     companion object {
         fun empty() = BoardState(List(49) { null }, List(7) { null })
         fun fromRows(rows: List<List<Cell?>>, incoming: List<Cell?> = List(7) { null }, sealedColumns: Set<Int> = emptySet()): BoardState {
@@ -65,7 +96,9 @@ data class BoardState(
     }
 }
 
-data class SpectrumState(val run: Int = 0, val lastHue: Hue? = null)
+data class SpectrumState(val run: Int = 0, val lastHue: Hue? = null) {
+    init { require(run >= 0) }
+}
 enum class PopRejection { EMPTY, STONE, NO_LEGAL_GROUP }
 sealed interface TapOutcome {
     data class Accepted(val result: PopResult) : TapOutcome
@@ -199,8 +232,12 @@ class BoardEngine {
     }
 }
 
-data class DeckHueProfile(val deckSize: Int, val cardCounts: Map<Hue, Int>) {
-    init { require(deckSize >= 0 && cardCounts.values.all { it >= 0 } && cardCounts.values.sum() <= deckSize) }
+class DeckHueProfile(val deckSize: Int, cardCounts: Map<Hue, Int>) {
+    val cardCounts: Map<Hue, Int> = Collections.unmodifiableMap(cardCounts.toMap())
+    init {
+        require(deckSize >= 0 && this.cardCounts.values.all { it >= 0 })
+        require(this.cardCounts.values.sumOf { it.toLong() } <= deckSize.toLong())
+    }
     fun weights(): Map<Hue, Long> {
         val raw = Hue.entries.associateWith { h -> maxOf(80_000L, ((cardCounts[h] ?: 0).toLong() + 1) * 1_000_000L / (deckSize + 5L)) }
         val total = raw.values.sum()
