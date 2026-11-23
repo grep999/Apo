@@ -3,6 +3,7 @@ package com.emberfall.content
 import com.emberfall.board.Cell
 import com.emberfall.board.Hue
 import com.emberfall.cards.*
+import com.emberfall.combat.CombatState
 
 enum class PlayerClassId { ASHEN_MONK, QUARRY_WITCH, THE_UNLIT }
 enum class SignatureRelicRule { FIRST_TAP_BONUS_INK, FREE_RECOLOR_ONCE_PER_FIGHT, SPARK_PER_ASH_BLOCK }
@@ -112,4 +113,10 @@ object PlayerClassCatalog {
     }
 
     fun starterDeck(id: PlayerClassId): List<String> = classes.getValue(id).starterDeck.toList()
+
+    fun startBattle(combat: CombatState, id: PlayerClassId, seed: Long = combat.runSeed): CardBattleState {
+        val profile = classes.getValue(id)
+        return CardBattleState.start(combat, profile.starterDeck, ClassCardCatalog.cards, seed,
+            equippedRelicIds = setOf(profile.signatureRelic.id))
+    }
 }
