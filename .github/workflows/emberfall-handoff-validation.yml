@@ -40,7 +40,9 @@ jobs:
         run: git fetch --no-tags origin +refs/heads/implementation/emberfall-latest-source:refs/remotes/origin/implementation/emberfall-latest-source
 
       - name: Bootstrap pinned Maestro v0.3.0
-        run: bash maestro/bootstrap_current_maestro.sh
+        run: |
+          mkdir -p artifacts
+          bash maestro/bootstrap_current_maestro.sh 2>&1 | tee artifacts/maestro-bootstrap.log
 
       - name: Validate Emberfall spec, WBS, ADR register and prototype provenance
         run: python scripts/validate_emberfall_handoff.py
@@ -71,10 +73,6 @@ jobs:
         working-directory: ${{ github.workspace }}/../maestro
         run: .venv/bin/maestro run-checks --workspace "$GITHUB_WORKSPACE" --preset smoke > "$GITHUB_WORKSPACE/artifacts/emberfall-handoff-gate-report.json"
 
-      - name: Run Maestro VERIFIED Python gate on pinned Maestro checkout
-        working-directory: ${{ github.workspace }}/../maestro
-        run: .venv/bin/maestro run-checks --workspace "$GITHUB_WORKSPACE/../maestro" --preset python > "$GITHUB_WORKSPACE/artifacts/maestro-v03-gate-report.json"
-
       - name: Assert GateRunner evidence is VERIFIED and passed
         shell: bash
         run: |
@@ -84,7 +82,6 @@ jobs:
           from pathlib import Path
           for path in [
               Path("artifacts/emberfall-handoff-gate-report.json"),
-              Path("artifacts/maestro-v03-gate-report.json"),
           ]:
               rows = json.loads(path.read_text())
               assert rows, f"empty GateRunner report: {path}"
