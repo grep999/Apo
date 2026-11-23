@@ -39,15 +39,18 @@
     {
       "name": "Gradle clean test",
       "status": "PENDING_FINAL_CANDIDATE",
-      "run_id": 45273033526,
+      "run_id": 45273205685,
       "required": true
     },
     {
-      "name": "Earlier Gradle failure",
-      "status": "FAILED_ON_OLD_CANDIDATE_ONLY",
-      "run_id": 45272406052,
-      "detail": "58 tests executed; 1 stale Seal/Stain incoming-row assertion failed before sealed-row preservation fix. The assertion was corrected and the final candidate has a new exact-head run.",
-      "required": false
+      "name": "Earlier test run 45272406052",
+      "status": "FAILED_OLD_CANDIDATE",
+      "detail": "58 tests, 1 stale assertion on sealed incoming row; corrected in later candidate."
+    },
+    {
+      "name": "Earlier test run 45272688983",
+      "status": "FAILED_OLD_CANDIDATE",
+      "detail": "Test source brace placed later regression tests outside CombatCoreTest; corrected in candidate 8dd0a03."
     },
     {
       "name": "Independent Mastery",
@@ -71,7 +74,7 @@
     "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
     "No Android/device evidence is claimed for this pure JVM increment."
   ],
-  "next_action": "Complete run 45273033526 on candidate 48c5a38cbb42568d64b1655ae5f667854e55786d; resolve any remaining failures, then independent Mastery and Repetition.",
-  "candidate_sha": "48c5a38cbb42568d64b1655ae5f667854e55786d",
-  "candidate_ref": "git:48c5a38cbb42568d64b1655ae5f667854e55786d"
+  "next_action": "Complete exact-head Gradle/JUnit and pure-JVM run 45273205685 on candidate 8dd0a03ceae047a72d783eeee81df037952ac18c; fix any remaining defects, then independent Mastery and Repetition.",
+  "candidate_sha": "8dd0a03ceae047a72d783eeee81df037952ac18c",
+  "candidate_ref": "git:8dd0a03ceae047a72d783eeee81df037952ac18c"
 }
