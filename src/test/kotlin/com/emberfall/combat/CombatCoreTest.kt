@@ -173,12 +173,16 @@ class CombatCoreTest {
         val board = boardWith(
             Coord(0, 6) to Cell.hue(Hue.TIDE),
             Coord(1, 6) to Cell.hue(Hue.TIDE)
-        ).sealColumn(1, 3)
+        ).sealColumn(1, 3).copy(incoming = listOf(
+            Cell.hue(Hue.TIDE), Cell.hue(Hue.TIDE), null, null, null, null, null
+        ))
         var state = CombatState.start(board, enemy(EnemyIntent.Stain(Hue.TIDE), EnemyIntent.Seal(2)))
         state = beginEnemy(state)
         state = accepted(engine.transition(state, CombatCommand.ResolveEnemy)).state
         assertTrue((0..6).any { y -> state.board[Coord(0, y)]?.kind == TileKind.ASH })
         assertEquals(Hue.TIDE, state.board[Coord(1, 6)]?.hue)
+        assertEquals(TileKind.ASH, state.board.incoming[0]?.kind)
+        assertEquals(Hue.TIDE, state.board.incoming[1]?.hue)
         assertEquals(2, state.board.sealTurnsRemaining[1])
         state = accepted(engine.transition(state, CombatCommand.FinishCleanup)).state
         state = beginEnemy(state)
