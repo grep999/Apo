@@ -417,3 +417,23 @@ class CombatCoreTest {
         assertEquals(CombatPhase.DEFEAT, result.state.phase)
     }
 
+    @Test fun commandReplayProducesIdenticalCheckpointSequenceIncludingRejections() {
+        val initial = CombatState.start(BoardState.empty(), enemy(EnemyIntent.Strike(6), EnemyIntent.AshRow))
+        val commands = listOf(
+            CombatCommand.CompleteDraw,
+            CombatCommand.EndWeave,
+            CombatCommand.EndCast,
+            CombatCommand.ResolveWall(listOf(List(7) { null })),
+            CombatCommand.ResolveEnemy,
+            CombatCommand.FinishCleanup,
+            CombatCommand.CardDamage(2)
+        )
+        val replay = CombatReplay()
+        val first = replay.replay(initial, commands)
+        val second = replay.replay(initial, commands)
+        assertEquals(first.map { it.digest }, second.map { it.digest })
+        assertEquals(CombatRejection.WRONG_PHASE, first.last().rejection)
+        assertEquals(first[first.lastIndex - 1].digest, first.last().digest)
+        assertEquals(COMBAT_RULES_VERSION, "emberfall-v0.2-combat-1")
+    }
+
