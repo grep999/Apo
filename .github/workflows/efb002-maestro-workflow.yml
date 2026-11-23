@@ -1,8 +1,8 @@
 name: Emberfall EFB-002 Maestro Lifecycle
 
 on:
-  pull_request:
-    branches: [handoff/emberfall-coding-agent-v1.0]
+  push:
+    branches: [feat/efb-002-board-core-exactsha]
     paths:
       - 'src/**'
       - 'build.gradle.kts'
