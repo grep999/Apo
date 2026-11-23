@@ -1,0 +1,124 @@
+name: Emberfall EFB-002 Maestro Lifecycle
+
+on:
+  push:
+    branches: [feat/efb-002-board-core-reconciled]
+    paths:
+      - 'scripts/record_efb002_maestro_gates.py'
+      - 'maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json'
+      - 'maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json'
+      - '.github/workflows/efb002-maestro-workflow.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-efb002-maestro-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maestro-lifecycle:
+    name: Ground and record EFB-002 Momentum
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact pushed candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Bootstrap and verify pinned Maestro v0.3.0
+        env:
+          MAESTRO_DIR: ${{ github.workspace }}/../maestro
+        run: bash maestro/bootstrap_current_maestro.sh
+
+      - name: Run exact-SHA GateRunner checks and bind evidence to Momentum packet
+        env:
+          MAESTRO_DIR: ${{ github.workspace }}/../maestro
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: '"$MAESTRO_DIR/.venv/bin/python" scripts/record_efb002_maestro_gates.py'
+
+      - name: Create native EFB-002 Maestro workflow and record Grounding/Momentum
+        shell: bash
+        env:
+          MAESTRO_DIR: ${{ github.workspace }}/../maestro
+        run: |
+          set -euo pipefail
+          mkdir -p .maestro artifacts
+          CLI="$MAESTRO_DIR/.venv/bin/maestro"
+          DB="$GITHUB_WORKSPACE/.maestro/state.sqlite3"
+          revision() {
+            python - "$1" <<'PY'
+          import json, sys
+          value = json.load(open(sys.argv[1], encoding="utf-8"))
+          revision = value.get("revision", value.get("workflow_revision"))
+          if revision is None:
+              raise SystemExit(f"no workflow revision in {sys.argv[1]}: {value}")
+          print(revision)
+          PY
+          }
+          "$CLI" --db "$DB" coding-start EMBERFALL \
+            "EFB-002 deterministic board core" \
+            "Implement and verify the pure Kotlin/JVM v0.2 board domain without importing legacy SwapCells rules." \
+            --workspace "$GITHUB_WORKSPACE" --risk R1 --actor orchestrator \
+            > .maestro/efb-002-start.json
+          WID="$(python -c 'import json; print(json.load(open(".maestro/efb-002-start.json"))["id"])')"
+          REV="$(revision .maestro/efb-002-start.json)"
+          "$CLI" --db "$DB" ground "$WID" \
+            "$GITHUB_WORKSPACE/maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json" \
+            --revision "$REV" --actor orchestrator > .maestro/efb-002-grounded.json
+          REV="$(revision .maestro/efb-002-grounded.json)"
+          "$CLI" --db "$DB" begin-momentum "$WID" --revision "$REV" --actor orchestrator \
+            > .maestro/efb-002-momentum-began.json
+          REV="$(revision .maestro/efb-002-momentum-began.json)"
+          "$CLI" --db "$DB" coding-seed-work "$WID" --revision "$REV" --actor orchestrator \
+            > .maestro/efb-002-work-seeded.json
+          "$CLI" --db "$DB" show "$WID" > .maestro/efb-002-before-delivery.json
+          REV="$(revision .maestro/efb-002-before-delivery.json)"
+          "$CLI" --db "$DB" deliver "$WID" \
+            "$GITHUB_WORKSPACE/maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json" \
+            --revision "$REV" --actor builder > .maestro/efb-002-delivered.json
+          "$CLI" --db "$DB" show "$WID" > .maestro/efb-002-final-state.json
+          "$CLI" --db "$DB" work-items "$WID" > .maestro/efb-002-work-items.json
+          "$CLI" --db "$DB" events "$WID" > .maestro/efb-002-events.json
+          cp maestro/packets_v03/EFB-002-BOARD-CORE.momentum.json artifacts/
+          cp maestro/packets_v03/EFB-002-BOARD-CORE.grounding.json artifacts/
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          state = json.loads(Path(".maestro/efb-002-final-state.json").read_text())
+          assert state.get("stage") == "MOMENTUM", state
+          assert state.get("status") == "ACTIVE", state
+          print(json.dumps({"workflow_id": state.get("id"), "stage": state.get("stage"),
+                            "status": state.get("status"), "revision": state.get("revision"),
+                            "candidate_ref": state.get("candidate_ref")}, indent=2))
+          PY
+
+      - name: Upload Maestro state and exact-SHA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-efb-002-maestro-evidence
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: |
+            .maestro/
+            artifacts/
