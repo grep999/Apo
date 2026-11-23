@@ -12,11 +12,9 @@ const val STARTING_HAND_SIZE = 5
 enum class CardType { ATTACK, SKILL, POWER, CURSE }
 enum class CardRarity { BASIC, COMMON, UNCOMMON, RARE, CURSE }
 
-class CardCost(colored: Map<Hue, Int> = emptyMap(), val generic: Int = 0) {
-    val colored: Map<Hue, Int> = Collections.unmodifiableMap(Hue.entries.associateWith { colored[it] ?: 0 }.filterValues { it > 0 })
-    init {
-        require(generic >= 0 && colored.values.all { it > 0 })
-    }
+class CardCost(coloredInput: Map<Hue, Int> = emptyMap(), val generic: Int = 0) {
+    init { require(generic >= 0 && coloredInput.values.all { it > 0 }) }
+    val colored: Map<Hue, Int> = Collections.unmodifiableMap(Hue.entries.associateWith { coloredInput[it] ?: 0 }.filterValues { it > 0 })
     fun copy(colored: Map<Hue, Int> = this.colored, generic: Int = this.generic) = CardCost(colored, generic)
     override fun equals(other: Any?) = other is CardCost && colored == other.colored && generic == other.generic
     override fun hashCode() = 31 * colored.hashCode() + generic
