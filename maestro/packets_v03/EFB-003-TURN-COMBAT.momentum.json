@@ -28,19 +28,23 @@
   "checks": [
     {
       "name": "Gradle clean test",
-      "status": "PENDING_EXACT_SHA_CI"
+      "status": "NOT_YET_VERIFIED",
+      "required": true
     },
     {
       "name": "Pure JVM / Android boundary",
-      "status": "PENDING_EXACT_SHA_CI"
+      "status": "NOT_YET_VERIFIED",
+      "required": true
     },
     {
       "name": "Independent Mastery",
-      "status": "PENDING"
+      "status": "PENDING",
+      "required": true
     },
     {
       "name": "Repetition",
-      "status": "PENDING"
+      "status": "PENDING",
+      "required": true
     }
   ],
   "scope_exclusions": [
@@ -54,5 +58,7 @@
     "Enemy definitions provide the exact ordered intent sequence and numeric parameters; content catalogue and scaling belong to later content/balance increments.",
     "No Android/device evidence is claimed for this pure JVM increment."
   ],
-  "next_action": "Run exact-head Gradle/JUnit and pure-JVM CI, inspect all resulting findings, then submit the exact final SHA for independent Mastery and record Repetition."
+  "next_action": "Obtain an exact-head Gradle/JUnit and pure-JVM CI result for this candidate SHA, then independent Mastery review and Repetition. Do not mark acceptance until those are complete.",
+  "candidate_sha": "a75debceaea583ee5dfe6d7509149cf01030ebc1",
+  "candidate_ref": "git:a75debceaea583ee5dfe6d7509149cf01030ebc1"
 }
