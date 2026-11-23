@@ -7,11 +7,11 @@
   "evidence_policy": "Exact-candidate VERIFIED evidence is required. Independent Mastery is the default review gate; any Product Owner waiver must be explicit, recorded with rationale, and must never be represented as an independent review.",
   "baseline": {
     "efb000": {
-      "status": "MERGED_BASELINE_REVIEW_PENDING_LICENSE_PROVENANCE",
+      "status": "HISTORICAL_ARCHIVE_LEGACY_EXCLUDED",
       "pr": 4,
       "merge_sha": "5130215cb0a033345752311903de7f9c08aced4d",
       "review_submissions": 0,
-      "required_next": "Independent review of exact merged tree 5130215... plus matching E00 evidence. PR #12 follow-up validator now pins original baseline 26f0e9... and legacy commit e3610946..., reports no license files, and passed run 45265389152; rights confirmation remains open.",
+      "required_next": "Product Owner explicitly excluded the legacy prototype and all associated source/assets from the clean product baseline. No ownership/reuse clearance is sought for excluded material. Retain EFB-000 provenance and validator evidence for historical audit only; it is not a prerequisite for EFB-003.",
       "maestro_workflow_id": "9dcb920b-4da4-4e96-bd96-584db5d3c4ab",
       "maestro_stage": "GROUNDING",
       "maestro_revision": 1,
@@ -30,7 +30,12 @@
         "legacy_prototype_commit": "e3610946ecf4caf91f0e1d2a232af714b88e65c2",
         "handoff_license_files": [],
         "legacy_license_files": [],
-        "reuse_authorization": "NOT_ESTABLISHED"
+        "reuse_authorization": "NOT_APPLICABLE_LEGACY_EXCLUDED_BY_PRODUCT_OWNER"
+      },
+      "product_owner_disposition": {
+        "decision": "LEGACY_PROTOTYPE_AND_ASSOCIATED_ASSETS_EXCLUDED",
+        "source_of_truth": "engineering/PRODUCT_OWNER_DECISION_CLEAN_CORE.md",
+        "effect": "No copying, porting, linking, packaging or dependency on legacy prototype source/assets; EFB-000 historical review/rights clearance no longer gates clean-room increments."
       }
     },
     "efb001": {
@@ -86,7 +91,7 @@
           "ran_on_sha": "6b6e139890a205ead337a94226464a0b5ddd82da"
         }
       ],
-      "required_next": "EFB-000 merged-tree review and explicit rights disposition; then EFB-003 after Maestro durable state continuity and independent-review dispatch are operational.",
+      "required_next": "EFB-002 accepted by Product Owner at exact SHA 6b6e139890a205ead337a94226464a0b5ddd82da; one review round completed and further Mastery waived. PR #14 remains draft; no additional EFB-002 review is required absent new evidence.",
       "review_input": "maestro/reviews_v03/EFB-002-BOARD-CORE.review-input.json",
       "original_remediation_sha": "6932b747d78f9310ecb859cc9079cb2fc28ac9bf",
       "branch": "feat/efb002-remediation-rebased",
@@ -118,6 +123,47 @@
       "repetition_record": "maestro/packets_v03/EFB-002-BOARD-CORE.repetition.json",
       "repetition_status": "RECORDED_AS_PRODUCT_OWNER_GOVERNANCE_PACKET_NOT_NATIVE_MAESTRO_DB_EVENT",
       "native_workflow_reconciliation": "PENDING; historical workflow artifacts are run-scoped and do not prove durable cross-run resume."
+    },
+    "efb003": {
+      "status": "IMPLEMENTATION_CANDIDATE_PENDING_EXACT_SHA_CI_AND_MASTERY",
+      "pr": 15,
+      "branch": "feat/efb003-turn-combat-clean",
+      "base_sha": "6b6e139890a205ead337a94226464a0b5ddd82da",
+      "candidate_sha": "fbb8b07c134b77825cedac3f65389be13f11fd15",
+      "draft": true,
+      "mergeable": true,
+      "implementation": "Deterministic pure Kotlin/JVM turn/combat reducer; explicit phases; player resources; two-intent deterministic preview; all ten intent contracts; Wall/Overflow/Seal integration; Card Pop/Block/Damage/Delay seams; versioned command replay and checkpoint digest.",
+      "legacy_policy": "EXCLUDED_NO_SOURCE_OR_ASSET_REUSE",
+      "required_checks": [
+        {
+          "name": "pure-jvm-boundary",
+          "status": "PASSED_ON_EARLIER_CANDIDATE",
+          "run_id": 45272406052
+        },
+        {
+          "name": "gradle-junit-exact-candidate",
+          "status": "PENDING_FINAL_CANDIDATE"
+        },
+        {
+          "name": "independent-mastery",
+          "status": "PENDING"
+        },
+        {
+          "name": "repetition",
+          "status": "PENDING"
+        }
+      ],
+      "known_earlier_failures": [
+        {
+          "run_id": 45272406052,
+          "detail": "58 tests, 1 stale Seal/Stain incoming-row assertion; corrected in subsequent candidate."
+        },
+        {
+          "run_id": 45272688983,
+          "detail": "Test class closed before later regression tests; corrected by moving all tests inside CombatCoreTest."
+        }
+      ],
+      "next": "Complete exact-head Gradle/JUnit and pure-JVM CI, then independent Mastery and Repetition. Do not merge or mark accepted until complete."
     }
   },
   "epics": [
@@ -137,13 +183,13 @@
       "id": "EFB-002-BOARD-CORE",
       "status": "ACCEPTED",
       "maestro_state": "PRODUCT_OWNER_ACCEPTED_REPETITION_RECORDED_NATIVE_WORKFLOW_RECONCILIATION_PENDING",
-      "next": "Exact candidate 6b6e1398 accepted by Product Owner; further independent Mastery round waived; Repetition recorded. EFB-000 provenance/review and Maestro continuity remain separate gates."
+      "next": "Accepted by Product Owner at exact candidate 6b6e1398; additional independent Mastery waived; Repetition recorded. No further EFB-002 review required absent new evidence."
     },
     {
       "id": "EFB-003-TURN-COMBAT",
-      "status": "BLOCKED",
-      "maestro_state": "PREPARED",
-      "next": "EFB-002 accepted by Product Owner. Start implementation only after EFB-000 merged-tree review/rights disposition and durable Maestro state continuity plus a working independent-review route."
+      "status": "IN_PROGRESS",
+      "maestro_state": "MOMENTUM_CANDIDATE_PR15_PENDING_EXACT_SHA_CI_MASTERY_REPETITION",
+      "next": "PR #15 on clean EFB-002 baseline; candidate fbb8b07c134b77825cedac3f65389be13f11fd15. Finish exact-SHA CI, independent Mastery and Repetition."
     },
     {
       "id": "EFB-004-CARD-EFFECTS",
@@ -256,6 +302,22 @@
     "reason": "PR workflow creates a fresh coding-start workflow/database on each run; latest artifact is run-scoped and does not prove durable resume.",
     "reviewer_dispatch": "BLOCKED_PREMIUM_QUOTA",
     "reason_reviewer": "Both EFB-000 and EFB-002 Copilot cloud-agent dispatch attempts failed HTTP 412: insufficient premium quota to create assignment. No reviewer session exists.",
-    "next_action": "Complete independent EFB-000 merged-tree review and obtain explicit source ownership/reuse-rights disposition; repair durable Maestro workflow continuity and reviewer dispatch; then begin EFB-003."
-  }
+    "next_action": "EFB-003 clean-room implementation is underway; complete exact-candidate CI, independent Mastery and Repetition. Maestro cross-run state continuity and real reviewer dispatch remain governance improvements, not source implementation blockers. EFB-000 rights clearance for excluded legacy material is retired."
+  },
+  "next": [
+    "EFB-003 exact-SHA CI, independent Mastery and Repetition",
+    "EFB-004 card/effects",
+    "EFB-005 classes",
+    "EFB-006 enemies/bosses",
+    "EFB-007 progression",
+    "EFB-008 Shade/narrative",
+    "EFB-009 Android client",
+    "EFB-010 art",
+    "EFB-011 audio/haptics",
+    "EFB-012 save/replay",
+    "EFB-013 balance",
+    "EFB-014 full content",
+    "EFB-015 optional backend",
+    "EFB-016 QA/release"
+  ]
 }
