@@ -128,6 +128,38 @@ class BoardCoreTest {
         assertTrue(weights.values.all { it >= 80_000L })
     }
 
+    @Test fun randomStreamsAreIndependentOfDerivationOrder() {
+        val first = DeterministicStreams.fromSeed(991L)
+        val second = DeterministicStreams.fromSeed(991L)
+        assertEquals(List(32) { first.enemy.nextLong() }, List(32) { second.enemy.nextLong() })
+        assertEquals(List(32) { first.board.nextLong() }, List(32) { second.board.nextLong() })
+        assertEquals(List(32) { first.cards.nextLong() }, List(32) { second.cards.nextLong() })
+    }
+
+    @Test fun oneHundredThousandSeedDistributionAndFallbackGate() {
+        val deck = DeckHueProfile(12, mapOf(Hue.EMBER to 5, Hue.TIDE to 4, Hue.MOSS to 3))
+        val expected = deck.weights()
+        val counts = Hue.entries.associateWith { 0L }.toMutableMap()
+        var fallbacks = 0
+        val generator = BoardGenerator()
+        repeat(100_000) { seed ->
+            val generated = generator.generate(seed.toLong(), deck)
+            if (generated.telemetry.fallbackUsed) fallbacks++
+            assertEquals(35, generated.board.cells.count { it != null })
+            assertTrue(hasLegalPair(generated.board), "seed=$seed")
+            (generated.board.cells + generated.board.incoming).filterNotNull().forEach { cell ->
+                if (cell.kind == TileKind.HUE) counts[cell.hue!!] = counts.getValue(cell.hue!!) + 1L
+            }
+        }
+        assertTrue(fallbacks < 10, "fallbacks=$fallbacks must remain below 0.01%")
+        val total = counts.values.sum().toDouble()
+        Hue.entries.forEach { hue ->
+            val observed = counts.getValue(hue) / total
+            val target = expected.getValue(hue) / 1_000_000.0
+            assertTrue(kotlin.math.abs(observed - target) < 0.005, "$hue observed=$observed expected=$target")
+        }
+    }
+
     private fun hasLegalPair(b: BoardState) = b.cells.indices.any { i ->
         val c = b.cells[i] ?: return@any false
         c.kind == TileKind.HUE && Coord(i % 7, i / 7).neighbors().any { n ->
