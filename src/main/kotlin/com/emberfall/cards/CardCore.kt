@@ -137,8 +137,13 @@ class CardBattleState(
     val lastTopLevelCardId: String? = null,
     val lastCardEchoed: Boolean = false,
     val playedThisTurn: Int = 0,
-    val nextEffectSequence: Long = 0
+    val nextEffectSequence: Long = 0,
+    equippedRelicIds: Set<String> = emptySet(),
+    usedRelicIds: Set<String> = emptySet(),
+    val prayerBeadsUsedThisTurn: Boolean = false
 ) {
+    val equippedRelicIds: Set<String> = Collections.unmodifiableSet(equippedRelicIds.toSet())
+    val usedRelicIds: Set<String> = Collections.unmodifiableSet(usedRelicIds.toSet())
     val drawPile = Collections.unmodifiableList(drawPile.toList())
     val hand = Collections.unmodifiableList(hand.toList())
     val discardPile = Collections.unmodifiableList(discardPile.toList())
@@ -147,6 +152,8 @@ class CardBattleState(
     init {
         require(drawOrdinal >= 0 && nextCardInstanceId >= 0 && bonusTapsNextTurn >= 0)
         require(playedThisTurn >= 0 && nextEffectSequence >= 0)
+        require(this.equippedRelicIds.all { it.isNotBlank() } && this.usedRelicIds.all { it.isNotBlank() })
+        require(this.usedRelicIds.all { it in this.equippedRelicIds })
         val ids = (this.drawPile + this.hand + this.discardPile + this.exhaustPile).map { it.instanceId }
         require(ids.distinct().size == ids.size) { "Card instance IDs must be unique across zones" }
     }
@@ -164,17 +171,24 @@ class CardBattleState(
         lastTopLevelCardId: String? = this.lastTopLevelCardId,
         lastCardEchoed: Boolean = this.lastCardEchoed,
         playedThisTurn: Int = this.playedThisTurn,
-        nextEffectSequence: Long = this.nextEffectSequence
+        nextEffectSequence: Long = this.nextEffectSequence,
+        equippedRelicIds: Set<String> = this.equippedRelicIds,
+        usedRelicIds: Set<String> = this.usedRelicIds,
+        prayerBeadsUsedThisTurn: Boolean = this.prayerBeadsUsedThisTurn
     ) = CardBattleState(combat, drawPile, hand, discardPile, exhaustPile, runSeed, drawOrdinal,
         nextCardInstanceId, bonusTapsNextTurn, lastTopLevelEffects, lastTopLevelCardId,
-        lastCardEchoed, playedThisTurn, nextEffectSequence)
+        lastCardEchoed, playedThisTurn, nextEffectSequence, equippedRelicIds, usedRelicIds, prayerBeadsUsedThisTurn)
 
     companion object {
-        fun start(combat: CombatState, deck: List<String>, catalog: Map<String, CardDefinition>, seed: Long = combat.runSeed): CardBattleState {
+        fun start(
+            combat: CombatState, deck: List<String>, catalog: Map<String, CardDefinition>,
+            seed: Long = combat.runSeed, equippedRelicIds: Set<String> = emptySet()
+        ): CardBattleState {
             require(deck.isNotEmpty() && deck.all { it in catalog })
             val instances = deck.mapIndexed { i, id -> CardInstance(i.toLong(), id) }
             val shuffled = deterministicShuffle(instances, seed, 0)
-            return CardBattleState(combat, shuffled, runSeed = seed, nextCardInstanceId = instances.size.toLong())
+            return CardBattleState(combat, shuffled, runSeed = seed, nextCardInstanceId = instances.size.toLong(),
+                equippedRelicIds = equippedRelicIds)
         }
     }
 }
@@ -191,6 +205,8 @@ private fun deterministicShuffle(cards: List<CardInstance>, seed: Long, ordinal:
 
 sealed interface CardBattleCommand {
     data object BeginTurn : CardBattleCommand
+    data class Tap(val coord: Coord) : CardBattleCommand
+    data class UseSignatureRecolor(val coord: Coord, val hue: Hue) : CardBattleCommand
     data object EndWeave : CardBattleCommand
     data class Play(val instanceId: Long, val payment: PaymentPlan? = null, val target: Coord? = null, val secondTarget: Coord? = null, val chosenHue: Hue? = null) : CardBattleCommand
     data object EndCast : CardBattleCommand
@@ -200,6 +216,7 @@ sealed interface CardBattleCommand {
 }
 
 enum class CardRejection { WRONG_PHASE, UNKNOWN_CARD, INVALID_TARGET, UNAFFORDABLE, INVALID_PAYMENT, EFFECT_LIMIT, EFFECT_FAILED }
+enum class RelicTriggerResource { INK, SPARK, BOARD }
 sealed interface CardEvent {
     data class Drew(val instanceId: Long, val cardId: String) : CardEvent
     data class Played(val instanceId: Long, val cardId: String, val echoed: Boolean) : CardEvent
@@ -208,6 +225,7 @@ sealed interface CardEvent {
     data class CardDiscarded(val instanceId: Long) : CardEvent
     data class CardExhausted(val instanceId: Long) : CardEvent
     data class EchoQueued(val cardId: String) : CardEvent
+    data class RelicTriggered(val relicId: String, val resource: RelicTriggerResource, val amount: Int) : CardEvent
 }
 sealed interface CardBattleResult {
     data class Accepted(val state: CardBattleState, val events: List<CardEvent>) : CardBattleResult
@@ -227,6 +245,8 @@ class CardEngine(
 
     fun transition(state: CardBattleState, command: CardBattleCommand): CardBattleResult = when (command) {
         CardBattleCommand.BeginTurn -> beginTurn(state)
+        is CardBattleCommand.Tap -> tap(state, command.coord)
+        is CardBattleCommand.UseSignatureRecolor -> signatureRecolor(state, command)
         CardBattleCommand.EndWeave -> combatTransition(state, CombatCommand.EndWeave)
         is CardBattleCommand.Play -> play(state, command)
         CardBattleCommand.EndCast -> combatTransition(state, CombatCommand.EndCast)
@@ -235,9 +255,81 @@ class CardEngine(
         CardBattleCommand.FinishCleanup -> cleanup(state)
     }
 
+    private fun tap(state: CardBattleState, coord: Coord): CardBattleResult {
+        val beforePop = boardEngine.tap(state.combat.board, coord, state.combat.spectrum)
+        val result = combatEngine.transition(state.combat, CombatCommand.Tap(coord))
+        val events = mutableListOf<CardEvent>()
+        return when (result) {
+            is CombatResult.Rejected -> CardBattleResult.Rejected(CardRejection.INVALID_TARGET)
+            is CombatResult.Accepted -> {
+                var next = state.copy(combat = result.state)
+                if (beforePop is TapOutcome.Accepted) {
+                    next = applyPopRelics(state, next, beforePop.result, manualTap = true, events = events)
+                        ?: return CardBattleResult.Rejected(CardRejection.EFFECT_FAILED)
+                }
+                CardBattleResult.Accepted(next, events)
+            }
+        }
+    }
+
+    private fun signatureRecolor(state: CardBattleState, command: CardBattleCommand.UseSignatureRecolor): CardBattleResult {
+        if (state.combat.phase !in setOf(CombatPhase.DRAW, CombatPhase.WEAVE, CombatPhase.CAST)) {
+            return CardBattleResult.Rejected(CardRejection.WRONG_PHASE)
+        }
+        val relicId = "relic_chisel_wand"
+        if (relicId !in state.equippedRelicIds || relicId in state.usedRelicIds) {
+            return CardBattleResult.Rejected(CardRejection.WRONG_PHASE)
+        }
+        if (command.coord.x in state.combat.board.sealedColumns) return CardBattleResult.Rejected(CardRejection.INVALID_TARGET)
+        val cell = state.combat.board[command.coord] ?: return CardBattleResult.Rejected(CardRejection.INVALID_TARGET)
+        if (cell.kind != TileKind.HUE) return CardBattleResult.Rejected(CardRejection.INVALID_TARGET)
+        val board = state.combat.board.withCell(command.coord, Cell.hue(command.hue, cell.branded))
+        return CardBattleResult.Accepted(
+            state.copy(combat = state.combat.copy(board = board), usedRelicIds = state.usedRelicIds + relicId),
+            listOf(CardEvent.RelicTriggered(relicId, RelicTriggerResource.BOARD, 1))
+        )
+    }
+
+    private fun applyPopRelics(
+        before: CardBattleState,
+        after: CardBattleState,
+        pop: PopResult,
+        manualTap: Boolean,
+        events: MutableList<CardEvent>
+    ): CardBattleState? {
+        var player = after.combat.player
+        val ashBlocks = pop.orderedCells.count { before.combat.board[it]?.kind == TileKind.ASH }
+        if ("relic_hollow_crown" in before.equippedRelicIds && ashBlocks > 0) {
+            val spark = player.spark.toLong() + ashBlocks.toLong()
+            if (spark > Int.MAX_VALUE) return null
+            player = player.copy(spark = spark.toInt())
+            events += CardEvent.RelicTriggered("relic_hollow_crown", RelicTriggerResource.SPARK, ashBlocks)
+        }
+        var beadsUsed = before.prayerBeadsUsedThisTurn
+        if (manualTap && "relic_prayer_beads" in before.equippedRelicIds && !beadsUsed) {
+            val hue = pop.resolvedHue
+            if (hue != null) {
+                val ink = player.immutableInk.toMutableMap()
+                val accepted = minOf(INK_CAP_PER_HUE - ink.getValue(hue), 2)
+                ink[hue] = ink.getValue(hue) + accepted
+                val overflow = 2 - accepted
+                val spark = player.spark.toLong() + overflow.toLong()
+                if (spark > Int.MAX_VALUE) return null
+                player = player.copy(ink = ink, spark = spark.toInt())
+                if (accepted > 0) events += CardEvent.RelicTriggered("relic_prayer_beads", RelicTriggerResource.INK, accepted)
+                if (overflow > 0) events += CardEvent.RelicTriggered("relic_prayer_beads", RelicTriggerResource.SPARK, overflow)
+            }
+            beadsUsed = true
+        }
+        return after.copy(
+            combat = after.combat.copy(player = player),
+            prayerBeadsUsedThisTurn = beadsUsed
+        )
+    }
+
     private fun beginTurn(state: CardBattleState): CardBattleResult {
         if (state.combat.phase != CombatPhase.DRAW) return CardBattleResult.Rejected(CardRejection.WRONG_PHASE)
-        var next = state
+        var next = state.copy(prayerBeadsUsedThisTurn = false)
         val events = mutableListOf<CardEvent>()
         if (state.bonusTapsNextTurn > 0) {
             val taps = state.combat.tapsRemaining.toLong() + state.bonusTapsNextTurn
@@ -327,9 +419,20 @@ class CardEngine(
         var seq = nextSequence
         var echoed = wasEchoed
         fun combat(cmd: CombatCommand): Boolean {
+            val before = next
             return when (val result = combatEngine.transition(next.combat, cmd)) {
                 is CombatResult.Rejected -> false
-                is CombatResult.Accepted -> { next = next.copy(combat = result.state); true }
+                is CombatResult.Accepted -> {
+                    var accepted = next.copy(combat = result.state)
+                    if (cmd is CombatCommand.CardPop) {
+                        val pop = boardEngine.tap(before.combat.board, cmd.coord, before.combat.spectrum)
+                        if (pop is TapOutcome.Accepted) {
+                            accepted = applyPopRelics(before, accepted, pop.result, manualTap = false, events = events) ?: return false
+                        }
+                    }
+                    next = accepted
+                    true
+                }
             }
         }
         when (val effect = item.effect) {
