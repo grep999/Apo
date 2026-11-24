@@ -220,6 +220,24 @@ private fun CombatScreen(session: GameSession, onSessionChange: (GameSession) ->
                 }
             }
         }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Text("INCOMING WALL", color = Color(0xFF88837B), fontSize = 9.sp, letterSpacing = 1.sp)
+            Text("TELEGRAPHED", color = Color(0xFF88837B), fontSize = 8.sp)
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+            combat.board.incoming.forEachIndexed { column, cell ->
+                Surface(
+                    modifier = Modifier.weight(1f).height(17.dp)
+                        .semantics { contentDescription = "Incoming column ${column + 1}: ${cell?.kind?.name ?: "empty"}" },
+                    color = tileColor(cell),
+                    shape = RoundedCornerShape(3.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text(tileGlyph(cell), color = tileForeground(cell), fontSize = 9.sp)
+                    }
+                }
+            }
+        }
         Text(feedback, color = Color(0xFFB8AA91), fontSize = 11.sp, minLines = 1)
         if (combat.phase == CombatPhase.CAST) {
             if (chiselMode) {
