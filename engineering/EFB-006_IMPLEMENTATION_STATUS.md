@@ -1,6 +1,6 @@
 # EFB-006 — Signature Relic Runtime
 
-**Status:** IMPLEMENTED — exact-SHA CI pending  
+**Status:** IMPLEMENTED — exact-SHA CI PASS  
 **Branch:** `feat/efb006-signature-relic-runtime`  
 **Base:** `feat/efb005-class-starters`
 
@@ -21,3 +21,7 @@
 ## Scope boundary
 
 This implements the three class signature relics only. General relic inventory, arbitrary trigger ordering, relic stacking, save migration and relic UI remain future increments.
+
+
+**Verified candidate:** `ea2b723363cd888c8dd69961958d206c99337391`  
+**GitHub Actions run:** [45293276435](https://github.com/grep999/Apo/actions/runs/45293276435) — full Kotlin/JVM suite PASS; pure-JVM boundary PASS.
