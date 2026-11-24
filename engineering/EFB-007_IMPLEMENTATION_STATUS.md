@@ -1,6 +1,6 @@
 # EFB-007 — First-Slice Encounters
 
-**Status:** IMPLEMENTED — exact-SHA CI pending  
+**Status:** IMPLEMENTED — exact-SHA CI PASS  
 **Branch:** `feat/efb007-enemy-encounters`  
 **Base:** `feat/efb006-signature-relic-runtime`
 
@@ -20,3 +20,7 @@ This is the first content slice, not the full 36 regular / 12 elite / 3 boss tar
 ## Verification
 
 `.github/workflows/efb007-encounters.yml` runs the complete Kotlin/JVM test suite and pure-JVM boundary check on exact SHA.
+
+
+**Verified candidate:** `577c56df026837f1acacd4ad9dafc7153002e15e`  
+**GitHub Actions run:** [45293372126](https://github.com/grep999/Apo/actions/runs/45293372126) — full Kotlin/JVM suite PASS; pure-JVM boundary PASS.
