@@ -45,3 +45,10 @@ jobs:
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
       - name: Run core tests and assemble Android app
         run: gradle --no-daemon clean test :android-app:assembleDebug
+      - name: Publish installable debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-debug-apk-${{ github.sha }}
+          path: android-app/build/outputs/apk/debug/android-app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
