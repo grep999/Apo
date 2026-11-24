@@ -1,0 +1,54 @@
+name: Emberfall EFB-008 Android Vertical Slice
+
+on:
+  push:
+    branches: [feat/efb008-android-playable-shell]
+    paths: ['src/**', 'android-app/**', 'build.gradle.kts', 'settings.gradle.kts', '.github/workflows/efb008-android.yml']
+  pull_request:
+    branches: [feat/efb007-enemy-encounters]
+    paths:
+      - 'src/**'
+      - 'android-app/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - '.github/workflows/efb008-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emberfall-efb008-android-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  android:
+    name: Exact-SHA core tests and Android debug build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools"
+      - name: Install Android 35 platform
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Run core tests and assemble Android app
+        run: gradle --no-daemon clean test :android-app:assembleDebug
+      - name: Publish installable debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: emberfall-debug-apk-${{ github.sha }}
+          path: android-app/build/outputs/apk/debug/android-app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
